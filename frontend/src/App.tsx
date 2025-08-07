@@ -1,13 +1,15 @@
-import { Provider } from '@/components/ui/provider'
-import { Box, Button } from '@chakra-ui/react'
+import Gatcha from './pages/Gatcha'
+import { system } from './theme'
+import { Box, ChakraProvider } from '@chakra-ui/react'
 
 function App() {
   return (
-    <Provider>
-      <Box p={4}>
-        <Button colorScheme="blue">Hola Chakra</Button>
+    <ChakraProvider value={system}>
+      <Box bg="background" minH="100vh">
+        <Gatcha/>
+
       </Box>
-    </Provider>
+    </ChakraProvider>
   )
 }
 
