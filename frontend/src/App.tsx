@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router'
 import GatchaLayout from './layout/gatcha-layout'
 import Gatcha from './pages/Gatcha'
 import { system } from './theme'
+import { ROUTES } from './utils/routes'
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route element={<GatchaLayout/>}>
           <Route index element={<Gatcha/>} />
+          <Route path={ROUTES.history} />
         </Route>
       </Routes>
     </ChakraProvider>

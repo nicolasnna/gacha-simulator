@@ -27,7 +27,7 @@ const rarityCards: rarityCard[] = [
 function Gatcha() {
   return (
     <Container centerContent py={2} spaceY={5}>
-      <Box mt={10}>
+      <Box mt={2}>
         <Heading size={'4xl'} color="text">
           Simulador de Gacha
         </Heading>
