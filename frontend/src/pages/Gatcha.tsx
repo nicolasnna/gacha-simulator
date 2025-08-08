@@ -1,4 +1,4 @@
-import { Box, Button, Card, Container, Heading, Stack } from '@chakra-ui/react'
+import { Box, Button, Card, Container, Heading, Stack, Text } from '@chakra-ui/react'
 
 interface rarityCard {
   rarity: 'ssr' | 'sr' | 'r' | 'c'
@@ -36,7 +36,7 @@ function Gatcha() {
       <Box color="text">
         <Stack flexDir="row">
           <img src="https://emojicdn.elk.sh/%F0%9F%92%8E" width={25} />
-          <p>Monedas: 9000</p>
+          <Text>Monedas: 9000</Text>
         </Stack>
       </Box>
 

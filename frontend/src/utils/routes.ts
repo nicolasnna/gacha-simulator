@@ -1,6 +1,7 @@
 export const ROUTES = {
   history: '/historial',
   home: '/',
-  characters: '/personajes'
+  characters: '/personajes',
+  login: '/login'
 }
 Object.freeze(ROUTES)
