@@ -1,14 +1,17 @@
+import { ChakraProvider } from '@chakra-ui/react'
+import { Route, Routes } from 'react-router'
+import GatchaLayout from './layout/gatcha-layout'
 import Gatcha from './pages/Gatcha'
 import { system } from './theme'
-import { Box, ChakraProvider } from '@chakra-ui/react'
 
 function App() {
   return (
     <ChakraProvider value={system}>
-      <Box bg="background" minH="100vh">
-        <Gatcha/>
-
-      </Box>
+      <Routes>
+        <Route element={<GatchaLayout/>}>
+          <Route index element={<Gatcha/>} />
+        </Route>
+      </Routes>
     </ChakraProvider>
   )
 }
