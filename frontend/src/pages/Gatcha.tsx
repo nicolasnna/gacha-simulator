@@ -1,7 +1,17 @@
-import { Box, Button, Card, Container, Heading, Stack, Text } from '@chakra-ui/react'
+import type { Rarity } from '@/interfaces/rarity.interface'
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Heading,
+  HStack,
+  Stack,
+  Text
+} from '@chakra-ui/react'
 
 interface rarityCard {
-  rarity: 'ssr' | 'sr' | 'r' | 'c'
+  rarity: Rarity
   probability: number
 }
 
@@ -27,25 +37,32 @@ const rarityCards: rarityCard[] = [
 function Gatcha() {
   return (
     <Container centerContent py={2} spaceY={5}>
-      <Box mt={2}>
+      <HStack mt={2} flexWrap='wrap'>
+        <img src='https://emojicdn.elk.sh/🎰?style=facebook' width={40}/>
         <Heading size={'4xl'} color="text">
           Simulador de Gacha
         </Heading>
-      </Box>
+      </HStack>
 
       <Box color="text">
         <Stack flexDir="row">
-          <img src="https://emojicdn.elk.sh/%F0%9F%92%8E" width={25} />
+          <img src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google" width={25} />
           <Text>Monedas: 9000</Text>
         </Stack>
       </Box>
 
-      <Card.Root width="18rem" alignItems="center" bg="bg-secondary" border={0}>
+      <Card.Root
+        width="18rem"
+        alignItems="center"
+        bg="bg-secondary.400"
+        borderRadius={15}
+        border="none"
+      >
         <Card.Header alignSelf="end">
-          <img src="https://emojicdn.elk.sh/%E2%84%B9" width={25} />
+          <img src="https://emojicdn.elk.sh/%E2%84%B9?style=google" width={25} />
         </Card.Header>
         <Card.Body>
-          <img src="https://emojicdn.elk.sh/%F0%9F%8E%81" width={120} />
+          <img src="https://emojicdn.elk.sh/%F0%9F%8E%81?style=google" width={120} />
         </Card.Body>
         <Card.Footer spaceX={4}>
           <Button bg="primary" fontSize="xl" p={5} borderRadius={10}>
@@ -57,7 +74,7 @@ function Gatcha() {
         </Card.Footer>
       </Card.Root>
 
-      <Stack flexDir="row">
+      <HStack as="section" flexWrap='wrap' alignItems='center' justifyContent='center'>
         {rarityCards.map((rarityCard) => (
           <Card.Root
             width={150}
@@ -73,7 +90,7 @@ function Gatcha() {
             </Card.Body>
           </Card.Root>
         ))}
-      </Stack>
+      </HStack>
     </Container>
   )
 }

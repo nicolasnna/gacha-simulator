@@ -8,15 +8,21 @@ function Login() {
   const [showRegister, setShowRegister] = useState<boolean>(false)
 
   return (
-    <Box bgImage={`url(${loginbg})`} bgSize="cover" bgPos="center" minH="100vh">
+    <Box
+      bgImage={`url(${loginbg})`}
+      bgSize="cover"
+      bgPos="center"
+      minH="100vh"
+      bgAttachment="fixed"
+    >
       <Center minH="100vh">
         <Box
-          bg="rgba(255,255,255, 0.7)"
-          px={10}
-          py={6}
+          bg="rgba(255,255,255, 0.35)"
+          p={6}
           spaceY={3}
           borderRadius={10}
           minW={320}
+          backdropFilter="blur(4px)"
         >
           <Heading textAlign="center" size="3xl">
             {showRegister ? 'Registro' : 'Iniciar sesión'}
