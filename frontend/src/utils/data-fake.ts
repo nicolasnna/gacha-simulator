@@ -1,4 +1,7 @@
-import type { CharacterObtained } from '@/interfaces/character.interface'
+import type {
+  Character,
+  CharacterObtained
+} from '@/interfaces/character.interface'
 
 export const obtainedCharactersFake: CharacterObtained[] = [
   {
@@ -150,5 +153,61 @@ export const obtainedCharactersFake: CharacterObtained[] = [
     obtainedAt: new Date('2025-08-01T10:40:00'),
     pullNumber: 15,
     isDuplicate: false
+  }
+]
+
+export const characterListFake: Character[] = [
+  {
+    id: 101,
+    name: 'Luna Eclipse',
+    rarity: 'ssr',
+    urlImage: 'https://example.com/images/luna-eclipse.png',
+    repeatedCount: 0
+  },
+  {
+    id: 102,
+    name: 'Vortex Blade',
+    rarity: 'ssr',
+    urlImage: 'https://example.com/images/vortex-blade.png',
+    repeatedCount: 2
+  },
+  {
+    id: 103,
+    name: 'Shadow Dancer',
+    rarity: 'sr',
+    urlImage: 'https://example.com/images/shadow-dancer.png',
+    repeatedCount: 1
+  },
+  {
+    id: 104,
+    name: 'Stormcaller',
+    rarity: 'sr',
+    urlImage: 'https://example.com/images/stormcaller.png'
+  },
+  {
+    id: 105,
+    name: 'Ironclad Guardian',
+    rarity: 'r',
+    urlImage: 'https://example.com/images/ironclad-guardian.png',
+    repeatedCount: 3
+  },
+  {
+    id: 106,
+    name: 'Mist Weaver',
+    rarity: 'r',
+    urlImage: 'https://example.com/images/mist-weaver.png'
+  },
+  {
+    id: 107,
+    name: 'Wildfire Archer',
+    rarity: 'c',
+    urlImage: 'https://example.com/images/wildfire-archer.png'
+  },
+  {
+    id: 108,
+    name: 'Frost Spirit',
+    rarity: 'c',
+    urlImage: 'https://example.com/images/frost-spirit.png',
+    repeatedCount: 1
   }
 ]
