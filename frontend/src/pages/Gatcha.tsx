@@ -38,7 +38,7 @@ function Gatcha() {
   return (
     <Container centerContent py={2} spaceY={5}>
       <HStack mt={2} flexWrap='wrap'>
-        <img src='https://emojicdn.elk.sh/🎰?style=facebook' width={40}/>
+        <img src='https://emojicdn.elk.sh/🎰?style=facebook' width={40} alt='Máquina gatcha'/>
         <Heading size={'4xl'} color="text">
           Simulador de Gacha
         </Heading>
@@ -46,7 +46,7 @@ function Gatcha() {
 
       <Box color="text">
         <Stack flexDir="row">
-          <img src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google" width={25} />
+          <img src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google" width={25} alt='Diamante' />
           <Text>Monedas: 9000</Text>
         </Stack>
       </Box>
@@ -59,10 +59,10 @@ function Gatcha() {
         border="none"
       >
         <Card.Header alignSelf="end">
-          <img src="https://emojicdn.elk.sh/%E2%84%B9?style=google" width={25} />
+          <img src="https://emojicdn.elk.sh/%E2%84%B9?style=google" width={25} alt='Información' />
         </Card.Header>
         <Card.Body>
-          <img src="https://emojicdn.elk.sh/%F0%9F%8E%81?style=google" width={120} />
+          <img src="https://emojicdn.elk.sh/%F0%9F%8E%81?style=google" width={120} alt='Caja gatcha'/>
         </Card.Body>
         <Card.Footer spaceX={4}>
           <Button bg="primary" fontSize="xl" p={5} borderRadius={10}>

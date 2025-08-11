@@ -2,6 +2,80 @@ import type {
   Character,
   CharacterObtained
 } from '@/interfaces/character.interface'
+import type { User } from '@/interfaces/user.interface'
+
+export const usersFake: User[] = [
+   {
+    id: 1,
+    username: "pixelMaster",
+    uniqueCharacters: 12,
+    credits: 4500,
+    role: "user"
+  },
+  {
+    id: 2,
+    username: "adminWizard",
+    uniqueCharacters: 35,
+    credits: 99999,
+    role: "admin"
+  },
+  {
+    id: 3,
+    username: "modHunter",
+    uniqueCharacters: 20,
+    credits: 8200,
+    role: "moderator"
+  },
+  {
+    id: 4,
+    username: "gachaLover",
+    uniqueCharacters: 15,
+    credits: 3000,
+    role: "user"
+  },
+  {
+    id: 5,
+    username: "legendaryPuller",
+    uniqueCharacters: 45,
+    credits: 15000,
+    role: "user"
+  },
+  {
+    id: 6,
+    username: "shadowAdmin",
+    uniqueCharacters: 50,
+    credits: 50000,
+    role: "admin"
+  },
+  {
+    id: 7,
+    username: "rareCollector",
+    uniqueCharacters: 27,
+    credits: 7200,
+    role: "user"
+  },
+  {
+    id: 8,
+    username: "eventMod",
+    uniqueCharacters: 18,
+    credits: 6400,
+    role: "moderator"
+  },
+  {
+    id: 9,
+    username: "coinFarmer",
+    uniqueCharacters: 10,
+    credits: 2500,
+    role: "user"
+  },
+  {
+    id: 10,
+    username: "maxRoller",
+    uniqueCharacters: 60,
+    credits: 20000,
+    role: "user"
+  }
+]
 
 export const obtainedCharactersFake: CharacterObtained[] = [
   {

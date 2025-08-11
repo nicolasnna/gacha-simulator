@@ -17,11 +17,16 @@ function CardCharacter({ data }: CardCharacterProps) {
       zIndex={10}
     >
       {!!data.repeatedCount && (
-        <Float placement="top-end" zIndex={10}>
-          <Circle size="6" bg="red" color="white">
-            {data.repeatedCount}
-          </Circle>
-        </Float>
+        <>
+          <Float placement="top-end" zIndex={10} >
+            <Circle size="7" bg="bg-secondary" border='2px solid' borderColor={data.rarity} color="white">
+              {data.repeatedCount}
+            </Circle>
+          </Float>
+          {/* <Float placement='top-start' offset={5}>
+            <img src='https://emojicdn.elk.sh/🗑️?style=facebook' width={25}/>
+          </Float> */}
+        </>
       )}
 
       <Card.Header zIndex={10}>

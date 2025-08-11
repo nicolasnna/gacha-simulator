@@ -13,7 +13,7 @@ function HistoryGacha() {
   return (
     <Container centerContent py={2} spaceY={4}>
       <HStack mt={2} flexWrap='wrap'>
-        <img src='https://emojicdn.elk.sh/%F0%9F%93%85?style=google' width={50}/>
+        <img src='https://emojicdn.elk.sh/%F0%9F%93%85?style=google' width={50} alt='Calendario'/>
         <Heading size="4xl" color="text">
           Historial de tiradas
         </Heading>
@@ -34,7 +34,7 @@ function HistoryGacha() {
             alignItems="center"
           >
             <GridItem colSpan={1}>
-              <img src="https://emojicdn.elk.sh/%F0%9F%8E%AF?style=google" width={25} />
+              <img src="https://emojicdn.elk.sh/%F0%9F%8E%AF?style=google" width={25} alt='Icono conseguido'/>
             </GridItem>
             <GridItem colSpan={7}>
               <HStack flexWrap="wrap" gapY={0}>

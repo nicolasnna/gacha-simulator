@@ -7,6 +7,7 @@ import { ROUTES } from './utils/routes'
 import Login from './pages/Login'
 import HistoryGacha from './pages/HistoryGacha'
 import Characters from './pages/Characters'
+import Users from './pages/Users'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route index element={<Gatcha />} />
           <Route path={ROUTES.history} element={<HistoryGacha />} />
           <Route path={ROUTES.characters} element={<Characters />} />
+          <Route path={ROUTES.users} element={<Users />} />
         </Route>
       </Routes>
     </ChakraProvider>
