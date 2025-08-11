@@ -6,4 +6,5 @@ export interface User {
   uniqueCharacters: number
   credits: number
   role: Role
+  permissions: string[]
 }

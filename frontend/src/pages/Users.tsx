@@ -1,6 +1,6 @@
-import DeleteUserDialog from '@/components/dialog/delete-user-dialog'
+import UsersTable from '@/components/table/users-table'
 import { usersFake } from '@/utils/data-fake'
-import { Container, Heading, HStack, Table } from '@chakra-ui/react'
+import { Container, Heading, HStack, Tabs } from '@chakra-ui/react'
 
 function Users() {
   return (
@@ -11,32 +11,16 @@ function Users() {
         </Heading>
       </HStack>
 
-      <Table.Root interactive size="sm" maxW={900}>
-        <Table.Header>
-          <Table.Row bg="background/60" borderRadius={2}>
-            <Table.ColumnHeader color="text">Usuario</Table.ColumnHeader>
-            <Table.ColumnHeader color="text">Personajes</Table.ColumnHeader>
-            <Table.ColumnHeader color="text">Creditos</Table.ColumnHeader>
-            <Table.ColumnHeader color="text">Rol</Table.ColumnHeader>
-            <Table.ColumnHeader color="text" textAlign="center">
-              Acción
-            </Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {usersFake.map((user) => (
-            <Table.Row key={user.id} bg="bg-secondary/40">
-              <Table.Cell color="text">{user.username}</Table.Cell>
-              <Table.Cell color="text">{user.uniqueCharacters}</Table.Cell>
-              <Table.Cell color="text">{user.credits}</Table.Cell>
-              <Table.Cell color="text">{user.role}</Table.Cell>
-              <Table.Cell color="text" textAlign="center">
-                {user.role !== 'admin' && <DeleteUserDialog data={user} />}
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
+      <Tabs.Root defaultValue="users" variant="plain">
+        <Tabs.List >
+          <Tabs.Trigger value="users" color="text">Usuarios</Tabs.Trigger>
+          <Tabs.Trigger value="permissions" color="text">Permisos</Tabs.Trigger>
+          <Tabs.Indicator rounded="md" bg='bg-secondary'/>
+        </Tabs.List>
+        <Tabs.Content value="users">
+          <UsersTable data={usersFake} />
+        </Tabs.Content>
+      </Tabs.Root>
     </Container>
   )
 }

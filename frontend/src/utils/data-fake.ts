@@ -5,75 +5,107 @@ import type {
 import type { User } from '@/interfaces/user.interface'
 
 export const usersFake: User[] = [
-   {
+  {
     id: 1,
-    username: "pixelMaster",
+    username: 'pixelMaster',
     uniqueCharacters: 12,
     credits: 4500,
-    role: "user"
+    role: 'usuarioGeneral',
+    permissions: ['view_characters', 'play_gacha']
   },
   {
     id: 2,
-    username: "adminWizard",
+    username: 'adminWizard',
     uniqueCharacters: 35,
     credits: 99999,
-    role: "admin"
+    role: 'superAdmin',
+    permissions: [
+      'view_characters',
+      'play_gacha',
+      'manage_users',
+      'edit_characters',
+      'view_reports'
+    ]
   },
   {
     id: 3,
-    username: "modHunter",
+    username: 'modHunter',
     uniqueCharacters: 20,
     credits: 8200,
-    role: "moderator"
+    role: 'moderador',
+    permissions: [
+      'view_characters',
+      'play_gacha',
+      'moderate_chat',
+      'manage_events'
+    ]
   },
   {
     id: 4,
-    username: "gachaLover",
+    username: 'gachaLover',
     uniqueCharacters: 15,
     credits: 3000,
-    role: "user"
+    role: 'usuarioGeneral',
+    permissions: ['view_characters', 'play_gacha']
   },
   {
     id: 5,
-    username: "legendaryPuller",
+    username: 'legendaryPuller',
     uniqueCharacters: 45,
     credits: 15000,
-    role: "user"
+    role: 'usuarioGeneral',
+    permissions: ['view_characters', 'play_gacha']
   },
   {
     id: 6,
-    username: "shadowAdmin",
+    username: 'shadowAdmin',
     uniqueCharacters: 50,
     credits: 50000,
-    role: "admin"
+    role: 'superAdmin',
+    permissions: [
+      'view_characters',
+      'play_gacha',
+      'manage_users',
+      'edit_characters',
+      'view_reports'
+    ]
   },
   {
     id: 7,
-    username: "rareCollector",
+    username: 'rareCollector',
     uniqueCharacters: 27,
     credits: 7200,
-    role: "user"
+    role: 'usuarioGeneral',
+    permissions: ['view_characters', 'play_gacha']
   },
   {
     id: 8,
-    username: "eventMod",
+    username: 'eventMod',
     uniqueCharacters: 18,
     credits: 6400,
-    role: "moderator"
+    role: 'moderador',
+    permissions: [
+      'view_characters',
+      'play_gacha',
+      'moderate_chat',
+      'manage_events'
+    ]
   },
   {
     id: 9,
-    username: "coinFarmer",
+    username: 'coinFarmer',
     uniqueCharacters: 10,
     credits: 2500,
-    role: "user"
+    role: 'usuarioGeneral',
+    permissions: ['view_characters', 'play_gacha']
   },
   {
     id: 10,
-    username: "maxRoller",
+    username: 'maxRoller',
     uniqueCharacters: 60,
     credits: 20000,
-    role: "user"
+    role: 'usuarioGeneral',
+    permissions: ['view_characters', 'play_gacha']
   }
 ]
 
