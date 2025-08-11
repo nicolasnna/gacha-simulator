@@ -11,7 +11,7 @@ export default function UsersTable({ data }: UsersTableProps) {
   return (
     <Table.Root interactive size="sm" maxW={900}>
       <Table.Header>
-        <Table.Row bg="background/60" borderRadius={2}>
+        <Table.Row bg="background/60">
           <Table.ColumnHeader color="text">Usuario</Table.ColumnHeader>
           <Table.ColumnHeader color="text">Personajes</Table.ColumnHeader>
           <Table.ColumnHeader color="text">Creditos</Table.ColumnHeader>
@@ -24,7 +24,11 @@ export default function UsersTable({ data }: UsersTableProps) {
       </Table.Header>
       <Table.Body>
         {data.map((user) => (
-          <Table.Row key={user.id} bg="bg-secondary/40">
+          <Table.Row
+            key={user.id}
+            bg="bg-secondary/40"
+            _hover={{ bg: 'background' }}
+          >
             <Table.Cell color="text">{user.username}</Table.Cell>
             <Table.Cell color="text">{user.uniqueCharacters}</Table.Cell>
             <Table.Cell color="text">{user.credits}</Table.Cell>

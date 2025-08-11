@@ -19,6 +19,11 @@ export default function DeleteUserDialog({ data }: DeleteUserDialogProps) {
     { label: 'Rol:', value: data.role }
   ]
 
+  const onDelete = () => {
+    console.log('Borrado: ' + data.username)
+    setOpenDialog(false)
+  }
+
   return (
     <>
       <Icon
@@ -58,7 +63,7 @@ export default function DeleteUserDialog({ data }: DeleteUserDialogProps) {
                 <Dialog.ActionTrigger asChild>
                   <Button variant="outline">Cancelar</Button>
                 </Dialog.ActionTrigger>
-                <Button>Eliminar</Button>
+                <Button onClick={onDelete}>Eliminar</Button>
               </Dialog.Footer>
             </Dialog.Content>
           </Dialog.Positioner>

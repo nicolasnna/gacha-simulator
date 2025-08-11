@@ -14,6 +14,11 @@ export default function UpdateUserDialog({ data }: UpdateUserDialogProps) {
     {}
   ]
 
+  const onUpdate = () => {
+    console.log('Modificado: ' + data.username)
+    setOpenDialog(false)
+  }
+
   return (
     <>
       <Icon
@@ -42,7 +47,7 @@ export default function UpdateUserDialog({ data }: UpdateUserDialogProps) {
                 <Dialog.ActionTrigger asChild>
                   <Button variant="outline">Cancelar</Button>
                 </Dialog.ActionTrigger>
-                <Button>Modificar</Button>
+                <Button onClick={onUpdate}>Modificar</Button>
               </Dialog.Footer>
             </Dialog.Content>
           </Dialog.Positioner>
