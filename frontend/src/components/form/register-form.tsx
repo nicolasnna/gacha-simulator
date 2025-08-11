@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import FieldInput from './field-input'
 
-function FormRegister() {
+function RegisterForm() {
   const {
     register,
     handleSubmit,
@@ -59,4 +59,4 @@ function FormRegister() {
   )
 }
 
-export default FormRegister
+export default RegisterForm

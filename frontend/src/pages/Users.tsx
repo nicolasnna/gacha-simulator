@@ -1,4 +1,4 @@
-import PermissionsTable from '@/components/table/permissions-table'
+import PermissionsForm from '@/components/form/permissions-form'
 import UsersTable from '@/components/table/users-table'
 import { usersFake } from '@/utils/data-fake'
 import { Container, Heading, HStack, Tabs } from '@chakra-ui/react'
@@ -26,7 +26,7 @@ function Users() {
           <UsersTable data={usersFake} />
         </Tabs.Content>
         <Tabs.Content value="permissions">
-          <PermissionsTable />
+          <PermissionsForm />
         </Tabs.Content>
       </Tabs.Root>
     </Container>

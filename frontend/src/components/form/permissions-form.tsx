@@ -8,7 +8,7 @@ import { Table } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import CheckboxField from '../form/checkbox-field'
+import CheckboxField from './checkbox-field'
 
 const defaultModuleState = {
   manage: false,
@@ -18,7 +18,7 @@ const defaultModuleState = {
   delete: false
 }
 
-export default function PermissionsTable() {
+export default function PermissionsForm() {
   const actions: Action[] = ['manage', 'read', 'create', 'update', 'delete']
 
   const modules = ['users', 'gachas', 'histories', 'characters']
