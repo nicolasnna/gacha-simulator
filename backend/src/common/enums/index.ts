@@ -1,2 +1,2 @@
-export * from './actions.enum'
-export * from './modules.enum'
+export * from './access/actions.enum'
+export * from './access/modules.enum'
