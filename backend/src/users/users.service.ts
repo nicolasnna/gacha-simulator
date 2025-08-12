@@ -17,7 +17,7 @@ export class UsersService {
     return `This action returns a #${id} user`
   }
 
-  findEmail(email: string): User {
+  findEmail(email: string) {
     return 'en proceso'
   }
 
