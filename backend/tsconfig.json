@@ -17,12 +17,12 @@
     "strictBindCallApply": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-    // "paths": {
-    //   "@connections/": ["./src/connections/*"],
-    //   "@common/": ["./src/common/*"],
-    //   "@access/": ["./src/access/*"]
-    // }
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@connections/": ["src/connections/"],
+      "@common/": ["src/common/"],
+      "@access/": ["src/access/"]
+    }
   },
   "watchOptions": {
     "watchFile": "fixedPollingInterval"
