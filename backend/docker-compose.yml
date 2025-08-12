@@ -5,10 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: dev
 
     container_name: backend-gacha-simulator
     command: npm run start:dev
-    environment:      
+    environment:
       - PORT=3000
       - URI_MONGO=mongodb://mongo:27017/gacha-simulator
       - DB_NAME=gacha-simulator

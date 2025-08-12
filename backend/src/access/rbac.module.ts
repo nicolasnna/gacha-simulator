@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AccessControlModule } from 'nest-access-control'
-import { Role, RoleSchema } from '@common/schemas'
+import { Role, RoleSchema } from 'src/common/schemas'
 import { SuperACGuard } from './super-ac.guard'
 import { RbacBuilderService } from './rbac-builder.service'
 

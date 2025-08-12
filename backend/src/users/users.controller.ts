@@ -12,13 +12,13 @@ import {
 } from '@nestjs/common'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { UseRoles } from 'nest-access-control'
-import { ModuleKey } from '@common/enums'
+import { ModuleKey } from 'src/common/enums'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dtos/create-user.dto'
 import { UpdateUserProfileDto } from './dtos/update-user-profile.dto'
 import { ChangePasswordDto } from './dtos/change-password.dto'
 import { UpdateUserRoleDto } from './dtos/update-user-role.dto'
-import { SuperACGuard } from '@access/super-ac.guard'
+import { SuperACGuard } from 'src/access/super-ac.guard'
 import { UpdateUserDto } from './dtos/update-user.dto'
 
 @UseGuards(JwtAuthGuard, SuperACGuard)

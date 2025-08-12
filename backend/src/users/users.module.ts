@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
 import { UsersService } from './users.service'
 import { UsersController } from './users.controller'
-import { RbacModule } from '@access/rbac.module'
-import { User, UserSchema } from '@common/schemas'
+import { RbacModule } from 'src/access/rbac.module'
+import { User, UserSchema } from 'src/common/schemas'
 import { MongooseModule } from '@nestjs/mongoose'
 
 @Module({

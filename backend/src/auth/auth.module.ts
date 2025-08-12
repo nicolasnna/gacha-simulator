@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
-import { LocalStrategy } from './strategies/jwt-local.strategy'
 import { MongooseModule } from '@nestjs/mongoose'
 import { User, UserSchema } from 'src/common/schemas/user.schema'
 import { JwtModule } from '@nestjs/jwt'
+import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
   imports: [
@@ -15,6 +15,6 @@ import { JwtModule } from '@nestjs/jwt'
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy]
+  providers: [AuthService, JwtStrategy]
 })
 export class AuthModule {}

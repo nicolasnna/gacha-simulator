@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { Role, RoleDocument } from '@common/schemas'
-import { ModuleKey, Action } from '@common/enums'
+import { Role, RoleDocument } from 'src/common/schemas'
+import { ModuleKey, Action } from 'src/common/enums'
 
 @Injectable()
 export class RolesSeeder {

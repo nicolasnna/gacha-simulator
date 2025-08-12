@@ -43,6 +43,7 @@ export class AuthService {
     const user = await this.userModel
       .findOne({ email: userData.email })
       .select('+passwordHash')
+      .exec()
 
     if (!user) {
       throw new NotFoundException()
@@ -57,6 +58,7 @@ export class AuthService {
     }
 
     const userObject = user.toObject<UserResponse>()
+
     return {
       userObject,
       ...(await this.sign(
@@ -79,13 +81,4 @@ export class AuthService {
     const access_token = await this.jwtService.signAsync(payload)
     return { access_token }
   }
-
-  // validateUser(loginUserDto: LoginUserDto): Promise<any> {
-  //   const user = this.usersService.findEmail(loginUserDto.email)
-  //   if (user && user.password === loginUserDto.password) {
-  //     const { password, ...result } = user
-  //     return result
-  //   }
-  //   return null
-  // }
 }
