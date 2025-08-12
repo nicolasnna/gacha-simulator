@@ -1,11 +1,11 @@
 import type { PermissionKeys } from '@/interfaces/permissions.interfaces'
-import type { PermissionType } from '@/schemas/permission.schema'
+import type { PermissionWithUserIdType } from '@/schemas/permission.schema'
 import { Checkbox, Field } from '@chakra-ui/react'
 import { Controller, type Control } from 'react-hook-form'
 
 interface CheckboxFieldProps {
   name: PermissionKeys
-  control: Control<PermissionType>
+  control: Control<PermissionWithUserIdType>
 }
 
 export default function CheckboxField({ name, control }: CheckboxFieldProps) {

@@ -1,4 +1,5 @@
-import type { Role } from "./role.interface"
+import type { PermissionType } from '@/schemas/permission.schema'
+import type { Role } from './role.interface'
 
 export interface User {
   id: string | number
@@ -6,5 +7,5 @@ export interface User {
   uniqueCharacters: number
   credits: number
   role: Role
-  permissions: string[]
+  permissions: PermissionType
 }

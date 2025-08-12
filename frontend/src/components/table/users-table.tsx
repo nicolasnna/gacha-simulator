@@ -34,7 +34,7 @@ export default function UsersTable({ data }: UsersTableProps) {
             <Table.Cell color="text">{user.credits}</Table.Cell>
             <Table.Cell color="text">{user.role}</Table.Cell>
             <Table.Cell color="text" inlineSize="300px">
-              {user.permissions?.join(', ')}
+              {/* {user.permissions?.join(', ')} */}
             </Table.Cell>
             <Table.Cell color="text" textAlign="center" spaceX={2}>
               {user.role !== 'superAdmin' && <DeleteUserDialog data={user} />}

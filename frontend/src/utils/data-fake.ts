@@ -11,7 +11,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 12,
     credits: 4500,
     role: 'usuarioGeneral',
-    permissions: ['view_characters', 'play_gacha']
+    permissions: {
+      users: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      gachas: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      }
+    }
   },
   {
     id: 2,
@@ -19,13 +48,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 35,
     credits: 99999,
     role: 'superAdmin',
-    permissions: [
-      'view_characters',
-      'play_gacha',
-      'manage_users',
-      'edit_characters',
-      'view_reports'
-    ]
+    permissions: {
+      users: {
+        manage: true,
+        read: true,
+        create: true,
+        update: true,
+        delete: true
+      },
+      gachas: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: true,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: true,
+        delete: false
+      }
+    }
   },
   {
     id: 3,
@@ -33,12 +85,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 20,
     credits: 8200,
     role: 'moderador',
-    permissions: [
-      'view_characters',
-      'play_gacha',
-      'moderate_chat',
-      'manage_events'
-    ]
+    permissions: {
+      users: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      gachas: {
+        manage: true,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      }
+    }
   },
   {
     id: 4,
@@ -46,7 +122,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 15,
     credits: 3000,
     role: 'usuarioGeneral',
-    permissions: ['view_characters', 'play_gacha']
+    permissions: {
+      users: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      gachas: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      }
+    }
   },
   {
     id: 5,
@@ -54,7 +159,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 45,
     credits: 15000,
     role: 'usuarioGeneral',
-    permissions: ['view_characters', 'play_gacha']
+    permissions: {
+      users: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      gachas: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      }
+    }
   },
   {
     id: 6,
@@ -62,13 +196,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 50,
     credits: 50000,
     role: 'superAdmin',
-    permissions: [
-      'view_characters',
-      'play_gacha',
-      'manage_users',
-      'edit_characters',
-      'view_reports'
-    ]
+    permissions: {
+      users: {
+        manage: true,
+        read: true,
+        create: true,
+        update: true,
+        delete: true
+      },
+      gachas: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: true,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: true,
+        delete: false
+      }
+    }
   },
   {
     id: 7,
@@ -76,7 +233,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 27,
     credits: 7200,
     role: 'usuarioGeneral',
-    permissions: ['view_characters', 'play_gacha']
+    permissions: {
+      users: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      gachas: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      }
+    }
   },
   {
     id: 8,
@@ -84,12 +270,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 18,
     credits: 6400,
     role: 'moderador',
-    permissions: [
-      'view_characters',
-      'play_gacha',
-      'moderate_chat',
-      'manage_events'
-    ]
+    permissions: {
+      users: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      gachas: {
+        manage: true,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      }
+    }
   },
   {
     id: 9,
@@ -97,7 +307,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 10,
     credits: 2500,
     role: 'usuarioGeneral',
-    permissions: ['view_characters', 'play_gacha']
+    permissions: {
+      users: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      gachas: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      }
+    }
   },
   {
     id: 10,
@@ -105,7 +344,36 @@ export const usersFake: User[] = [
     uniqueCharacters: 60,
     credits: 20000,
     role: 'usuarioGeneral',
-    permissions: ['view_characters', 'play_gacha']
+    permissions: {
+      users: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      gachas: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      },
+      histories: {
+        manage: false,
+        read: false,
+        create: false,
+        update: false,
+        delete: false
+      },
+      characters: {
+        manage: false,
+        read: true,
+        create: false,
+        update: false,
+        delete: false
+      }
+    }
   }
 ]
 
