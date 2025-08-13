@@ -1,10 +1,11 @@
 import z from 'zod'
 
-export const UsernameSchema = z
-  .string()
+export const EmailSchema = z
+  .email()
   .trim()
-  .max(16)
+  .max(25)
   .min(6, { message: 'Debe tener un mínimo de 6 caracteres' })
+  .transform((email) => email.toLowerCase())
 
 export const PasswordSchema = z
   .string()
@@ -12,7 +13,7 @@ export const PasswordSchema = z
   .min(6, { message: 'Debe tener un mínimo de 6 caracteres' })
 
 export const LoginSchema = z.object({
-  username: UsernameSchema,
+  email: EmailSchema,
   password: PasswordSchema
 })
 

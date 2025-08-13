@@ -13,7 +13,7 @@ function LoginForm() {
   } = useForm<LoginType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: ''
     }
   })
@@ -30,14 +30,14 @@ function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <VStack gap={4}>
         <FieldInput
-          register={register('username')}
-          error={errors.username}
-          placeholder="Usuario"
+          register={register('email')}
+          error={errors.email}
+          placeholder="Correo electrónico"
         />
 
         <FieldInput
           register={register('password')}
-          error={errors.username}
+          error={errors.password}
           placeholder="Contraseña"
           isPassword
         />
