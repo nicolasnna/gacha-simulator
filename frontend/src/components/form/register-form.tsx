@@ -1,4 +1,5 @@
 import { RegisterSchema, type RegisterType } from '@/schemas/register.schema'
+import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
 import { Button, HStack, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -18,6 +19,10 @@ function RegisterForm() {
       confirmPassword: ''
     }
   })
+  const { loading, userInfo, error, success } = useAppSelector(
+    (state) => state.auth
+  )
+  const dispatch = useAppDispatch()
 
   const onSubmit = (data: RegisterType) => {
     console.log(data)
