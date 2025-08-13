@@ -8,3 +8,8 @@ export class LoginUserDto {
   @IsString()
   password: string
 }
+
+export class ResponseLoginUserDto {
+  role: string
+  access_token: string
+}

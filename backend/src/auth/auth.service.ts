@@ -9,8 +9,11 @@ import { InjectModel } from '@nestjs/mongoose'
 import * as bcrypt from 'bcrypt'
 import { Model } from 'mongoose'
 import { User, UserDocument } from 'src/common/schemas/user.schema'
-import { LoginUserDto } from './dto/login-user.dto'
-import { RegisterUserDto } from './dto/register-user.dto'
+import { LoginUserDto, ResponseLoginUserDto } from './dto/login-user.dto'
+import {
+  RegisterUserDto,
+  ResponseRegisterUserDto
+} from './dto/register-user.dto'
 
 type UserResponse = Omit<User, 'passwordHash'> & { id: string }
 @Injectable()
@@ -20,47 +23,45 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async register(dto: RegisterUserDto) {
-    const exists = await this.userModel.exists({ email: dto.email })
+  async register(userData: RegisterUserDto): Promise<ResponseRegisterUserDto> {
+    const exists = await this.userModel.exists({ email: userData.email })
     if (exists) throw new ConflictException('Email ya registrado')
 
-    const passwordHash = await bcrypt.hash(dto.password, 12)
+    const passwordHash = await bcrypt.hash(userData.password, 12)
     const doc = await this.userModel.create({
-      email: dto.email,
+      email: userData.email,
       passwordHash,
       role: 'user',
-      name: dto.name
+      name: userData.name
     })
 
     const user = doc.toObject<UserResponse>()
     return {
-      user,
+      email: user.email,
+      role: user.role,
       ...(await this.sign(user.id, user.email, user.role, false))
     }
   }
 
-  async loginUser(userData: LoginUserDto) {
+  async loginUser(userData: LoginUserDto): Promise<ResponseLoginUserDto> {
     const user = await this.userModel
       .findOne({ email: userData.email })
       .select('+passwordHash')
       .exec()
 
-    if (!user) {
-      throw new NotFoundException()
-    }
+    if (!user) throw new NotFoundException()
+
     const validatePassword = await bcrypt.compare(
       userData.password,
       user.passwordHash
     )
 
-    if (!validatePassword) {
-      throw new UnauthorizedException()
-    }
+    if (!validatePassword) throw new UnauthorizedException()
 
     const userObject = user.toObject<UserResponse>()
 
     return {
-      userObject,
+      role: userObject.role,
       ...(await this.sign(
         userObject.id,
         userObject.email,
