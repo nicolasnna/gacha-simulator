@@ -2,7 +2,7 @@ import { LoginSchema, type LoginType } from '@/schemas/login.schema'
 import { Button, HStack, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import FieldInput from './field-input'
+import FieldInput from './FieldInput'
 
 function LoginForm() {
   const {

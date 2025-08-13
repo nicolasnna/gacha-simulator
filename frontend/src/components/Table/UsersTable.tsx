@@ -1,7 +1,7 @@
 import type { User } from '@/interfaces/user.interface'
 import { Table } from '@chakra-ui/react'
-import DeleteUserDialog from '../dialog/delete-user-dialog'
-import UpdateUserDialog from '../dialog/update-user-dialog'
+import DeleteUserDialog from '../Dialog/DeleteUserDialog'
+import UpdateUserDialog from '../Dialog/UpdateUserDialog'
 
 interface UsersTableProps {
   data: User[]

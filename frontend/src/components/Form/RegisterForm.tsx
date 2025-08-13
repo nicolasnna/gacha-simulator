@@ -1,10 +1,10 @@
 import { RegisterSchema, type RegisterType } from '@/schemas/register.schema'
-import { useAppDispatch } from '@/services/hooks/useRedux'
-import { registerUser } from '@/services/redux/auth/auth.actions'
+import { useAppDispatch } from '@hooks/useRedux'
 import { Button, HStack, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import FieldInput from './field-input'
+import FieldInput from './FieldInput'
+import { registerUser } from '@redux/auth'
 
 function RegisterForm() {
   const {

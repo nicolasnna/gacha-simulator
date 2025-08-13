@@ -1,5 +1,5 @@
-import PermissionsForm from '@/components/form/permissions-form'
-import UsersTable from '@/components/table/users-table'
+import PermissionsForm from '@/components/Form/PermissionsForm'
+import UsersTable from '@/components/Table/UsersTable'
 import { usersFake } from '@/utils/data-fake'
 import { Container, Heading, HStack, Tabs } from '@chakra-ui/react'
 

@@ -10,9 +10,7 @@ interface UpdateUserDialogProps {
 export default function UpdateUserDialog({ data }: UpdateUserDialogProps) {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
 
-  const highlights = [
-    {}
-  ]
+  const highlights = [{}]
 
   const onUpdate = () => {
     console.log('Modificado: ' + data.username)

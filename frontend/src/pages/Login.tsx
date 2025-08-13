@@ -1,6 +1,6 @@
 import loginbg from '@/assets/login-bg.webp'
-import LoginForm from '@/components/form/login-form'
-import RegisterForm from '@/components/form/register-form'
+import LoginForm from '@/components/Form/LoginForm'
+import RegisterForm from '@/components/Form/RegisterForm'
 import { Box, Center, Heading, Link, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 

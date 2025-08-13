@@ -15,8 +15,8 @@ import {
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import CheckboxField from './checkbox-field'
-import UsersIdSelect from './users-id-select'
+import CheckboxField from './CheckboxField'
+import UsersIdSelect from './UsersIdSelect'
 
 const defaultPermissions = {
   manage: false,

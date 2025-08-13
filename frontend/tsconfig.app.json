@@ -25,7 +25,9 @@
 
     /* Alias path */
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@redux/*": ["./src/services/redux/*"],
+      "@hooks/*": ["./src/services/hooks/*"]
     }
   },
   "include": ["src"]
