@@ -37,7 +37,7 @@ export class RolesSeeder {
 
   async drop() {
     const roleKeys = this.roleDefinitions.map((r) => r.key)
-    await this.roleModel.deleteMany({ key: { $in: roleKeys } })
+    await this.roleModel.deleteMany({ key: { $in: roleKeys } }).exec()
     this.logger.warn(
       `Roles in mongoDB has been deleted: ${roleKeys.join(', ')}`
     )
@@ -45,16 +45,18 @@ export class RolesSeeder {
 
   async seed() {
     for (const role of this.roleDefinitions) {
-      await this.roleModel.findOneAndUpdate(
-        { key: role.key },
-        { $set: role },
-        {
-          upsert: true,
-          setDefaultsOnInsert: false,
-          new: true
-        }
-      )
-      this.logger.log(`Set ${role.key} whith label: ${role.label}`)
+      await this.roleModel
+        .findOneAndUpdate(
+          { key: role.key },
+          { $set: role },
+          {
+            upsert: true,
+            setDefaultsOnInsert: false,
+            new: true
+          }
+        )
+        .exec()
+      this.logger.log(`Setted ${role.key} whith label: ${role.label}`)
     }
   }
 }

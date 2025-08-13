@@ -1,3 +1,4 @@
+import { RoleKey } from '@common/enums'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { HydratedDocument } from 'mongoose'
 
@@ -14,7 +15,7 @@ export class User {
   passwordHash: string
 
   @Prop({ required: true })
-  role!: string
+  role!: RoleKey
 
   @Prop({ default: false })
   superAdmin: boolean
