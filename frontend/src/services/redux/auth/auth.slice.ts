@@ -16,12 +16,11 @@ interface AuthState {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getErrorMessagePayload = (action: any): string => {
-  if (action.payload && typeof action.payload === 'string') {
+  if (action.payload && typeof action.payload === 'string')
     return action.payload
-  }
-  if (action.error?.message) {
-    return action.error.message
-  }
+
+  if (action.error?.message) return action.error.message
+
   return 'Error desconocido'
 }
 

@@ -5,7 +5,13 @@ import { HydratedDocument } from 'mongoose'
 export type UserDocument = HydratedDocument<User>
 
 @Schema({
-  timestamps: true
+  timestamps: true,
+  toObject: {
+    versionKey: false
+  },
+  toJSON: {
+    versionKey: false
+  }
 })
 export class User {
   @Prop({ unique: true, required: true, index: true })

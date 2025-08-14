@@ -1,3 +1,4 @@
+import { RoleKey } from '@common/enums'
 import {
   ConflictException,
   Injectable,
@@ -9,12 +10,9 @@ import { InjectModel } from '@nestjs/mongoose'
 import * as bcrypt from 'bcrypt'
 import { Model } from 'mongoose'
 import { User, UserDocument } from 'src/common/schemas/user.schema'
-import { LoginUserDto, ResponseLoginUserDto } from './dto/login-user.dto'
-import {
-  RegisterUserDto,
-  ResponseRegisterUserDto
-} from './dto/register-user.dto'
-import { RoleKey } from '@common/enums'
+import { LoginUserDto } from './dto/login-user.dto'
+import { RegisterUserDto } from './dto/register-user.dto'
+import { AuthUserResponse } from './types/auth-response.type'
 
 type UserResponse = Omit<User, 'passwordHash'> & { id: string }
 @Injectable()
@@ -24,7 +22,7 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async register(userData: RegisterUserDto): Promise<ResponseRegisterUserDto> {
+  async register(userData: RegisterUserDto): Promise<AuthUserResponse> {
     const exists = await this.userModel.exists({ email: userData.email })
     if (exists) throw new ConflictException('Email ya registrado')
 
@@ -44,7 +42,7 @@ export class AuthService {
     }
   }
 
-  async loginUser(userData: LoginUserDto): Promise<ResponseLoginUserDto> {
+  async loginUser(userData: LoginUserDto): Promise<AuthUserResponse> {
     const user = await this.userModel
       .findOne({ email: userData.email })
       .select('+passwordHash')
