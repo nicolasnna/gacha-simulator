@@ -8,10 +8,12 @@ import Login from './pages/Login'
 import HistoryGacha from './pages/HistoryGacha'
 import Characters from './pages/Characters'
 import Users from './pages/Users'
+import { Toaster } from './components/ui/toaster'
 
 function App() {
   return (
     <ChakraProvider value={system}>
+      <Toaster />
       <Routes>
         <Route path={ROUTES.login} element={<Login />} />
         <Route path="/" element={<GatchaLayout />}>

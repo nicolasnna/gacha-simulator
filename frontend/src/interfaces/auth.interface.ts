@@ -1,3 +1,5 @@
+import type { Role } from './role.interface'
+
 export interface LoginUserApi {
   email: string
   password: string
@@ -7,7 +9,7 @@ export interface RegisterUserApi extends LoginUserApi {
 }
 
 export interface ResponseAuthApi {
-  email?: string
-  role: string
+  email: string
+  role: Role
   access_token: string
 }

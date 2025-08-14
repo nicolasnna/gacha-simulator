@@ -14,6 +14,7 @@ import {
   RegisterUserDto,
   ResponseRegisterUserDto
 } from './dto/register-user.dto'
+import { RoleKey } from '@common/enums'
 
 type UserResponse = Omit<User, 'passwordHash'> & { id: string }
 @Injectable()
@@ -31,7 +32,7 @@ export class AuthService {
     const doc = await this.userModel.create({
       email: userData.email,
       passwordHash,
-      role: 'user',
+      role: RoleKey.User,
       name: userData.name
     })
 
@@ -61,6 +62,7 @@ export class AuthService {
     const userObject = user.toObject<UserResponse>()
 
     return {
+      email: userObject.email,
       role: userObject.role,
       ...(await this.sign(
         userObject.id,

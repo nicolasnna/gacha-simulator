@@ -10,6 +10,7 @@ export class LoginUserDto {
 }
 
 export class ResponseLoginUserDto {
+  email: string
   role: string
   access_token: string
 }

@@ -1,11 +1,14 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { loginUser, registerUser } from './auth.actions'
 import type { ResponseAuthApi } from '@/interfaces/auth.interface'
+import type { Role } from '@/interfaces/role.interface'
 
 interface AuthState {
   loading: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  userInfo: Record<string, any>
+  userInfo: {
+    email: string
+    role: Role
+  } | null
   userToken: string | null
   error: string | null
   success: boolean | null
@@ -49,7 +52,7 @@ const handleRejected = (state: AuthState, action: any) => {
 
 const initialState: AuthState = {
   loading: false,
-  userInfo: {},
+  userInfo: null,
   userToken: null,
   error: null,
   success: null

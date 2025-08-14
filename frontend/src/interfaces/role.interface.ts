@@ -1,1 +1,1 @@
-export type Role = 'superAdmin' | 'usuarioGeneral' | 'developer' | 'moderador'
+export type Role = 'superAdmin' | 'user' | 'developer' | 'moderator'

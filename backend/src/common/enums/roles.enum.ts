@@ -3,9 +3,9 @@ import { ModuleKey } from './modules.enum'
 
 export enum RoleKey {
   SuperAdmin = 'superAdmin',
-  User = 'usuarioGeneral',
+  User = 'user',
   Developer = 'developer',
-  Moderator = 'moderador'
+  Moderator = 'moderator'
 }
 
 export const ROLE_PERMISSIONS: Record<

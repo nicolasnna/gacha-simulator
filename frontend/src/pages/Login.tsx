@@ -1,11 +1,19 @@
 import loginbg from '@/assets/login-bg.webp'
 import LoginForm from '@/components/Form/LoginForm'
 import RegisterForm from '@/components/Form/RegisterForm'
+import { useAppSelector } from '@/services/hooks/useRedux'
 import { Box, Center, Heading, Link, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 
 function Login() {
   const [showRegister, setShowRegister] = useState<boolean>(false)
+  const { success, userToken } = useAppSelector((state) => state.auth)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (success && userToken) navigate('/')
+  }, [success, userToken, navigate])
 
   return (
     <Box
