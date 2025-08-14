@@ -3,7 +3,7 @@ import z from 'zod'
 export const EmailSchema = z
   .email()
   .trim()
-  .max(25)
+  .max(40)
   .min(6, { message: 'Debe tener un mínimo de 6 caracteres' })
   .transform((email) => email.toLowerCase())
 

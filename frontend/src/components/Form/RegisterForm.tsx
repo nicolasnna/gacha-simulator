@@ -1,5 +1,5 @@
 import { RegisterSchema, type RegisterType } from '@/schemas/register.schema'
-import { useAppDispatch } from '@hooks/useRedux'
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux'
 import { Button, HStack, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -21,7 +21,7 @@ function RegisterForm() {
       confirmPassword: ''
     }
   })
-  // const { userInfo } = useAppSelector((state) => state.auth)
+  const { loading } = useAppSelector((state) => state.auth)
   const dispatch = useAppDispatch()
 
   const onSubmit = (data: RegisterType) => {
@@ -67,7 +67,9 @@ function RegisterForm() {
 
         <HStack alignItems="end">
           <Button onClick={cleanForm}>Limpiar</Button>
-          <Button type="submit">Registarse</Button>
+          <Button type="submit" disabled={loading}>
+            Registarse
+          </Button>
         </HStack>
       </VStack>
     </form>

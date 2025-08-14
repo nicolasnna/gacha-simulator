@@ -1,4 +1,5 @@
-import type { RegisterUserApi } from '@/interfaces/auth.interface'
+import type { LoginUserApi, RegisterUserApi } from '@/interfaces/auth.interface'
+import { getErrorMessage } from '@/utils/axios.helper'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
@@ -21,13 +22,29 @@ export const registerUser = createAsyncThunk(
       )
       return response.data
     } catch (error) {
-      if (!axios.isAxiosError(error))
-        return rejectWithValue('An unexpected error ocurred')
+      return rejectWithValue(getErrorMessage(error))
+    }
+  }
+)
 
-      if (error.response && error.response.data?.message)
-        return rejectWithValue(error.response.data?.message)
+export const loginUser = createAsyncThunk(
+  'auth/login',
+  async (userData: LoginUserApi, { rejectWithValue }) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
 
-      return rejectWithValue(error.message)
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/auth/login`,
+        userData,
+        config
+      )
+      return response.data
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error))
     }
   }
 )

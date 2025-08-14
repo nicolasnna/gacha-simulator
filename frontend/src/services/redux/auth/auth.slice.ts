@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { registerUser } from './auth.actions'
-import type { ResponseRegisterUserApi } from '@/interfaces/auth.interface'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { loginUser, registerUser } from './auth.actions'
+import type { ResponseAuthApi } from '@/interfaces/auth.interface'
 
 interface AuthState {
   loading: boolean
@@ -9,6 +9,42 @@ interface AuthState {
   userToken: string | null
   error: string | null
   success: boolean | null
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getErrorMessagePayload = (action: any): string => {
+  if (action.payload && typeof action.payload === 'string') {
+    return action.payload
+  }
+  if (action.error?.message) {
+    return action.error.message
+  }
+  return 'Error desconocido'
+}
+
+// Helpers
+const handlePending = (state: AuthState) => {
+  state.loading = true
+  state.error = null
+  state.success = null
+}
+
+const handleFulfilled = (
+  state: AuthState,
+  { payload }: PayloadAction<ResponseAuthApi>
+) => {
+  state.loading = false
+  state.success = true
+  const { access_token, ...result } = payload
+  state.userToken = access_token
+  state.userInfo = result
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handleRejected = (state: AuthState, action: any) => {
+  state.loading = false
+  state.success = false
+  state.error = getErrorMessagePayload(action)
 }
 
 const initialState: AuthState = {
@@ -25,23 +61,14 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {
-        state.loading = true
-        state.error = null
-        state.success = null
-      })
-      .addCase(registerUser.fulfilled, (state, { payload }) => {
-        state.loading = false
-        state.success = true
-        const { access_token, ...result } = payload as ResponseRegisterUserApi
-        state.userToken = access_token
-        state.userInfo = result
-      })
-      .addCase(registerUser.rejected, (state, { payload }) => {
-        state.loading = false
-        state.success = false
-        state.error = payload as string
-      })
+      //Register
+      .addCase(registerUser.pending, handlePending)
+      .addCase(registerUser.fulfilled, handleFulfilled)
+      .addCase(registerUser.rejected, handleRejected)
+      //Login
+      .addCase(loginUser.pending, handlePending)
+      .addCase(loginUser.fulfilled, handleFulfilled)
+      .addCase(loginUser.rejected, handleRejected)
   }
 })
 

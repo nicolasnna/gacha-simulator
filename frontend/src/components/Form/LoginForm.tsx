@@ -3,6 +3,8 @@ import { Button, HStack, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import FieldInput from './FieldInput'
+import { useAppDispatch, useAppSelector } from '@hooks/useRedux'
+import { loginUser } from '@redux/auth'
 
 function LoginForm() {
   const {
@@ -17,9 +19,11 @@ function LoginForm() {
       password: ''
     }
   })
+  const { loading } = useAppSelector((state) => state.auth)
+  const dispatch = useAppDispatch()
 
   const onSubmit = (data: LoginType) => {
-    console.log(data)
+    dispatch(loginUser(data))
   }
 
   const cleanForm = () => {
@@ -44,7 +48,9 @@ function LoginForm() {
 
         <HStack alignItems="end">
           <Button onClick={cleanForm}>Limpiar</Button>
-          <Button type="submit">Ingresar</Button>
+          <Button type="submit" disabled={loading}>
+            Ingresar
+          </Button>
         </HStack>
       </VStack>
     </form>
