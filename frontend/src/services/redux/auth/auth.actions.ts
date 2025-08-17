@@ -1,5 +1,5 @@
 import type { LoginUserApi, RegisterUserApi } from '@/interfaces/auth.interface'
-import { getErrorMessage } from '@/utils/axios.helper'
+import { getErrorMessageAxios } from '@/utils/axios.helper'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
@@ -22,7 +22,7 @@ export const registerUser = createAsyncThunk(
       )
       return response.data
     } catch (error) {
-      return rejectWithValue(getErrorMessage(error))
+      return rejectWithValue(getErrorMessageAxios(error))
     }
   }
 )
@@ -44,7 +44,7 @@ export const loginUser = createAsyncThunk(
       )
       return response.data
     } catch (error) {
-      return rejectWithValue(getErrorMessage(error))
+      return rejectWithValue(getErrorMessageAxios(error))
     }
   }
 )

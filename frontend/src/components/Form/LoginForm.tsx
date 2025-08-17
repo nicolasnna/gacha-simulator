@@ -34,8 +34,9 @@ function LoginForm() {
         description: `Usuario ${userInfo?.email} rol: ${userInfo?.role} ingresado correctamente`,
         duration: 4000
       })
+      reset()
     }
-  }, [success, userInfo?.email, userInfo?.role])
+  }, [success, reset, userInfo?.email, userInfo?.role])
 
   const cleanForm = () => {
     reset()

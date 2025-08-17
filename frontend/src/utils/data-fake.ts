@@ -7,373 +7,53 @@ import type { User } from '@/interfaces/user.interface'
 export const usersFake: User[] = [
   {
     id: 1,
-    username: 'pixelMaster',
-    uniqueCharacters: 12,
-    credits: 4500,
-    role: 'usuarioGeneral',
-    permissions: {
-      users: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      gachas: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      }
-    }
+    email: 'superadmin@example.com',
+    role: 'superAdmin',
+    superAdmin: true,
+    active: true,
+    createdAt: new Date('2024-01-10T10:20:00Z'),
+    updatedAt: new Date('2024-06-01T12:00:00Z'),
+    name: 'Alice Root'
   },
   {
     id: 2,
-    username: 'adminWizard',
-    uniqueCharacters: 35,
-    credits: 99999,
-    role: 'superAdmin',
-    permissions: {
-      users: {
-        manage: true,
-        read: true,
-        create: true,
-        update: true,
-        delete: true
-      },
-      gachas: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: true,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: true,
-        delete: false
-      }
-    }
+    email: 'user1@example.com',
+    role: 'user',
+    superAdmin: false,
+    active: true,
+    createdAt: new Date('2024-02-15T09:00:00Z'),
+    updatedAt: new Date('2024-07-05T16:30:00Z'),
+    name: 'Bob User'
   },
   {
     id: 3,
-    username: 'modHunter',
-    uniqueCharacters: 20,
-    credits: 8200,
-    role: 'moderador',
-    permissions: {
-      users: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      gachas: {
-        manage: true,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      }
-    }
+    email: 'dev@example.com',
+    role: 'developer',
+    superAdmin: false,
+    active: true,
+    createdAt: new Date('2024-03-01T14:45:00Z'),
+    updatedAt: new Date('2024-08-10T18:00:00Z'),
+    name: 'Charlie Dev'
   },
   {
     id: 4,
-    username: 'gachaLover',
-    uniqueCharacters: 15,
-    credits: 3000,
-    role: 'usuarioGeneral',
-    permissions: {
-      users: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      gachas: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      }
-    }
+    email: 'moderator@example.com',
+    role: 'moderator',
+    superAdmin: false,
+    active: false, // deshabilitado
+    createdAt: new Date('2024-04-20T08:15:00Z'),
+    updatedAt: new Date('2024-08-12T11:00:00Z'),
+    name: 'Diana Mod'
   },
   {
     id: 5,
-    username: 'legendaryPuller',
-    uniqueCharacters: 45,
-    credits: 15000,
-    role: 'usuarioGeneral',
-    permissions: {
-      users: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      gachas: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      }
-    }
-  },
-  {
-    id: 6,
-    username: 'shadowAdmin',
-    uniqueCharacters: 50,
-    credits: 50000,
-    role: 'superAdmin',
-    permissions: {
-      users: {
-        manage: true,
-        read: true,
-        create: true,
-        update: true,
-        delete: true
-      },
-      gachas: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: true,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: true,
-        delete: false
-      }
-    }
-  },
-  {
-    id: 7,
-    username: 'rareCollector',
-    uniqueCharacters: 27,
-    credits: 7200,
-    role: 'usuarioGeneral',
-    permissions: {
-      users: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      gachas: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      }
-    }
-  },
-  {
-    id: 8,
-    username: 'eventMod',
-    uniqueCharacters: 18,
-    credits: 6400,
-    role: 'moderador',
-    permissions: {
-      users: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      gachas: {
-        manage: true,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      }
-    }
-  },
-  {
-    id: 9,
-    username: 'coinFarmer',
-    uniqueCharacters: 10,
-    credits: 2500,
-    role: 'usuarioGeneral',
-    permissions: {
-      users: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      gachas: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      }
-    }
-  },
-  {
-    id: 10,
-    username: 'maxRoller',
-    uniqueCharacters: 60,
-    credits: 20000,
-    role: 'usuarioGeneral',
-    permissions: {
-      users: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      gachas: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      },
-      histories: {
-        manage: false,
-        read: false,
-        create: false,
-        update: false,
-        delete: false
-      },
-      characters: {
-        manage: false,
-        read: true,
-        create: false,
-        update: false,
-        delete: false
-      }
-    }
+    email: 'testuser@example.com',
+    role: 'user',
+    superAdmin: false,
+    active: true,
+    createdAt: new Date('2024-05-05T20:00:00Z'),
+    updatedAt: new Date('2024-08-15T09:30:00Z'),
+    name: 'Eve Tester'
   }
 ]
 

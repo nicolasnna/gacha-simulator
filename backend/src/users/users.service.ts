@@ -91,7 +91,7 @@ export class UsersService {
   }
 
   async activateById(id: string): Promise<UserResponse> {
-    return await this.changeActiveState(id, false)
+    return await this.changeActiveState(id, true)
   }
 
   private async changeActiveState(id: string, active: boolean) {

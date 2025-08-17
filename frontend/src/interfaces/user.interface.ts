@@ -1,11 +1,20 @@
-import type { PermissionType } from '@/schemas/permission.schema'
 import type { Role } from './role.interface'
 
 export interface User {
   id: string | number
-  username: string
-  uniqueCharacters: number
-  credits: number
+  email: string
   role: Role
-  permissions: PermissionType
+  superAdmin: boolean
+  active?: boolean
+  createdAt?: Date
+  updatedAt?: Date
+  name?: string
+}
+
+export interface ResponseGetAllUsersApi {
+  data: User[]
+  totalItems: number
+  lastItemNumber: number
+  page: number
+  limit: number
 }
