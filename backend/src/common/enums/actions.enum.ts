@@ -1,4 +1,4 @@
-export enum ActionKey {
+export enum ActionKeyEnum {
   CREATE = 'create',
   READ = 'read',
   UPDATE = 'update',
@@ -6,5 +6,5 @@ export enum ActionKey {
   MANAGE = 'manage'
 }
 
-export const ACTIONS = Object.values(ActionKey)
-export type Action = ActionKey
+export const ACTIONS = Object.values(ActionKeyEnum)
+export type ActionType = ActionKeyEnum

@@ -1,5 +1,5 @@
-import { Action, ActionKey } from './actions.enum'
-import { ModuleKey } from './modules.enum'
+import { ActionKeyEnum, ActionType } from './actions.enum'
+import { ModuleKeyEnum } from './modules.enum'
 
 export enum RoleKey {
   SuperAdmin = 'superAdmin',
@@ -10,38 +10,38 @@ export enum RoleKey {
 
 export const ROLE_PERMISSIONS: Record<
   RoleKey,
-  { module: ModuleKey; actions: Action[] }[]
+  { module: ModuleKeyEnum; actions: ActionType[] }[]
 > = {
   [RoleKey.User]: [
     {
-      module: ModuleKey.Characters,
-      actions: [ActionKey.READ, ActionKey.DELETE]
+      module: ModuleKeyEnum.Characters,
+      actions: [ActionKeyEnum.READ, ActionKeyEnum.DELETE]
     },
     {
-      module: ModuleKey.Gachas,
-      actions: [ActionKey.READ]
+      module: ModuleKeyEnum.Gachas,
+      actions: [ActionKeyEnum.READ]
     },
     {
-      module: ModuleKey.Histories,
-      actions: [ActionKey.READ]
+      module: ModuleKeyEnum.Histories,
+      actions: [ActionKeyEnum.READ]
     }
   ],
   [RoleKey.Moderator]: [
-    { module: ModuleKey.Characters, actions: Object.values(ActionKey) },
-    { module: ModuleKey.Histories, actions: Object.values(ActionKey) },
-    { module: ModuleKey.Users, actions: Object.values(ActionKey) },
+    { module: ModuleKeyEnum.Characters, actions: Object.values(ActionKeyEnum) },
+    { module: ModuleKeyEnum.Histories, actions: Object.values(ActionKeyEnum) },
+    { module: ModuleKeyEnum.Users, actions: Object.values(ActionKeyEnum) },
     {
-      module: ModuleKey.Gachas,
-      actions: [ActionKey.READ, ActionKey.UPDATE, ActionKey.CREATE]
+      module: ModuleKeyEnum.Gachas,
+      actions: [ActionKeyEnum.READ, ActionKeyEnum.UPDATE, ActionKeyEnum.CREATE]
     }
   ],
   [RoleKey.Developer]: [
-    { module: ModuleKey.Characters, actions: Object.values(ActionKey) },
-    { module: ModuleKey.Histories, actions: Object.values(ActionKey) },
-    { module: ModuleKey.Users, actions: Object.values(ActionKey) },
+    { module: ModuleKeyEnum.Characters, actions: Object.values(ActionKeyEnum) },
+    { module: ModuleKeyEnum.Histories, actions: Object.values(ActionKeyEnum) },
+    { module: ModuleKeyEnum.Users, actions: Object.values(ActionKeyEnum) },
     {
-      module: ModuleKey.Gachas,
-      actions: Object.values(ActionKey)
+      module: ModuleKeyEnum.Gachas,
+      actions: Object.values(ActionKeyEnum)
     }
   ],
   [RoleKey.SuperAdmin]: []

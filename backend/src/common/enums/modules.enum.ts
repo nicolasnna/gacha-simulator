@@ -1,4 +1,4 @@
-export enum ModuleKey {
+export enum ModuleKeyEnum {
   Users = 'users',
   Gachas = 'gachas',
   Histories = 'histories',

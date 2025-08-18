@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { HydratedDocument } from 'mongoose'
-import { Action, ACTIONS, ModuleKey, RoleKey } from '../enums'
+import { ACTIONS, ActionType, ModuleKeyEnum, RoleKey } from '../enums'
 
 export type RoleDocument = HydratedDocument<Role>
 
@@ -22,7 +22,7 @@ export class Role {
       {
         module: {
           type: String,
-          enum: Object.values(ModuleKey),
+          enum: Object.values(ModuleKeyEnum),
           required: true
         },
         actions: [{ type: String, enum: ACTIONS, default: [] }]
@@ -30,6 +30,6 @@ export class Role {
     ],
     default: []
   })
-  grants: { module: ModuleKey; actions: Action[] }[]
+  grants: { module: ModuleKeyEnum; actions: ActionType[] }[]
 }
 export const RoleSchema = SchemaFactory.createForClass(Role)
