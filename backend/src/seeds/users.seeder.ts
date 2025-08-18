@@ -26,31 +26,36 @@ export class UsersSeeder {
       password: 'Admin123',
       name: 'Super Admin',
       role: RoleKey.SuperAdmin,
-      superAdmin: true
+      superAdmin: true,
+      active: true
     },
     {
       email: 'gacha@local.test',
       password: 'Secret123',
       name: 'Gacha Mgr',
-      role: RoleKey.Moderator
+      role: RoleKey.Moderator,
+      active: true
     },
     {
       email: 'editor@local.test',
       password: 'Secret123',
       name: 'Editor',
-      role: RoleKey.Developer
+      role: RoleKey.Developer,
+      active: true
     },
     {
       email: 'viewer@local.test',
       password: 'Secret123',
       name: 'Viewer',
-      role: RoleKey.User
+      role: RoleKey.User,
+      active: true
     },
     {
       email: 'user@local.test',
       password: 'Secret123',
       name: 'Usuario',
-      role: RoleKey.User
+      role: RoleKey.User,
+      active: true
     }
   ]
 

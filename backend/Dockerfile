@@ -1,5 +1,5 @@
 FROM node:22 AS base
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # ------ Dev ------
 FROM base AS dev

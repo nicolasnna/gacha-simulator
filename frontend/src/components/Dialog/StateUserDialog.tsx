@@ -1,26 +1,29 @@
 import type { User } from '@/interfaces/user.interface'
+import { useAppDispatch } from '@/services/hooks/useRedux'
+import { activateUser, deactivateUser } from '@/services/redux/users'
 import { Button, Dialog, Highlight, Icon, Portal, Text } from '@chakra-ui/react'
+import { Power, PowerOff } from 'lucide-react'
 import { useState } from 'react'
-import { FaTrashAlt } from 'react-icons/fa'
 
-interface DeleteUserDialogProps {
+interface StateUserDialogProps {
   data: User
 }
 
-export default function DeleteUserDialog({ data }: DeleteUserDialogProps) {
+export default function StateUserDialog({ data }: StateUserDialogProps) {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
 
   const highlights = [
     {
-      label: 'Personajes adquiridos:',
-      value: data.uniqueCharacters
+      label: 'Correo electrónico:',
+      value: data.email
     },
-    { label: 'Créditos restantes:', value: data.credits },
+    { label: 'Nombre:', value: data.name },
     { label: 'Rol:', value: data.role }
   ]
 
-  const onDelete = () => {
-    console.log('Borrado: ' + data.username)
+  const changeState = () => {
+    dispatch(data.active ? deactivateUser(data.id) : activateUser(data.id))
     setOpenDialog(false)
   }
 
@@ -32,7 +35,7 @@ export default function DeleteUserDialog({ data }: DeleteUserDialogProps) {
         _hover={{ color: 'primary' }}
         onClick={() => setOpenDialog(true)}
       >
-        <FaTrashAlt />
+        {data.active ? <PowerOff /> : <Power />}
       </Icon>
 
       <Dialog.Root
@@ -45,7 +48,9 @@ export default function DeleteUserDialog({ data }: DeleteUserDialogProps) {
           <Dialog.Positioner>
             <Dialog.Content>
               <Dialog.Header>
-                <Dialog.Title>¿Desea eliminar {data.username}?</Dialog.Title>
+                <Dialog.Title>
+                  ¿Desea {data.active ? 'desactivar' : 'activar'} {data.email}?
+                </Dialog.Title>
               </Dialog.Header>
               <Dialog.Body>
                 {highlights.map((h) => (
@@ -63,7 +68,9 @@ export default function DeleteUserDialog({ data }: DeleteUserDialogProps) {
                 <Dialog.ActionTrigger asChild>
                   <Button variant="outline">Cancelar</Button>
                 </Dialog.ActionTrigger>
-                <Button onClick={onDelete}>Eliminar</Button>
+                <Button onClick={changeState}>
+                  {data.active ? 'Desactivar' : 'Activar'}
+                </Button>
               </Dialog.Footer>
             </Dialog.Content>
           </Dialog.Positioner>

@@ -101,7 +101,7 @@ export class UsersService {
 
     if (!doc) throw new NotFoundException('Usuario no encontrado')
 
-    const { _id, ...rest } = doc.toObject<UserResponse>()
-    return { id: _id.toString(), ...rest }
+    const { _id, ...rest } = doc.toObject<UserWithOmit>()
+    return { data: { id: _id.toString(), ...rest } }
   }
 }

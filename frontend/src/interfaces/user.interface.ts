@@ -1,11 +1,11 @@
 import type { Role } from './role.interface'
 
 export interface User {
-  id: string | number
+  id: string
   email: string
   role: Role
   superAdmin: boolean
-  active?: boolean
+  active: boolean
   createdAt?: Date
   updatedAt?: Date
   name?: string
@@ -19,6 +19,6 @@ export interface ResponseGetAllUsersApi {
   limit: number
 }
 
-export interface ResponseUpdateUser {
+export interface ResponseUserDataAPI {
   data: User
 }

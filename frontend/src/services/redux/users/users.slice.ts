@@ -1,12 +1,23 @@
 import type {
   ResponseGetAllUsersApi,
-  ResponseUpdateUser,
+  ResponseUserDataAPI,
   User
 } from '@/interfaces/user.interface'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { getAllUsers, updateUser } from './users.actions'
+import {
+  activateUser,
+  deactivateUser,
+  getAllUsers,
+  updateUser
+} from './users.actions'
+import {
+  handlePromiseFulfilled,
+  handlePromisePending,
+  handlePromiseReject,
+  updateDataState
+} from './users.helper'
 
-interface UsersState {
+export interface UsersState {
   // Promise
   promise: {
     loading: boolean
@@ -37,22 +48,6 @@ const initialState: UsersState = {
     limit: 5
   },
   data: []
-}
-
-const handlePromisePending = (state: UsersState) => {
-  state.promise.error = null
-  state.promise.loading = true
-  state.promise.success = null
-}
-const handlePromiseReject = (state: UsersState, payload: string) => {
-  state.promise.error = payload
-  state.promise.loading = false
-  state.promise.success = false
-}
-const handlePromiseFulfilled = (state: UsersState) => {
-  state.promise.error = null
-  state.promise.loading = false
-  state.promise.success = true
 }
 
 const usersSlice = createSlice({
@@ -92,12 +87,33 @@ const usersSlice = createSlice({
       )
       .addCase(
         updateUser.fulfilled,
-        (state, { payload }: PayloadAction<ResponseUpdateUser>) => {
+        (state, { payload }: PayloadAction<ResponseUserDataAPI>) => {
           handlePromiseFulfilled(state)
-          const userListUpdated = state.data.map((user) =>
-            user.id === payload.data.id ? { ...user, ...payload.data } : user
-          )
-          state.data = userListUpdated
+          state.data = updateDataState(state.data, payload.data)
+        }
+      )
+      // deactivate user
+      .addCase(deactivateUser.pending, (state) => handlePromisePending(state))
+      .addCase(deactivateUser.rejected, (state, { payload }) =>
+        handlePromiseReject(state, payload as string)
+      )
+      .addCase(
+        deactivateUser.fulfilled,
+        (state, { payload }: PayloadAction<ResponseUserDataAPI>) => {
+          handlePromiseFulfilled(state)
+          state.data = updateDataState(state.data, payload.data)
+        }
+      )
+      // activate user
+      .addCase(activateUser.pending, (state) => handlePromisePending(state))
+      .addCase(activateUser.rejected, (state, { payload }) =>
+        handlePromiseReject(state, payload as string)
+      )
+      .addCase(
+        activateUser.fulfilled,
+        (state, { payload }: PayloadAction<ResponseUserDataAPI>) => {
+          handlePromiseFulfilled(state)
+          state.data = updateDataState(state.data, payload.data)
         }
       )
   }

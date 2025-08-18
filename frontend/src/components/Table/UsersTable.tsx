@@ -1,6 +1,6 @@
 import type { User } from '@/interfaces/user.interface'
 import { Table } from '@chakra-ui/react'
-import DeleteUserDialog from '../Dialog/DeleteUserDialog'
+import StateUserDialog from '../Dialog/StateUserDialog'
 import UpdateUserDialog from '../Dialog/UpdateUserDialog'
 
 interface UsersTableProps {
@@ -32,14 +32,14 @@ export default function UsersTable({ data }: UsersTableProps) {
             <Table.Cell color="text">{user.email}</Table.Cell>
             <Table.Cell color="text">{user.name}</Table.Cell>
             <Table.Cell color="text">
-              {user.active?.toString() ?? 'true' ? 'Activado' : 'Desactivado'}
+              {user.active ? 'Activado' : 'Desactivado'}
             </Table.Cell>
             <Table.Cell color="text">{user.role}</Table.Cell>
             <Table.Cell color="text" inlineSize="300px">
               {/* {user.permissions?.join(', ')} */}
             </Table.Cell>
             <Table.Cell color="text" textAlign="center" spaceX={2}>
-              {user.role !== 'superAdmin' && <DeleteUserDialog data={user} />}
+              {user.role !== 'superAdmin' && <StateUserDialog data={user} />}
               {user.role !== 'superAdmin' && <UpdateUserDialog data={user} />}
             </Table.Cell>
           </Table.Row>
