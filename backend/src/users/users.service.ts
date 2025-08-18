@@ -8,7 +8,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { UpdateUserInfoDto } from './dto/update-user-info.dto'
 import { UserLean } from './types'
-import { UserResponse } from './types/user-response.type'
+import { UserResponse, UserWithOmit } from './types/user-response.type'
 
 @Injectable()
 export class UsersService {
@@ -24,7 +24,7 @@ export class UsersService {
     page = 1,
     limit = 20
   ): Promise<{
-    data: UserResponse[]
+    data: UserWithOmit[]
     totalItems: number
     lastItemNumber: number
     page: number
@@ -47,7 +47,7 @@ export class UsersService {
       this.userModel.countDocuments().exec()
     ])
 
-    const data: UserResponse[] = users.map(({ _id, ...restUser }) => ({
+    const data: UserWithOmit[] = users.map(({ _id, ...restUser }) => ({
       id: _id.toString(),
       ...restUser
     }))
@@ -62,8 +62,8 @@ export class UsersService {
 
     if (!data) throw new NotFoundException('Usuario no encontrado')
 
-    const { _id, ...rest } = data.toObject<UserResponse>()
-    return { id: _id, ...rest }
+    const { _id, ...rest } = data.toObject<UserWithOmit>()
+    return { data: { id: _id, ...rest } }
   }
 
   async updateInfo(
@@ -82,8 +82,8 @@ export class UsersService {
 
     if (!userData) throw new NotFoundException('Usuario no encontrado')
 
-    const { _id, ...rest } = userData.toObject<UserResponse>()
-    return { id: _id.toString(), ...rest }
+    const { _id, ...rest } = userData.toObject<UserWithOmit>()
+    return { data: { id: _id.toString(), ...rest } }
   }
 
   async deactivateById(id: string): Promise<UserResponse> {

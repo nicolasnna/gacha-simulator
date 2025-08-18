@@ -14,7 +14,7 @@ export default function UsersTable({ data }: UsersTableProps) {
         <Table.Row bg="background/60">
           <Table.ColumnHeader color="text">Email</Table.ColumnHeader>
           <Table.ColumnHeader color="text">Nombre</Table.ColumnHeader>
-          <Table.ColumnHeader color="text">Activo</Table.ColumnHeader>
+          <Table.ColumnHeader color="text">Estado</Table.ColumnHeader>
           <Table.ColumnHeader color="text">Rol</Table.ColumnHeader>
           <Table.ColumnHeader color="text">Permisos</Table.ColumnHeader>
           <Table.ColumnHeader color="text" textAlign="center">
@@ -32,7 +32,7 @@ export default function UsersTable({ data }: UsersTableProps) {
             <Table.Cell color="text">{user.email}</Table.Cell>
             <Table.Cell color="text">{user.name}</Table.Cell>
             <Table.Cell color="text">
-              {user.active?.toString() ?? 'true'}
+              {user.active?.toString() ?? 'true' ? 'Activado' : 'Desactivado'}
             </Table.Cell>
             <Table.Cell color="text">{user.role}</Table.Cell>
             <Table.Cell color="text" inlineSize="300px">

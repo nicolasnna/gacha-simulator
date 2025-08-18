@@ -30,19 +30,14 @@ export default function PermissionsForm() {
   const actions: Action[] = ['manage', 'read', 'create', 'update', 'delete']
   const usersList = createListCollection({
     items: usersFake.map((user) => ({
-      label: user.username,
+      label: user.email,
       value: user.id,
       role: user.role
     }))
   })
 
   const modules = ['users', 'gachas', 'histories', 'characters']
-  const uniqueRoles: Role[] = [
-    'superAdmin',
-    'moderador',
-    'developer',
-    'usuarioGeneral'
-  ]
+  const uniqueRoles: Role[] = ['superAdmin', 'moderator', 'developer', 'user']
 
   const permissionForm = useForm<PermissionWithUserIdType>({
     resolver: zodResolver(PermissionWithUserIdSchema),

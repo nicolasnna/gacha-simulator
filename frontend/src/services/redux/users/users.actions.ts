@@ -27,3 +27,37 @@ export const getAllUsers = createAsyncThunk(
     }
   }
 )
+
+interface UpdateUserAPI {
+  id: string
+  email?: string
+  password?: string
+  name?: string
+  role?: string
+}
+export const updateUser = createAsyncThunk(
+  'users/update',
+  async (
+    { id, email, password, name, role }: UpdateUserAPI,
+    { rejectWithValue }
+  ) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    const userInfoUpdated = { email, password, name, role }
+
+    try {
+      const response = await axios.patch(
+        `${BACKEND_URL}/users/${id}`,
+        userInfoUpdated,
+        config
+      )
+      return response.data
+    } catch (error) {
+      return rejectWithValue(getErrorMessageAxios(error))
+    }
+  }
+)

@@ -18,3 +18,7 @@ export interface ResponseGetAllUsersApi {
   page: number
   limit: number
 }
+
+export interface ResponseUpdateUser {
+  data: User
+}

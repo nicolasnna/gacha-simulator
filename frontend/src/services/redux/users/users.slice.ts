@@ -1,6 +1,10 @@
-import type { ResponseGetAllUsersApi, User } from '@/interfaces/user.interface'
+import type {
+  ResponseGetAllUsersApi,
+  ResponseUpdateUser,
+  User
+} from '@/interfaces/user.interface'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { getAllUsers } from './users.actions'
+import { getAllUsers, updateUser } from './users.actions'
 
 interface UsersState {
   // Promise
@@ -11,13 +15,13 @@ interface UsersState {
   }
   // Items
   itemsInfo: {
-    totalItems: number | null
-    lastItemNumber: number | null
-    page: number | null
-    limit: number | null
+    totalItems: number
+    lastItemNumber: number
+    page: number
+    limit: number
   }
   // user data
-  data: User[] | null
+  data: User[]
 }
 
 const initialState: UsersState = {
@@ -27,12 +31,28 @@ const initialState: UsersState = {
     success: null
   },
   itemsInfo: {
-    totalItems: null,
-    lastItemNumber: null,
-    page: null,
-    limit: null
+    totalItems: 0,
+    lastItemNumber: 0,
+    page: 0,
+    limit: 5
   },
-  data: null
+  data: []
+}
+
+const handlePromisePending = (state: UsersState) => {
+  state.promise.error = null
+  state.promise.loading = true
+  state.promise.success = null
+}
+const handlePromiseReject = (state: UsersState, payload: string) => {
+  state.promise.error = payload
+  state.promise.loading = false
+  state.promise.success = false
+}
+const handlePromiseFulfilled = (state: UsersState) => {
+  state.promise.error = null
+  state.promise.loading = false
+  state.promise.success = true
 }
 
 const usersSlice = createSlice({
@@ -41,34 +61,43 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllUsers.pending, (state) => {
-        state.promise.error = null
-        state.promise.loading = true
-        state.promise.success = null
-      })
-      .addCase(getAllUsers.rejected, (state, { payload }) => {
-        state.promise.error = payload as string
-        state.promise.loading = false
-        state.promise.success = false
-      })
+      //Get All users
+      .addCase(getAllUsers.pending, (state) => handlePromisePending(state))
+      .addCase(getAllUsers.rejected, (state, { payload }) =>
+        handlePromiseReject(state, payload as string)
+      )
       .addCase(
         getAllUsers.fulfilled,
         (state, { payload }: PayloadAction<ResponseGetAllUsersApi>) => {
-          state.promise.error = null
-          state.promise.loading = false
-          state.promise.success = true
+          handlePromiseFulfilled(state)
 
           state.itemsInfo.lastItemNumber = payload.lastItemNumber
           state.itemsInfo.limit = payload.limit
           state.itemsInfo.page = payload.page
           state.itemsInfo.totalItems = payload.totalItems
 
-          if (Array.isArray(state.data)) {
-            const setData = new Set([...state.data, ...payload.data])
-            state.data = [...setData]
-          } else {
-            state.data = payload.data
-          }
+          const merged = [...state.data, ...payload.data]
+
+          const unique = Array.from(
+            new Map(merged.map((item) => [item.id, item])).values()
+          )
+
+          state.data = unique
+        }
+      )
+      // Update user
+      .addCase(updateUser.pending, (state) => handlePromisePending(state))
+      .addCase(updateUser.rejected, (state, { payload }) =>
+        handlePromiseReject(state, payload as string)
+      )
+      .addCase(
+        updateUser.fulfilled,
+        (state, { payload }: PayloadAction<ResponseUpdateUser>) => {
+          handlePromiseFulfilled(state)
+          const userListUpdated = state.data.map((user) =>
+            user.id === payload.data.id ? { ...user, ...payload.data } : user
+          )
+          state.data = userListUpdated
         }
       )
   }
