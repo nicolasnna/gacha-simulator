@@ -58,11 +58,16 @@ export class RolesService {
   }
 
   async findRole(role: string) {
-    const roleDoc = await this.roleModel.find({ key: role }).exec()
+    const roleDocs = await this.roleModel.findOne({ key: role }).exec()
 
-    if (!roleDoc) throw new NotFoundException('Rol no encontrado')
+    if (!roleDocs) throw new NotFoundException('Rol no encontrado')
 
-    return { data: roleDoc }
+    const roleObj = roleDocs.toObject()
+    roleObj.id = roleObj._id
+    delete roleObj._id
+    delete roleObj.__v
+
+    return { data: roleObj }
   }
 
   async updatePermission(id: string, rolePermissions: GrantsDto[]) {

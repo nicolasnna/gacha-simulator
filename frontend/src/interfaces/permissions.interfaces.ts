@@ -1,4 +1,4 @@
-export type Action = 'manage' | 'create' | 'read' | 'update' | 'delete'
-export type Module = 'users' | 'gachas' | 'histories' | 'characters'
+export type ActionType = 'manage' | 'create' | 'read' | 'update' | 'delete'
+export type ModuleType = 'users' | 'gachas' | 'histories' | 'characters'
 
-export type PermissionKeys = `${Module}.${Action}`
+export type PermissionKeys = `${ModuleType}.${ActionType}`
