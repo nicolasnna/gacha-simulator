@@ -10,28 +10,22 @@ import {
   getAllUsers,
   updateUser
 } from './users.actions'
+
+import type {
+  ItemsInfoState,
+  PromiseState
+} from '@/interfaces/redux-state.interface'
 import {
   handlePromiseFulfilled,
   handlePromisePending,
   handlePromiseReject,
-  updateDataState
-} from './users.helper'
+  mergeUniqueDataState,
+  updateIdDataState
+} from '@/utils/redux.helper'
 
 export interface UsersState {
-  // Promise
-  promise: {
-    loading: boolean
-    error: string | null
-    success: boolean | null
-  }
-  // Items
-  itemsInfo: {
-    totalItems: number
-    lastItemNumber: number
-    page: number
-    limit: number
-  }
-  // user data
+  promise: PromiseState
+  itemsInfo: ItemsInfoState
   data: User[]
 }
 
@@ -57,63 +51,65 @@ const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       //Get All users
-      .addCase(getAllUsers.pending, (state) => handlePromisePending(state))
+      .addCase(getAllUsers.pending, (state) =>
+        handlePromisePending(state.promise)
+      )
       .addCase(getAllUsers.rejected, (state, { payload }) =>
-        handlePromiseReject(state, payload as string)
+        handlePromiseReject(state.promise, payload as string)
       )
       .addCase(
         getAllUsers.fulfilled,
         (state, { payload }: PayloadAction<ResponseGetAllUsersApi>) => {
-          handlePromiseFulfilled(state)
+          handlePromiseFulfilled(state.promise)
 
           state.itemsInfo.lastItemNumber = payload.lastItemNumber
           state.itemsInfo.limit = payload.limit
           state.itemsInfo.page = payload.page
           state.itemsInfo.totalItems = payload.totalItems
 
-          const merged = [...state.data, ...payload.data]
-
-          const unique = Array.from(
-            new Map(merged.map((item) => [item.id, item])).values()
-          )
-
-          state.data = unique
+          state.data = mergeUniqueDataState(state.data, payload.data)
         }
       )
       // Update user
-      .addCase(updateUser.pending, (state) => handlePromisePending(state))
+      .addCase(updateUser.pending, (state) =>
+        handlePromisePending(state.promise)
+      )
       .addCase(updateUser.rejected, (state, { payload }) =>
-        handlePromiseReject(state, payload as string)
+        handlePromiseReject(state.promise, payload as string)
       )
       .addCase(
         updateUser.fulfilled,
         (state, { payload }: PayloadAction<ResponseUserDataAPI>) => {
-          handlePromiseFulfilled(state)
-          state.data = updateDataState(state.data, payload.data)
+          handlePromiseFulfilled(state.promise)
+          state.data = updateIdDataState(state.data, payload.data)
         }
       )
       // deactivate user
-      .addCase(deactivateUser.pending, (state) => handlePromisePending(state))
+      .addCase(deactivateUser.pending, (state) =>
+        handlePromisePending(state.promise)
+      )
       .addCase(deactivateUser.rejected, (state, { payload }) =>
-        handlePromiseReject(state, payload as string)
+        handlePromiseReject(state.promise, payload as string)
       )
       .addCase(
         deactivateUser.fulfilled,
         (state, { payload }: PayloadAction<ResponseUserDataAPI>) => {
-          handlePromiseFulfilled(state)
-          state.data = updateDataState(state.data, payload.data)
+          handlePromiseFulfilled(state.promise)
+          state.data = updateIdDataState(state.data, payload.data)
         }
       )
       // activate user
-      .addCase(activateUser.pending, (state) => handlePromisePending(state))
+      .addCase(activateUser.pending, (state) =>
+        handlePromisePending(state.promise)
+      )
       .addCase(activateUser.rejected, (state, { payload }) =>
-        handlePromiseReject(state, payload as string)
+        handlePromiseReject(state.promise, payload as string)
       )
       .addCase(
         activateUser.fulfilled,
         (state, { payload }: PayloadAction<ResponseUserDataAPI>) => {
-          handlePromiseFulfilled(state)
-          state.data = updateDataState(state.data, payload.data)
+          handlePromiseFulfilled(state.promise)
+          state.data = updateIdDataState(state.data, payload.data)
         }
       )
   }
