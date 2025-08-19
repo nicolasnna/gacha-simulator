@@ -14,7 +14,7 @@ export default function CheckboxField({ name, control }: CheckboxFieldProps) {
       name={name}
       control={control}
       render={({ field }) => (
-        <Field.Root>
+        <Field.Root alignItems="center">
           <Checkbox.Root
             colorPalette="pink"
             checked={field.value}

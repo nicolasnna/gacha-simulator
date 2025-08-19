@@ -1,4 +1,4 @@
-import type { Role } from '@/interfaces/role.interface'
+import type { RoleType } from '@/interfaces/role.interface'
 import type { PermissionWithUserIdType } from '@/schemas/permission.schema'
 import { Field, Portal, Select, type ListCollection } from '@chakra-ui/react'
 import { Controller, type Control } from 'react-hook-form'
@@ -6,7 +6,7 @@ import { Controller, type Control } from 'react-hook-form'
 interface UsersIdSelectProps {
   control: Control<PermissionWithUserIdType>
   users: ListCollection
-  roles: Role[]
+  roles: RoleType[]
   isMultiple?: boolean
 }
 

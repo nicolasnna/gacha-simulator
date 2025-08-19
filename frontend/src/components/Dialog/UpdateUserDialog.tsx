@@ -16,12 +16,17 @@ import FieldInput from '../Form/FieldInput'
 import FieldSelect from '../Form/FieldSelect'
 import { useAppDispatch } from '@/services/hooks/useRedux'
 import { updateUser } from '@/services/redux/users'
+import type { Role } from '@/interfaces/role.interface'
 
 interface UpdateUserDialogProps {
-  data: User
+  dataUser: User
+  roles: Role[]
 }
 
-export default function UpdateUserDialog({ data }: UpdateUserDialogProps) {
+export default function UpdateUserDialog({
+  dataUser,
+  roles
+}: UpdateUserDialogProps) {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
 
   const {
@@ -33,33 +38,32 @@ export default function UpdateUserDialog({ data }: UpdateUserDialogProps) {
   } = useForm<UserPartialType>({
     resolver: zodResolver(UserPartialSchema),
     defaultValues: {
-      email: data.email,
+      email: dataUser.email,
       password: '',
-      role: data.role,
-      name: data.name
+      role: dataUser.role,
+      name: dataUser.name
     }
   })
   const dispatch = useAppDispatch()
-  const roleColleciton = createListCollection({
-    items: [
-      { label: 'user', value: 'user' },
-      { label: 'developer', value: 'developer' },
-      { label: 'moderator', value: 'moderator' }
-    ]
+  const rolesCollection = createListCollection({
+    items: roles.map((role) => ({
+      label: role.label,
+      value: role.key
+    }))
   })
 
   const onUpdate = (dataForm: UserPartialType) => {
     const dataToUpdate = new Object()
     const { name, email, password, role } = dataForm
 
-    if (email !== data.email && email !== '')
+    if (email !== dataUser.email && email !== '')
       Object.assign(dataToUpdate, { email: email })
-    if (name !== data.name) Object.assign(dataToUpdate, { name: name })
+    if (name !== dataUser.name) Object.assign(dataToUpdate, { name: name })
     if (password !== '') Object.assign(dataToUpdate, { password: password })
-    if (role !== data.role) Object.assign(dataToUpdate, { role: role })
+    if (role !== dataUser.role) Object.assign(dataToUpdate, { role: role })
 
     if (Object.keys(dataToUpdate).length !== 0)
-      dispatch(updateUser({ id: data.id as string, ...dataToUpdate }))
+      dispatch(updateUser({ id: dataUser.id as string, ...dataToUpdate }))
     console.log(dataToUpdate)
     setOpenDialog(false)
   }
@@ -90,7 +94,7 @@ export default function UpdateUserDialog({ data }: UpdateUserDialogProps) {
           <Dialog.Positioner>
             <Dialog.Content>
               <Dialog.Header flexDir="column">
-                <Dialog.Title>¿Desea modificar {data.email}?</Dialog.Title>
+                <Dialog.Title>¿Desea modificar {dataUser.email}?</Dialog.Title>
                 <Dialog.Description>
                   Cambie los campos que desea modificar.
                 </Dialog.Description>
@@ -114,7 +118,7 @@ export default function UpdateUserDialog({ data }: UpdateUserDialogProps) {
 
                     <FieldSelect
                       control={control}
-                      values={roleColleciton}
+                      values={rolesCollection}
                       name="role"
                       placeholder="Rol"
                     />

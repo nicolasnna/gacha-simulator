@@ -4,14 +4,13 @@ import {
   Delete,
   Get,
   Param,
-  ParseArrayPipe,
   Patch,
   Post,
   Query
 } from '@nestjs/common'
 import { CreateRoleDto } from './dto/create-role.dto'
+import { GrantsArrayDto } from './dto/grants-role.dto'
 import { RolesService } from './roles.service'
-import { GrantsDto } from './dto/grants-role.dto'
 
 @Controller('roles')
 export class RolesController {
@@ -35,7 +34,7 @@ export class RolesController {
   @Patch(':id')
   updatePermission(
     @Param('id') id: string,
-    @Body(new ParseArrayPipe({ items: GrantsDto })) permission: GrantsDto[]
+    @Body() permission: GrantsArrayDto
   ) {
     return this.rolesService.updatePermission(id, permission)
   }

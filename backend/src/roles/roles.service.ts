@@ -5,9 +5,9 @@ import {
   NotFoundException
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { Document, Model } from 'mongoose'
+import { Model } from 'mongoose'
 import { CreateRoleDto } from './dto/create-role.dto'
-import { GrantsDto } from './dto/grants-role.dto'
+import { GrantsArrayDto } from './dto/grants-role.dto'
 import { RoleLean } from './types/role-lean.type'
 import { RoleType } from './types/role.type'
 
@@ -70,12 +70,15 @@ export class RolesService {
     return { data: roleObj }
   }
 
-  async updatePermission(id: string, rolePermissions: GrantsDto[]) {
+  async updatePermission(id: string, rolePermissions: GrantsArrayDto) {
+    console.log('📝 Datos recibidos:', JSON.stringify(rolePermissions, null, 2))
+    console.log('📋 Grants:', rolePermissions.grants)
+
     const roleDoc = await this.roleModel
       .findByIdAndUpdate(
         id,
         {
-          $set: { grants: rolePermissions }
+          $set: { grants: rolePermissions.grants }
         },
         { new: true }
       )

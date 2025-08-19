@@ -43,7 +43,9 @@ export default function UsersTable({ users, roles }: UsersTableProps) {
             </Table.Cell>
             <Table.Cell color="text" textAlign="center" spaceX={2}>
               {user.role !== 'superAdmin' && <StateUserDialog data={user} />}
-              {user.role !== 'superAdmin' && <UpdateUserDialog data={user} />}
+              {user.role !== 'superAdmin' && (
+                <UpdateUserDialog dataUser={user} roles={roles} />
+              )}
             </Table.Cell>
           </Table.Row>
         ))}

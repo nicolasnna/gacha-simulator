@@ -1,24 +1,29 @@
-import type { Action, Module } from '@/interfaces/permissions.interfaces'
+import type {
+  ActionType,
+  ModuleType
+} from '@/interfaces/permissions.interfaces'
 import z from 'zod'
 
-const actions: Action[] = ['manage', 'create', 'read', 'update', 'delete']
-const modules: Module[] = ['users', 'gachas', 'histories', 'characters']
+const actions: ActionType[] = ['manage', 'create', 'read', 'update', 'delete']
+const modules: ModuleType[] = ['users', 'gachas', 'histories', 'characters']
 
 export const ModuleSchema = z.object(
   Object.fromEntries(actions.map((action) => [action, z.boolean()])) as Record<
-    Action,
+    ActionType,
     z.ZodBoolean
   >
 )
 
+export type ActionBoolType = z.infer<typeof ModuleSchema>
+
 export const PermissionSchema = z.object(
   Object.fromEntries(modules.map((module) => [module, ModuleSchema])) as Record<
-    Module,
+    ModuleType,
     typeof ModuleSchema
   >
 )
 export const PermissionWithUserIdSchema = PermissionSchema.extend({
-  usersId: z.array(z.union([z.string(), z.int()]))
+  roleId: z.union([z.string()])
 })
 
 export type PermissionType = z.infer<typeof PermissionSchema>

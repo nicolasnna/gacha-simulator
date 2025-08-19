@@ -34,15 +34,14 @@ export default function FieldSelect<TFieldValues extends FieldValues>({
             multiple={isMultiple}
             name={field.name}
             size="md"
-            value={field.value ? [field.value] : []}
+            value={field.value}
             onValueChange={({ value }) => field.onChange(value)}
             onBlur={field.onBlur}
             collection={values}
-            defaultValue={field.value}
           >
             <Select.HiddenSelect />
             <Select.Control>
-              <Select.Trigger cursor="pointer">
+              <Select.Trigger cursor="pointer" bg="white/50">
                 <Select.ValueText placeholder={placeholder} />
               </Select.Trigger>
               <Select.IndicatorGroup>

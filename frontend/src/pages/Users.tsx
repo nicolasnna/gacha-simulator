@@ -65,7 +65,7 @@ function Users() {
           </HStack>
         </Tabs.Content>
         <Tabs.Content value="permissions">
-          <PermissionsForm />
+          <PermissionsForm roles={roles} />
         </Tabs.Content>
       </Tabs.Root>
     </Container>

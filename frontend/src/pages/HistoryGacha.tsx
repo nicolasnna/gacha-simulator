@@ -12,17 +12,21 @@ import {
 function HistoryGacha() {
   return (
     <Container centerContent py={2} spaceY={4}>
-      <HStack mt={2} flexWrap='wrap'>
-        <img src='https://emojicdn.elk.sh/%F0%9F%93%85?style=google' width={50} alt='Calendario'/>
+      <HStack mt={2} flexWrap="wrap">
+        <img
+          src="https://emojicdn.elk.sh/%F0%9F%93%85?style=google"
+          width={50}
+          alt="Calendario"
+        />
         <Heading size="4xl" color="text">
           Historial de tiradas
         </Heading>
       </HStack>
 
       <VStack alignItems={'start'} maxH={500} overflowY={'auto'} p={4}>
-        {obtainedCharactersFake.map((chara) => (
+        {obtainedCharactersFake.map((chara, idx) => (
           <Grid
-            key={chara.id}
+            key={idx}
             bg="bg-secondary.600"
             px={5}
             py={2}
@@ -34,7 +38,11 @@ function HistoryGacha() {
             alignItems="center"
           >
             <GridItem colSpan={1}>
-              <img src="https://emojicdn.elk.sh/%F0%9F%8E%AF?style=google" width={25} alt='Icono conseguido'/>
+              <img
+                src="https://emojicdn.elk.sh/%F0%9F%8E%AF?style=google"
+                width={25}
+                alt="Icono conseguido"
+              />
             </GridItem>
             <GridItem colSpan={7}>
               <HStack flexWrap="wrap" gapY={0}>

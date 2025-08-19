@@ -1,11 +1,14 @@
 import type {
-  Action,
+  ActionType,
+  ModuleType,
   PermissionKeys
 } from '@/interfaces/permissions.interfaces'
 import type { Role } from '@/interfaces/role.interface'
-import type { PermissionWithUserIdType } from '@/schemas/permission.schema'
+import type {
+  ActionBoolType,
+  PermissionWithUserIdType
+} from '@/schemas/permission.schema'
 import { PermissionWithUserIdSchema } from '@/schemas/permission.schema'
-import { usersFake } from '@/utils/data-fake'
 import {
   Button,
   createListCollection,
@@ -16,7 +19,11 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import CheckboxField from './CheckboxField'
-import UsersIdSelect from './UsersIdSelect'
+import FieldSelect from './FieldSelect'
+import { useCallback, useEffect } from 'react'
+import { permissionsToGrantsAPI } from '@/utils/grants-helper'
+import { useAppDispatch } from '@/services/hooks/useRedux'
+import { updatePermissionRole } from '@/services/redux/roles'
 
 const defaultPermissions = {
   manage: false,
@@ -26,42 +33,91 @@ const defaultPermissions = {
   delete: false
 }
 
-export default function PermissionsForm() {
-  const actions: Action[] = ['manage', 'read', 'create', 'update', 'delete']
-  const usersList = createListCollection({
-    items: usersFake.map((user) => ({
-      label: user.email,
-      value: user.id,
-      role: user.role
+interface PermissionFormProps {
+  roles: Role[]
+}
+
+export default function PermissionsForm({ roles }: PermissionFormProps) {
+  const actions: ActionType[] = ['manage', 'read', 'create', 'update', 'delete']
+  const modules: ModuleType[] = ['users', 'gachas', 'histories', 'characters']
+  const dispatch = useAppDispatch()
+  const rolesList = createListCollection({
+    items: roles.map((role) => ({
+      label: role.label,
+      value: role.key
     }))
   })
 
-  const modules = ['users', 'gachas', 'histories', 'characters']
-  const uniqueRoles: Role[] = ['superAdmin', 'moderator', 'developer', 'user']
+  const { handleSubmit, reset, watch, control, setValue } =
+    useForm<PermissionWithUserIdType>({
+      resolver: zodResolver(PermissionWithUserIdSchema),
+      defaultValues: {
+        roleId: '',
+        users: defaultPermissions,
+        gachas: defaultPermissions,
+        histories: defaultPermissions,
+        characters: defaultPermissions
+      }
+    })
 
-  const permissionForm = useForm<PermissionWithUserIdType>({
-    resolver: zodResolver(PermissionWithUserIdSchema),
-    defaultValues: {
-      usersId: [],
-      users: defaultPermissions,
-      gachas: defaultPermissions,
-      histories: defaultPermissions,
-      characters: defaultPermissions
+  const roleSelected: Array<string> | string = watch('roleId')
+
+  const handleDefautPermissions = useCallback(() => {
+    const roleFind = roles.find(
+      (role) => role.key === roleSelected || role.key === roleSelected[0]
+    )
+    if (roleFind) {
+      reset({
+        roleId: roleFind.key,
+        users: defaultPermissions,
+        gachas: { ...defaultPermissions },
+        histories: { ...defaultPermissions },
+        characters: { ...defaultPermissions }
+      })
+      for (const module of roleFind.grants) {
+        module.actions.forEach((action) =>
+          setValue(`${module.module}.${action}`, true)
+        )
+      }
+    } else {
+      reset({
+        roleId: '',
+        users: { ...defaultPermissions },
+        gachas: { ...defaultPermissions },
+        histories: { ...defaultPermissions },
+        characters: { ...defaultPermissions }
+      })
     }
-  })
+  }, [roleSelected, roles, reset, setValue])
 
-  const cleanPermissions = () => {
-    permissionForm.reset()
+  useEffect(() => {
+    handleDefautPermissions()
+  }, [handleDefautPermissions])
+
+  const onSubmit = (data: PermissionWithUserIdType) => {
+    const entries = Object.entries(data).filter(([key]) => key !== 'roleId')
+    const grants = entries.map(([key, boolValues]) =>
+      permissionsToGrantsAPI(key as ModuleType, boolValues as ActionBoolType)
+    )
+    const roleFind = roles.find((role) => role.key === data.roleId)
+    if (roleFind) {
+      dispatch(
+        updatePermissionRole({
+          id: roleFind.id,
+          permission: grants
+        })
+      )
+    }
   }
 
   return (
-    <form onSubmit={permissionForm.handleSubmit((data) => console.log(data))}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <VStack gap={3}>
-        <UsersIdSelect
-          control={permissionForm.control}
-          users={usersList}
-          roles={uniqueRoles}
-          isMultiple
+        <FieldSelect
+          control={control}
+          name="roleId"
+          placeholder="Rol"
+          values={rolesList}
         />
 
         <Table.Root interactive size="md" maxW={900}>
@@ -84,10 +140,10 @@ export default function PermissionsForm() {
               >
                 <Table.Cell color="text">{module}</Table.Cell>
                 {actions.map((action) => (
-                  <Table.Cell key={action} textAlign="center">
+                  <Table.Cell key={action}>
                     <CheckboxField
                       name={`${module}.${action}` as PermissionKeys}
-                      control={permissionForm.control}
+                      control={control}
                     />
                   </Table.Cell>
                 ))}
@@ -101,7 +157,7 @@ export default function PermissionsForm() {
             bg="transparent"
             border="2px solid"
             borderColor="primary"
-            onClick={cleanPermissions}
+            onClick={handleDefautPermissions}
           >
             Predeterminado
           </Button>

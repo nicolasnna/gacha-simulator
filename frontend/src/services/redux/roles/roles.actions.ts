@@ -50,7 +50,7 @@ export const updatePermissionRole = createAsyncThunk(
     try {
       const response = await axios.patch(
         `${BACKEND_URL}/roles/${id}`,
-        permission,
+        { grants: permission },
         config
       )
       return response.data
