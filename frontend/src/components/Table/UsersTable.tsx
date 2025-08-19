@@ -2,12 +2,15 @@ import type { User } from '@/interfaces/user.interface'
 import { Table } from '@chakra-ui/react'
 import StateUserDialog from '../Dialog/StateUserDialog'
 import UpdateUserDialog from '../Dialog/UpdateUserDialog'
+import type { Role } from '@/interfaces/role.interface'
+import { getArrayPermission } from '@/utils/transform.helper'
 
 interface UsersTableProps {
-  data: User[]
+  users: User[]
+  roles: Role[]
 }
 
-export default function UsersTable({ data }: UsersTableProps) {
+export default function UsersTable({ users, roles }: UsersTableProps) {
   return (
     <Table.Root interactive size="sm" maxW={900}>
       <Table.Header>
@@ -23,7 +26,7 @@ export default function UsersTable({ data }: UsersTableProps) {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {data.map((user) => (
+        {users.map((user) => (
           <Table.Row
             key={user.id}
             bg="bg-secondary/40"
@@ -36,7 +39,7 @@ export default function UsersTable({ data }: UsersTableProps) {
             </Table.Cell>
             <Table.Cell color="text">{user.role}</Table.Cell>
             <Table.Cell color="text" inlineSize="300px">
-              {/* {user.permissions?.join(', ')} */}
+              {getArrayPermission(roles, user.role).join(', ')}
             </Table.Cell>
             <Table.Cell color="text" textAlign="center" spaceX={2}>
               {user.role !== 'superAdmin' && <StateUserDialog data={user} />}

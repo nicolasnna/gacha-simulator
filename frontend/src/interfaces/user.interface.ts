@@ -1,9 +1,9 @@
-import type { Role } from './role.interface'
+import type { RoleType } from './role.interface'
 
 export interface User {
   id: string
   email: string
-  role: Role
+  role: RoleType
   superAdmin: boolean
   active: boolean
   createdAt?: Date

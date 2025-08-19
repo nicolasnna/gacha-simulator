@@ -1,6 +1,7 @@
 import PermissionsForm from '@/components/Form/PermissionsForm'
 import UsersTable from '@/components/Table/UsersTable'
 import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
+import { getAllRoles } from '@/services/redux/roles'
 import { getAllUsers } from '@/services/redux/users'
 import {
   Button,
@@ -14,10 +15,12 @@ import { useEffect } from 'react'
 
 function Users() {
   const { data, itemsInfo } = useAppSelector((state) => state.users)
+  const roles = useAppSelector((state) => state.roles.data)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(getAllUsers({ page: 1, limit: 3 }))
+    dispatch(getAllRoles({ page: 1, limit: 20 }))
   }, [dispatch])
 
   const loadMoreUsers = () => {
@@ -47,7 +50,7 @@ function Users() {
           <Tabs.Indicator rounded="md" bg="bg-secondary" />
         </Tabs.List>
         <Tabs.Content value="users" spaceY={2}>
-          <UsersTable data={data} />
+          <UsersTable users={data} roles={roles} />
           <HStack justifyContent="end">
             <Text color="white">
               Usuarios {itemsInfo.lastItemNumber} de {itemsInfo.totalItems}
