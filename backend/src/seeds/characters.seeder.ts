@@ -1,3 +1,4 @@
+import { CharactersService } from '@/characters/characters.service'
 import {
   BannerEnum,
   RarityCharacterEnum,
@@ -14,73 +15,87 @@ export class CharactersSeeder {
 
   constructor(
     @InjectModel(Character.name)
-    private readonly characterModel: Model<CharacterDocument>
+    private readonly characterModel: Model<CharacterDocument>,
+    private characterService: CharactersService
   ) {}
 
   private readonly charactersScrapping: {
     mal_id: number
     rarity: RarityCharacterEnum
     value: ValueCharacterEnum
+    banner: BannerEnum
   }[] = [
     {
       mal_id: 14,
       rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SSuperRare
+      value: ValueCharacterEnum.SSuperRare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 13,
       rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SSuperRare
+      value: ValueCharacterEnum.SSuperRare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 85,
       rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SSuperRare
+      value: ValueCharacterEnum.SSuperRare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 17,
       rarity: RarityCharacterEnum.SuperRare,
-      value: ValueCharacterEnum.SuperRare
+      value: ValueCharacterEnum.SuperRare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 145,
       rarity: RarityCharacterEnum.SuperRare,
-      value: ValueCharacterEnum.SuperRare
+      value: ValueCharacterEnum.SuperRare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 2174,
       rarity: RarityCharacterEnum.SuperRare,
-      value: ValueCharacterEnum.SuperRare
+      value: ValueCharacterEnum.SuperRare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 17312,
       rarity: RarityCharacterEnum.Rare,
-      value: ValueCharacterEnum.Rare
+      value: ValueCharacterEnum.Rare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 3052,
       rarity: RarityCharacterEnum.Rare,
-      value: ValueCharacterEnum.Rare
+      value: ValueCharacterEnum.Rare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 3735,
       rarity: RarityCharacterEnum.Rare,
-      value: ValueCharacterEnum.Rare
+      value: ValueCharacterEnum.Rare,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 2766,
       rarity: RarityCharacterEnum.Common,
-      value: ValueCharacterEnum.Common
+      value: ValueCharacterEnum.Common,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 10791,
       rarity: RarityCharacterEnum.Common,
-      value: ValueCharacterEnum.Common
+      value: ValueCharacterEnum.Common,
+      banner: BannerEnum.Standard
     },
     {
       mal_id: 15081,
       rarity: RarityCharacterEnum.Common,
-      value: ValueCharacterEnum.Common
+      value: ValueCharacterEnum.Common,
+      banner: BannerEnum.Standard
     }
   ]
 
@@ -134,19 +149,25 @@ export class CharactersSeeder {
     }
   }
 
-  async seed() {
-    for (const characterRaw of this.charactersScrapping) {
-      try {
-        await this.fetchAndSaveCharacter(
-          characterRaw.mal_id,
-          characterRaw.rarity,
-          characterRaw.value
-        )
+  async drop() {
+    const malIds = this.charactersScrapping.map((char) => char.mal_id)
+    await this.characterModel.deleteMany({ mal_id: { $in: malIds } }).exec()
+    this._logger.warn(
+      `The characters with mal_ids: ${malIds.join(', ')} has been deleted`
+    )
+  }
 
+  async seed() {
+    for (const char of this.charactersScrapping) {
+      try {
+        const newChar = await this.characterService.create({ ...char })
         // Limitar las peticiones por segundo
         await new Promise((resolve) => setTimeout(resolve, 1000))
+        this._logger.log(
+          `Added mal_id: ${newChar.data.name}:${newChar.data.mal_id}:${newChar.data.rarity}`
+        )
       } catch {
-        this._logger.log(`Omitiendo mal_id: ${characterRaw.mal_id}`)
+        this._logger.warn(`Is Omiting mal_id: ${char.mal_id}`)
       }
     }
   }

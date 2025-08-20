@@ -13,6 +13,7 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { RolesSeeder } from './roles.seeder'
 import { UsersSeeder } from './users.seeder'
 import { CharactersSeeder } from './characters.seeder'
+import { CharactersModule } from '@/characters/characters.module'
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { CharactersSeeder } from './characters.seeder'
       { name: Role.name, schema: RoleSchema },
       { name: User.name, schema: UserSchema },
       { name: Character.name, schema: CharacterSchema }
-    ])
+    ]),
+    CharactersModule
   ],
   providers: [RolesSeeder, UsersSeeder, CharactersSeeder]
 })

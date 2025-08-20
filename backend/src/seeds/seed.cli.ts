@@ -15,6 +15,7 @@ async function bootstrap() {
 
   await roles.drop()
   await users.drop()
+  await characters.drop()
 
   await roles.seed()
   await users.seed()
