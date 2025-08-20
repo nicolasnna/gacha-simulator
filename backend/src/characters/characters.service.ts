@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common'
 import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 import { InjectModel } from '@nestjs/mongoose'
@@ -52,21 +57,93 @@ export class CharactersService {
     }
   }
 
+  private async _changeStateChar(id: string, isActive: boolean) {
+    const char = await this.characterModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { isActive: isActive }
+        },
+        { new: true }
+      )
+      .exec()
+
+    if (!char) throw new NotFoundException('Personaje no encontrado')
+
+    const { _id, ...rest } = char.toObject()
+    return { id: _id.toString(), ...rest }
+  }
+
   async create(charData: CreateCharacterDto) {
     const char = await this._fetchAndGetCharacter({ ...charData })
     return { data: char }
   }
 
-  findAll() {
-    return `This action returns all characters`
+  async getAll(page: number = 1, limit: number = 20) {
+    if (page < 1 || limit < 1)
+      throw new BadRequestException(
+        'Parametro page y number deben ser mayores o iguales a 1'
+      )
+    const skip = (Math.max(page, 1) - 1) * Math.max(limit, 1)
+
+    const [chars, totalItems] = await Promise.all([
+      this.characterModel
+        .find()
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .lean()
+        .exec(),
+      this.characterModel.countDocuments().exec()
+    ])
+
+    const charsWithId = chars.map(({ _id, ...rest }) => ({
+      id: _id.toString(),
+      ...rest
+    }))
+
+    const lastItemNumber = skip + chars.length
+
+    return { data: charsWithId, totalItems, lastItemNumber, page, limit }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} character`
+  async findById(id: string) {
+    const char = await this.characterModel.findById(id).exec()
+
+    if (!char) throw new NotFoundException('Id de personaje no encontrado')
+
+    const charObj = char.toObject()
+    charObj.id = charObj._id
+    delete charObj._id
+
+    return { data: charObj }
   }
 
-  update(id: number, updateCharacterDto: UpdateCharacterDto) {
-    return `This action updates a #${id} character`
+  async updateCharGacha(id: string, newCharData: UpdateCharacterDto) {
+    const charUpdated = await this.characterModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { ...newCharData }
+        },
+        { new: true }
+      )
+      .exec()
+
+    if (!charUpdated) throw new NotFoundException('Personaje no encontrado')
+
+    const { _id, ...rest } = charUpdated.toObject()
+    return { data: { id: _id.toString(), ...rest } }
+  }
+
+  async deactivate(id: string) {
+    const charObj = await this._changeStateChar(id, false)
+    return { data: charObj }
+  }
+
+  async activate(id: string) {
+    const charObj = await this._changeStateChar(id, true)
+    return { data: charObj }
   }
 
   remove(id: number) {

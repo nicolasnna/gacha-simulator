@@ -5,7 +5,8 @@ import {
   Body,
   Patch,
   Param,
-  Delete
+  Delete,
+  Query
 } from '@nestjs/common'
 import { CharactersService } from './characters.service'
 import { CreateCharacterDto } from './dto/create-character.dto'
@@ -21,25 +22,30 @@ export class CharactersController {
   }
 
   @Get()
-  findAll() {
-    return this.charactersService.findAll()
+  getAll(@Query('page') page: number, @Query('limit') limit: number) {
+    return this.charactersService.getAll(page, limit)
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.charactersService.findOne(+id)
+  findById(@Param('id') id: string) {
+    return this.charactersService.findById(id)
   }
 
   @Patch(':id')
-  update(
+  updateCharGacha(
     @Param('id') id: string,
-    @Body() updateCharacterDto: UpdateCharacterDto
+    @Body() newCharData: UpdateCharacterDto
   ) {
-    return this.charactersService.update(+id, updateCharacterDto)
+    return this.charactersService.updateCharGacha(id, newCharData)
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.charactersService.remove(+id)
+  deactivate(@Param('id') id: string) {
+    return this.charactersService.deactivate(id)
+  }
+
+  @Patch(':id/activate')
+  activate(@Param('id') id: string) {
+    return this.charactersService.activate(id)
   }
 }
