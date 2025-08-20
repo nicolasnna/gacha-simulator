@@ -1,4 +1,4 @@
-import { RoleKey } from '@common/enums'
+import { RoleEnum } from '@common/enums'
 import {
   ConflictException,
   Injectable,
@@ -30,7 +30,7 @@ export class AuthService {
     const doc = await this.userModel.create({
       email: userData.email,
       passwordHash,
-      role: RoleKey.User,
+      role: RoleEnum.User,
       name: userData.name
     })
 

@@ -71,9 +71,6 @@ export class RolesService {
   }
 
   async updatePermission(id: string, rolePermissions: GrantsArrayDto) {
-    console.log('📝 Datos recibidos:', JSON.stringify(rolePermissions, null, 2))
-    console.log('📋 Grants:', rolePermissions.grants)
-
     const roleDoc = await this.roleModel
       .findByIdAndUpdate(
         id,

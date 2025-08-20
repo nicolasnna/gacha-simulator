@@ -1,7 +1,7 @@
 import { ActionKeyEnum, ActionType } from './actions.enum'
 import { ModuleKeyEnum } from './modules.enum'
 
-export enum RoleKey {
+export enum RoleEnum {
   SuperAdmin = 'superAdmin',
   User = 'user',
   Developer = 'developer',
@@ -9,10 +9,10 @@ export enum RoleKey {
 }
 
 export const ROLE_PERMISSIONS: Record<
-  RoleKey,
+  RoleEnum,
   { module: ModuleKeyEnum; actions: ActionType[] }[]
 > = {
-  [RoleKey.User]: [
+  [RoleEnum.User]: [
     {
       module: ModuleKeyEnum.Characters,
       actions: [ActionKeyEnum.READ, ActionKeyEnum.DELETE]
@@ -26,7 +26,7 @@ export const ROLE_PERMISSIONS: Record<
       actions: [ActionKeyEnum.READ]
     }
   ],
-  [RoleKey.Moderator]: [
+  [RoleEnum.Moderator]: [
     { module: ModuleKeyEnum.Characters, actions: Object.values(ActionKeyEnum) },
     { module: ModuleKeyEnum.Histories, actions: Object.values(ActionKeyEnum) },
     { module: ModuleKeyEnum.Users, actions: Object.values(ActionKeyEnum) },
@@ -35,7 +35,7 @@ export const ROLE_PERMISSIONS: Record<
       actions: [ActionKeyEnum.READ, ActionKeyEnum.UPDATE, ActionKeyEnum.CREATE]
     }
   ],
-  [RoleKey.Developer]: [
+  [RoleEnum.Developer]: [
     { module: ModuleKeyEnum.Characters, actions: Object.values(ActionKeyEnum) },
     { module: ModuleKeyEnum.Histories, actions: Object.values(ActionKeyEnum) },
     { module: ModuleKeyEnum.Users, actions: Object.values(ActionKeyEnum) },
@@ -44,5 +44,5 @@ export const ROLE_PERMISSIONS: Record<
       actions: Object.values(ActionKeyEnum)
     }
   ],
-  [RoleKey.SuperAdmin]: []
+  [RoleEnum.SuperAdmin]: []
 }

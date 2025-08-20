@@ -1,4 +1,4 @@
-import { RoleKey } from '@common/enums'
+import { RoleEnum } from '@common/enums'
 import { User, UserDocument } from '@common/schemas'
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
@@ -17,7 +17,7 @@ export class UsersSeeder {
     email: string
     password: string
     name?: string
-    role: RoleKey
+    role: RoleEnum
     superAdmin?: boolean
     active?: boolean
   }> = [
@@ -25,7 +25,7 @@ export class UsersSeeder {
       email: 'super@local.test',
       password: 'Admin123',
       name: 'Super Admin',
-      role: RoleKey.SuperAdmin,
+      role: RoleEnum.SuperAdmin,
       superAdmin: true,
       active: true
     },
@@ -33,28 +33,28 @@ export class UsersSeeder {
       email: 'gacha@local.test',
       password: 'Secret123',
       name: 'Gacha Mgr',
-      role: RoleKey.Moderator,
+      role: RoleEnum.Moderator,
       active: true
     },
     {
       email: 'editor@local.test',
       password: 'Secret123',
       name: 'Editor',
-      role: RoleKey.Developer,
+      role: RoleEnum.Developer,
       active: true
     },
     {
       email: 'viewer@local.test',
       password: 'Secret123',
       name: 'Viewer',
-      role: RoleKey.User,
+      role: RoleEnum.User,
       active: true
     },
     {
       email: 'user@local.test',
       password: 'Secret123',
       name: 'Usuario',
-      role: RoleKey.User,
+      role: RoleEnum.User,
       active: true
     }
   ]
@@ -72,7 +72,7 @@ export class UsersSeeder {
       const { password, ...info } = user
 
       const passwordHash = await bcrypt.hash(password, 12)
-      const superAdmin = info.role === RoleKey.SuperAdmin
+      const superAdmin = info.role === RoleEnum.SuperAdmin
 
       await this.userModel
         .findOneAndUpdate(

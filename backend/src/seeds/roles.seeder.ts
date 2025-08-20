@@ -1,4 +1,4 @@
-import { ROLE_PERMISSIONS, RoleKey } from '@common/enums'
+import { ROLE_PERMISSIONS, RoleEnum } from '@common/enums'
 import { Role, RoleDocument } from '@common/schemas'
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
@@ -14,24 +14,24 @@ export class RolesSeeder {
 
   private readonly roleDefinitions = [
     {
-      key: RoleKey.SuperAdmin,
+      key: RoleEnum.SuperAdmin,
       label: 'Super Administrador',
-      grants: ROLE_PERMISSIONS[RoleKey.SuperAdmin]
+      grants: ROLE_PERMISSIONS[RoleEnum.SuperAdmin]
     },
     {
-      key: RoleKey.Moderator,
+      key: RoleEnum.Moderator,
       label: 'Moderador',
-      grants: ROLE_PERMISSIONS[RoleKey.Moderator]
+      grants: ROLE_PERMISSIONS[RoleEnum.Moderator]
     },
     {
-      key: RoleKey.Developer,
+      key: RoleEnum.Developer,
       label: 'Desarrollador',
-      grants: ROLE_PERMISSIONS[RoleKey.Developer]
+      grants: ROLE_PERMISSIONS[RoleEnum.Developer]
     },
     {
-      key: RoleKey.User,
+      key: RoleEnum.User,
       label: 'Usuario General',
-      grants: ROLE_PERMISSIONS[RoleKey.User]
+      grants: ROLE_PERMISSIONS[RoleEnum.User]
     }
   ]
 
