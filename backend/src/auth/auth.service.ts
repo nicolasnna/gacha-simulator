@@ -1,6 +1,6 @@
+import { UsersService } from '@/users/users.service'
 import { RoleEnum } from '@common/enums'
 import {
-  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException
@@ -19,26 +19,22 @@ type UserResponse = Omit<User, 'passwordHash'> & { id: string }
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private userService: UsersService
   ) {}
 
   async register(userData: RegisterUserDto): Promise<AuthUserResponse> {
-    const exists = await this.userModel.exists({ email: userData.email })
-    if (exists) throw new ConflictException('Email ya registrado')
-
-    const passwordHash = await bcrypt.hash(userData.password, 12)
-    const doc = await this.userModel.create({
+    const user = await this.userService.create({
+      name: userData.name,
       email: userData.email,
-      passwordHash,
-      role: RoleEnum.User,
-      name: userData.name
+      password: userData.password,
+      role: RoleEnum.User
     })
 
-    const user = doc.toObject<UserResponse>()
     return {
-      email: user.email,
-      role: user.role,
-      ...(await this.sign(user.id, user.email, user.role, false))
+      email: user.data.email,
+      role: user.data.role,
+      ...(await this.sign(user.data.id, user.data.email, user.data.role, false))
     }
   }
 

@@ -1,6 +1,7 @@
 import { User, UserDocument } from '@common/schemas'
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException
 } from '@nestjs/common'
@@ -9,6 +10,9 @@ import { Model } from 'mongoose'
 import { UpdateUserInfoDto } from './dto/update-user-info.dto'
 import { UserLean } from './types'
 import { UserResponse, UserWithOmit } from './types/user-response.type'
+import { CreateUserDto } from './dto/create-user.dto'
+import * as bcrypt from 'bcrypt'
+import { FindEmailUserDto } from './dto/find-email-user.dto'
 
 @Injectable()
 export class UsersService {
@@ -16,8 +20,23 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) {}
 
-  create(createUserDto) {
-    return 'This action adds a new user'
+  async create(userData: CreateUserDto) {
+    const exists = await this.userModel.exists({ email: userData.email })
+    if (exists) throw new ConflictException('Email ya registrado')
+
+    const passwordHash = await bcrypt.hash(userData.password, 12)
+    const doc = await this.userModel.create({
+      email: userData.email,
+      passwordHash,
+      role: userData.role,
+      name: userData.name
+    })
+
+    const user = doc.toObject()
+    user.id = user._id
+    delete user._id
+    delete user.__v
+    return { data: user }
   }
 
   async findAll(
@@ -66,6 +85,13 @@ export class UsersService {
     return { data: { id: _id, ...rest } }
   }
 
+  async findByEmail(data: FindEmailUserDto) {
+    const user = await this.userModel.findOne({ email: data.email }).exec()
+    if (!user) throw new NotFoundException()
+
+    return { data: { ...user, passwordHash: user.passwordHash } }
+  }
+
   async updateInfo(
     id: string,
     userInfo: UpdateUserInfoDto
@@ -87,14 +113,14 @@ export class UsersService {
   }
 
   async deactivateById(id: string): Promise<UserResponse> {
-    return await this.changeActiveState(id, false)
+    return await this._changeActiveState(id, false)
   }
 
   async activateById(id: string): Promise<UserResponse> {
-    return await this.changeActiveState(id, true)
+    return await this._changeActiveState(id, true)
   }
 
-  private async changeActiveState(id: string, active: boolean) {
+  private async _changeActiveState(id: string, active: boolean) {
     const doc = await this.userModel
       .findByIdAndUpdate(id, { $set: { active } }, { new: true })
       .exec()
