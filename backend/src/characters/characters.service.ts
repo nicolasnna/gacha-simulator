@@ -1,14 +1,16 @@
+import { RarityCharacterEnum } from '@common/enums'
+import { Character, CharacterDocument } from '@common/schemas'
 import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException
 } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
-import { InjectModel } from '@nestjs/mongoose'
-import { Character, CharacterDocument } from '@common/schemas'
-import { Model } from 'mongoose'
+import { resourceLimits } from 'worker_threads'
 
 @Injectable()
 export class CharactersService {
@@ -44,7 +46,7 @@ export class CharactersService {
         rarity: rarity,
         banner: banner,
         value: value,
-        animeOrigin: characterData.anime[0].anime.title
+        animeOrigin: String(characterData.anime[0].anime.title).toLowerCase()
       })
 
       const char = await newCharacter.save({ validateBeforeSave: true })
@@ -117,6 +119,45 @@ export class CharactersService {
     delete charObj._id
 
     return { data: charObj }
+  }
+
+  async getRandomByRarity(rarity: RarityCharacterEnum, count: number) {
+    const results = await this.characterModel
+      .aggregate([
+        {
+          $match: {
+            rarity: rarity,
+            isActive: true
+          }
+        },
+        { $sample: { size: count } },
+        {
+          $project: {
+            name: 1,
+            imgUrl: 1,
+            rarity: 1,
+            value: 1
+          }
+        }
+      ])
+      .exec()
+
+    if (results.length < count) {
+      const missing = count - results.length
+      const duplicates = []
+
+      for (let i = 0; i < missing; i++) {
+        const randomIndex = Math.floor(Math.random() * results.length)
+        const duplicate = { ...results[randomIndex] }
+
+        duplicate.isDuplicate = true
+        duplicates.push(duplicate)
+      }
+
+      results.push(...duplicates)
+    }
+
+    return results
   }
 
   async updateCharGacha(id: string, newCharData: UpdateCharacterDto) {

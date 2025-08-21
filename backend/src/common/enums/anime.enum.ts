@@ -1,3 +1,3 @@
 export enum AnimeEnum {
-  Naruto = 'Naruto'
+  Naruto = 'naruto'
 }

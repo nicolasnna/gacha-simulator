@@ -28,19 +28,19 @@ export class CharactersSeeder {
     {
       mal_id: 14,
       rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SSuperRare,
+      value: ValueCharacterEnum.SuperSuperRare,
       banner: BannerEnum.Standard
     },
     {
       mal_id: 13,
       rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SSuperRare,
+      value: ValueCharacterEnum.SuperSuperRare,
       banner: BannerEnum.Standard
     },
     {
       mal_id: 85,
       rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SSuperRare,
+      value: ValueCharacterEnum.SuperSuperRare,
       banner: BannerEnum.Standard
     },
     {
@@ -99,56 +99,6 @@ export class CharactersSeeder {
     }
   ]
 
-  async fetchAndSaveCharacter(
-    mal_id: number,
-    rarity: RarityCharacterEnum,
-    value: ValueCharacterEnum
-  ) {
-    const urlApiJikan = `https://api.jikan.moe/v4/characters/${mal_id}/full`
-
-    try {
-      const existingCharacter = await this.characterModel.findOne({
-        mal_id: mal_id
-      })
-
-      if (existingCharacter)
-        return this._logger.warn(
-          `Personaje existente: ${existingCharacter.name}`
-        )
-
-      const response = await fetch(urlApiJikan, { method: 'GET' })
-      const apiData = await response.json()
-
-      if (!apiData.data) {
-        return this._logger.warn(
-          `No se ha logrado obtener el personaje con el id ${mal_id}`
-        )
-      }
-
-      const characterData = apiData.data
-
-      const newCharacter = new this.characterModel({
-        mal_id: mal_id,
-        name: characterData.name,
-        nicknames: characterData.nicknames ?? [],
-        imgUrl: characterData.images.webp.image_url,
-        rarity: rarity,
-        banner: BannerEnum.Standard,
-        value: value,
-        animeOrigin: characterData.anime[0].anime.title
-      })
-
-      await newCharacter.save()
-
-      this._logger.log(
-        `Personaje ${characterData.name}:${mal_id}:${rarity} guardado correctamente`
-      )
-    } catch (error) {
-      this._logger.error(error)
-      throw new Error('Error al obtener información de la api JIKAN')
-    }
-  }
-
   async drop() {
     const malIds = this.charactersScrapping.map((char) => char.mal_id)
     await this.characterModel.deleteMany({ mal_id: { $in: malIds } }).exec()
@@ -166,8 +116,9 @@ export class CharactersSeeder {
         this._logger.log(
           `Added mal_id: ${newChar.data.name}:${newChar.data.mal_id}:${newChar.data.rarity}`
         )
-      } catch {
-        this._logger.warn(`Is Omiting mal_id: ${char.mal_id}`)
+      } catch (err) {
+        this._logger.warn(`Is Omiting mal_id: ${char.mal_id} for: ${err}`)
+        break
       }
     }
   }
