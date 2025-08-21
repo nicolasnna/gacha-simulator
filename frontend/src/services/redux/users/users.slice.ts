@@ -39,7 +39,7 @@ const initialState: UsersState = {
     totalItems: 0,
     lastItemNumber: 0,
     page: 0,
-    limit: 5
+    limit: 20
   },
   data: []
 }

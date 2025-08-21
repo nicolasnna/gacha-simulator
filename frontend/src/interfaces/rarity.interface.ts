@@ -1,1 +1,1 @@
-export type Rarity = 'ssr' | 'sr' | 'r' | 'c'
+export type RarityType = 'ssr' | 'sr' | 'r' | 'c'

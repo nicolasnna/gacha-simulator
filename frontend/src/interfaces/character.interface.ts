@@ -1,11 +1,19 @@
-import type { Rarity } from './rarity.interface'
+import type { BannerType } from './banner.interface'
+import type { RarityType } from './rarity.interface'
 
 export interface Character {
-  id: string | number
+  id: string
+  mal_id: number
   name: string
-  rarity: Rarity
-  urlImage: string
-  repeatedCount?: number
+  rarity: RarityType
+  imgUrl: string
+  nicknames?: string[]
+  value: number
+  animeOrigin: string
+  isActive: boolean
+  banner: BannerType
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface CharacterObtained extends Character {

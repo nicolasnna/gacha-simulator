@@ -1,8 +1,16 @@
-import CardCharacter from '@/components/card-character'
-import { characterListFake } from '@/utils/data-fake'
+import CardCharacter from '@/components/Card/CardCharacter'
+import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
+import { getAllCharacters } from '@/services/redux/characters'
 import { Container, Heading, HStack } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
 function Characters() {
+  const characters = useAppSelector((s) => s.characters.data)
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(getAllCharacters({ page: 1, limit: 20 }))
+  }, [dispatch])
+
   return (
     <Container centerContent py={2} spaceY={5}>
       <HStack my={2}>
@@ -17,7 +25,7 @@ function Characters() {
         alignItems="center"
         justifyContent="center"
       >
-        {characterListFake.map((chara) => (
+        {characters.map((chara) => (
           <CardCharacter key={chara.id} data={chara} />
         ))}
       </HStack>

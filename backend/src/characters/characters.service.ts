@@ -91,7 +91,7 @@ export class CharactersService {
         .find()
         .skip(skip)
         .limit(limit)
-        .sort({ createdAt: -1 })
+        .sort({ rarity: -1 })
         .lean()
         .exec(),
       this.characterModel.countDocuments().exec()
