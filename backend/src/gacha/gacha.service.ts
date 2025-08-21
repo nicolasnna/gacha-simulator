@@ -5,7 +5,7 @@ import { GachaPull, GachaPullDocument } from '@common/schemas'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { GetPullDto } from './dto/get-pull.dto'
+import { UserPullDto } from './dto/pull.dto'
 
 @Injectable()
 export class GachaService {
@@ -34,7 +34,7 @@ export class GachaService {
     return RarityCharacterEnum.Common
   }
 
-  async getPull({ anime, pulls, userId }: GetPullDto & { userId: string }) {
+  async gachaPull({ anime, pulls, userId }: UserPullDto) {
     if (![PullsEnum.One, PullsEnum.Ten].includes(pulls)) {
       throw new BadRequestException(
         'Los pulls del gacha solo pueden ser 1 o 10'

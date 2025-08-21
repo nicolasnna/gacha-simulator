@@ -10,7 +10,6 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
-import { resourceLimits } from 'worker_threads'
 
 @Injectable()
 export class CharactersService {

@@ -53,16 +53,24 @@ export class AuthService {
 
     if (!validatePassword) throw new UnauthorizedException()
 
+    const userRes: UserResponse = {
+      id: user._id.toString(),
+      email: user.email,
+      role: user.role,
+      superAdmin: user.superAdmin,
+      active: user.active
+    }
+
     const userObject = user.toObject<UserResponse>()
 
     return {
       email: userObject.email,
       role: userObject.role,
       ...(await this.sign(
-        userObject.id,
-        userObject.email,
-        userObject.role,
-        user.superAdmin
+        userRes.id,
+        userRes.email,
+        userRes.role,
+        userRes.superAdmin
       ))
     }
   }

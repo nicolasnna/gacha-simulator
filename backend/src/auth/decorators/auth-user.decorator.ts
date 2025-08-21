@@ -3,7 +3,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 export type JwtPayload = {
   sub: string
   email: string
-  roles: string[]
+  role: string[]
   superAdmin?: boolean
 }
 

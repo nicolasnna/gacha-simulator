@@ -1,17 +1,17 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { AuthUser, JwtPayload } from '@/auth/decorators/auth-user.decorator'
+import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import { PullDto, UserPullDto } from './dto/pull.dto'
 import { GachaService } from './gacha.service'
-import { AnimeEnum } from '@common/enums'
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
 
 @Controller('gacha')
 export class GachaController {
   constructor(private readonly gachaService: GachaService) {}
 
-  @Get('pull/:anime')
-  getPull(@Param('anime') anime: AnimeEnum, @Query('count') count: number = 1) {
-    return this.gachaService.getPull({
-      anime,
-      pulls: count,
-      userId: 'sfehishf2323'
-    })
+  @UseGuards(JwtAuthGuard)
+  @Post('pull')
+  gachaPull(@AuthUser() user: JwtPayload, @Body() pullDto: PullDto) {
+    const getPullDto: UserPullDto = { ...pullDto, userId: user.sub }
+    return this.gachaService.gachaPull(getPullDto)
   }
 }
