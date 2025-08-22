@@ -1,4 +1,4 @@
-import type { Role } from './role.interface'
+import type { RoleType } from './role.interface'
 
 export interface LoginUserApi {
   email: string
@@ -10,6 +10,6 @@ export interface RegisterUserApi extends LoginUserApi {
 
 export interface ResponseAuthApi {
   email: string
-  role: Role
+  role: RoleType
   access_token: string
 }

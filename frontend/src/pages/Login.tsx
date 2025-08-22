@@ -3,17 +3,20 @@ import LoginForm from '@/components/Form/LoginForm'
 import RegisterForm from '@/components/Form/RegisterForm'
 import { useAppSelector } from '@/services/hooks/useRedux'
 import { Box, Center, Heading, Link, Text } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useState } from 'react'
+import { Navigate, useLocation } from 'react-router'
 
 function Login() {
   const [showRegister, setShowRegister] = useState<boolean>(false)
-  const { success, userToken } = useAppSelector((state) => state.auth)
-  const navigate = useNavigate()
 
-  useEffect(() => {
-    if (success && userToken) navigate('/')
-  }, [success, userToken, navigate])
+  const location = useLocation()
+  const { userToken, userInfo } = useAppSelector((s) => s.auth)
+
+  // Si ya está autenticado, redirigir automáticamente
+  if (userToken && userInfo) {
+    const from = location.state?.from?.pathname || '/'
+    return <Navigate to={from} replace />
+  }
 
   return (
     <Box

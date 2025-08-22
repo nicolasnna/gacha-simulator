@@ -1,13 +1,13 @@
+import type { ResponseAuthApi } from '@/interfaces/auth.interface'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { loginUser, registerUser } from './auth.actions'
-import type { ResponseAuthApi } from '@/interfaces/auth.interface'
-import type { Role } from '@/interfaces/role.interface'
+import type { RoleType } from '@/interfaces/role.interface'
 
 interface AuthState {
   loading: boolean
   userInfo: {
     email: string
-    role: Role
+    role: RoleType
   } | null
   userToken: string | null
   error: string | null
