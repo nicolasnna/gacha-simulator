@@ -16,7 +16,6 @@ function CardCharacter({ data }: CardCharacterProps) {
         borderColor={data.rarity}
         position="relative"
         zIndex={10}
-        className="card-content"
         overflow="hidden"
       >
         <img src={data.imgUrl} alt={data.name} className="img-card" />

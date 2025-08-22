@@ -5,8 +5,6 @@
 }
 
 .img-card {
-  width: 220px;
-  height: 300px;
   position: absolute;
   object-fit: cover;
   object-position: center;

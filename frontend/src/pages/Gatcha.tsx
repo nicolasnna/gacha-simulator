@@ -2,7 +2,6 @@ import GatchaActions from '@/components/GachaActions'
 import type { RarityType } from '@/interfaces/rarity.interface'
 import {
   Box,
-  Button,
   Card,
   Container,
   Heading,
