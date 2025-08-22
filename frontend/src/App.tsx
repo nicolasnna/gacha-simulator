@@ -10,8 +10,18 @@ import Login from './pages/Login'
 import Users from './pages/Users'
 import { system } from './theme'
 import { ROUTES } from './utils/routes'
+import { useAppDispatch } from './services/hooks/useRedux'
+import { useEffect } from 'react'
+import { loadSession } from './services/redux/auth'
 
 function App() {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(loadSession())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <ChakraProvider value={system}>
       <Toaster />

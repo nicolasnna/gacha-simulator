@@ -1,4 +1,5 @@
-import type { Rarity } from '@/interfaces/rarity.interface'
+import GatchaActions from '@/components/GachaActions'
+import type { RarityType } from '@/interfaces/rarity.interface'
 import {
   Box,
   Button,
@@ -11,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 
 interface rarityCard {
-  rarity: Rarity
+  rarity: RarityType
   probability: number
 }
 
@@ -81,12 +82,7 @@ function Gatcha() {
           />
         </Card.Body>
         <Card.Footer spaceX={4}>
-          <Button bg="primary" fontSize="xl" p={5} borderRadius={10}>
-            Tirar 1
-          </Button>
-          <Button bg="primary" fontSize="xl" p={5} borderRadius={10}>
-            Tirar 10
-          </Button>
+          <GatchaActions />
         </Card.Footer>
       </Card.Root>
 

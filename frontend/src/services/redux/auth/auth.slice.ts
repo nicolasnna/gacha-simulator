@@ -1,60 +1,30 @@
-import type { ResponseAuthApi } from '@/interfaces/auth.interface'
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { loginUser, registerUser } from './auth.actions'
+import type { PromiseState } from '@/interfaces/redux-state.interface'
 import type { RoleType } from '@/interfaces/role.interface'
+import {
+  handlePromiseFulfilled,
+  handlePromisePending,
+  handlePromiseReject
+} from '@/utils/redux.helper'
+import { createSlice } from '@reduxjs/toolkit'
+import { loginUser, registerUser } from './auth.actions'
 
 interface AuthState {
-  loading: boolean
+  promise: PromiseState
   userInfo: {
     email: string
     role: RoleType
   } | null
   userToken: string | null
-  error: string | null
-  success: boolean | null
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getErrorMessagePayload = (action: any): string => {
-  if (action.payload && typeof action.payload === 'string')
-    return action.payload
-
-  if (action.error?.message) return action.error.message
-
-  return 'Error desconocido'
-}
-
-// Helpers
-const handlePending = (state: AuthState) => {
-  state.loading = true
-  state.error = null
-  state.success = null
-}
-
-const handleFulfilled = (
-  state: AuthState,
-  { payload }: PayloadAction<ResponseAuthApi>
-) => {
-  state.loading = false
-  state.success = true
-  const { access_token, ...result } = payload
-  state.userToken = access_token
-  state.userInfo = result
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handleRejected = (state: AuthState, action: any) => {
-  state.loading = false
-  state.success = false
-  state.error = getErrorMessagePayload(action)
 }
 
 const initialState: AuthState = {
-  loading: false,
+  promise: {
+    loading: false,
+    error: null,
+    success: null
+  },
   userInfo: null,
-  userToken: null,
-  error: null,
-  success: null
+  userToken: null
 }
 
 const authSlice = createSlice({
@@ -63,23 +33,47 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.userInfo = null
-      state.success = null
+      state.promise.success = null
       state.userToken = null
-      state.error = null
+      state.promise.error = null
+      sessionStorage.clear()
+    },
+    loadSession: (state) => {
+      state.userToken = sessionStorage.getItem('access_token') || null
+      const infoStorage = sessionStorage.getItem('info')
+      state.userInfo = infoStorage ? JSON.parse(infoStorage) : null
     }
   },
   extraReducers: (builder) => {
     builder
       //Register
-      .addCase(registerUser.pending, handlePending)
-      .addCase(registerUser.fulfilled, handleFulfilled)
-      .addCase(registerUser.rejected, handleRejected)
+      .addCase(registerUser.pending, (s) => handlePromisePending(s.promise))
+      .addCase(registerUser.fulfilled, (s, { payload }) => {
+        handlePromiseFulfilled(s.promise)
+        const { access_token, ...result } = payload
+        s.userToken = access_token
+        s.userInfo = result
+        sessionStorage.setItem('access_token', access_token)
+        sessionStorage.setItem('info', JSON.stringify(result))
+      })
+      .addCase(registerUser.rejected, (s, { payload }) =>
+        handlePromiseReject(s.promise, payload as string)
+      )
       //Login
-      .addCase(loginUser.pending, handlePending)
-      .addCase(loginUser.fulfilled, handleFulfilled)
-      .addCase(loginUser.rejected, handleRejected)
+      .addCase(loginUser.pending, (s) => handlePromisePending(s.promise))
+      .addCase(loginUser.fulfilled, (s, { payload }) => {
+        handlePromiseFulfilled(s.promise)
+        const { access_token, ...result } = payload
+        s.userToken = access_token
+        s.userInfo = result
+        sessionStorage.setItem('access_token', access_token)
+        sessionStorage.setItem('info', JSON.stringify(result))
+      })
+      .addCase(loginUser.rejected, (s, { payload }) =>
+        handlePromiseReject(s.promise, payload as string)
+      )
   }
 })
 
-export const { logout } = authSlice.actions
+export const { logout, loadSession } = authSlice.actions
 export default authSlice.reducer
