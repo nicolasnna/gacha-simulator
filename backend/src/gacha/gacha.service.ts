@@ -58,7 +58,7 @@ export class GachaService {
     return await newPull.save({ validateBeforeSave: true })
   }
 
-  async getHistoryPull(page: number, limit: number, userId?: string) {
+  async getHistoryPull(page: number = 1, limit: number = 20, userId?: string) {
     if (page < 1 || limit < 1)
       throw new BadRequestException(
         'La query page y limit deben ser mayores a 0'

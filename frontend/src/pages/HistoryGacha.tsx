@@ -1,4 +1,4 @@
-import { obtainedCharactersFake } from '@/utils/data-fake'
+import useHistoryGacha from '@/services/hooks/useHistoryGacha'
 import {
   Container,
   Grid,
@@ -8,8 +8,17 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
 function HistoryGacha() {
+  const { history, updateHistory } = useHistoryGacha()
+
+  useEffect(() => {
+    if (history.length === 0) updateHistory()
+  }, [history])
+
+  console.log(history)
+
   return (
     <Container centerContent py={2} spaceY={4}>
       <HStack mt={2} flexWrap="wrap">
@@ -24,7 +33,7 @@ function HistoryGacha() {
       </HStack>
 
       <VStack alignItems={'start'} maxH={500} overflowY={'auto'} p={4}>
-        {obtainedCharactersFake.map((chara, idx) => (
+        {history.map((chara, idx) => (
           <Grid
             key={idx}
             bg="bg-secondary.600"
@@ -53,7 +62,7 @@ function HistoryGacha() {
               </HStack>
             </GridItem>
             <GridItem colSpan={4}>
-              <Text color="text">{chara.obtainedAt.toLocaleString()}</Text>
+              <Text color="text">{chara.dateAt.toLocaleString()}</Text>
             </GridItem>
           </Grid>
         ))}
