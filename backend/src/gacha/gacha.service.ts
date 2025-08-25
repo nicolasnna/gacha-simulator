@@ -11,14 +11,73 @@ import {
   calculateMultiplePullRarity,
   calculateSinglePullRarity
 } from './helpers/gacha-probability.helper'
+import { GachaUser, GachaUserDocument } from '@common/schemas/gacha-user.schema'
 
 @Injectable()
 export class GachaService {
   constructor(
     @InjectModel(GachaPull.name)
     private readonly gachaPullModel: Model<GachaPullDocument>,
+    @InjectModel(GachaUser.name)
+    private readonly gachaUserModel: Model<GachaUserDocument>,
     private charactersService: CharactersService
   ) {}
+
+  async setCharacterObtained(userId: string, anime: string, charId: string) {
+    const characterUserExist = await this.gachaUserModel.findOne({
+      userId,
+      animeOrigin: anime,
+      'characters.characterId': charId
+    })
+
+    console.log(characterUserExist)
+    if (characterUserExist) {
+      const updatedChar = await this.gachaUserModel.findOneAndUpdate(
+        {
+          userId,
+          animeOrigin: anime,
+          'characters.characterId': charId
+        },
+        {
+          $inc: { 'characters.$.repeatCount': 1 }
+        },
+        { new: true }
+      )
+
+      return { data: updatedChar }
+    }
+
+    const charInfo = await this.charactersService.findById(charId)
+    const updatedChar = await this.gachaUserModel.findOneAndUpdate(
+      {
+        userId,
+        animeOrigin: anime
+      },
+      {
+        $push: {
+          characters: {
+            characterId: charId,
+            name: charInfo.data.name,
+            rarity: charInfo.data.rarity,
+            imgUrl: charInfo.data.imgUrl,
+            repeatCount: 0
+          }
+        }
+      },
+      { new: true, upsert: true }
+    )
+
+    return { data: updatedChar }
+  }
+
+  async getCharactersObtained(userId: string, anime: string) {
+    const gachaUserDoc = await this.gachaUserModel.findOne({
+      userId: userId,
+      animeOrigin: anime
+    })
+
+    return { data: gachaUserDoc }
+  }
 
   async gachaPull({ anime, pulls, userId }: UserPullDto) {
     if (![PullsEnum.One, PullsEnum.Ten].includes(pulls)) {
@@ -54,6 +113,11 @@ export class GachaService {
       pullsCount: pulls,
       items: items
     })
+
+    // update user gacha info
+    for (const char of items) {
+      await this.setCharacterObtained(userId, anime, char._id)
+    }
 
     return await newPull.save({ validateBeforeSave: true })
   }

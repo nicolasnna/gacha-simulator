@@ -4,11 +4,13 @@ import { GachaController } from './gacha.controller'
 import { MongooseModule } from '@nestjs/mongoose'
 import { GachaPull, GachaPullSchema } from '@common/schemas'
 import { CharactersModule } from '@/characters/characters.module'
+import { GachaUser, GachaUserSchema } from '@common/schemas/gacha-user.schema'
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: GachaPull.name, schema: GachaPullSchema }
+      { name: GachaPull.name, schema: GachaPullSchema },
+      { name: GachaUser.name, schema: GachaUserSchema }
     ]),
     CharactersModule
   ],

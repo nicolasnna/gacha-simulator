@@ -3,6 +3,7 @@ import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common'
 import { PullDto, UserPullDto } from './dto/pull.dto'
 import { GachaService } from './gacha.service'
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
+import { CharacterObtainedDto } from './dto/character-obtained.dto'
 
 @Controller('gacha')
 export class GachaController {
@@ -23,5 +24,27 @@ export class GachaController {
     @Query('limit') limit: number
   ) {
     return this.gachaService.getHistoryPull(page, limit, user.sub)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('character-obtained')
+  setCharacterObtained(
+    @AuthUser() user: JwtPayload,
+    @Body() charInfo: CharacterObtainedDto
+  ) {
+    return this.gachaService.setCharacterObtained(
+      user.sub,
+      charInfo.anime,
+      charInfo.charId
+    )
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('character-obtained')
+  getCharactersObtained(
+    @AuthUser() user: JwtPayload,
+    @Query('anime') anime: string
+  ) {
+    return this.gachaService.getCharactersObtained(user.sub, anime)
   }
 }
