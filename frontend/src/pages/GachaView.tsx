@@ -1,14 +1,6 @@
-import GatchaActions from '@/components/GachaActions'
+import GachaContainer from '@/components/Gacha/GachaContainer'
 import type { RarityType } from '@/interfaces/rarity.interface'
-import {
-  Box,
-  Card,
-  Container,
-  Heading,
-  HStack,
-  Stack,
-  Text
-} from '@chakra-ui/react'
+import { Card, Container, Heading, HStack, Text } from '@chakra-ui/react'
 
 interface rarityCard {
   rarity: RarityType
@@ -34,7 +26,7 @@ const rarityCards: rarityCard[] = [
   }
 ]
 
-function Gatcha() {
+function GachaView() {
   return (
     <Container centerContent py={2} spaceY={5}>
       <HStack mt={2} flexWrap="wrap">
@@ -48,42 +40,16 @@ function Gatcha() {
         </Heading>
       </HStack>
 
-      <Box color="text">
-        <Stack flexDir="row">
-          <img
-            src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
-            width={25}
-            alt="Diamante"
-          />
-          <Text>Monedas: 9000</Text>
-        </Stack>
-      </Box>
+      <HStack flexDir="row" color="text">
+        <img
+          src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
+          width={25}
+          alt="Diamante"
+        />
+        <Text>Monedas: 9000</Text>
+      </HStack>
 
-      <Card.Root
-        width="18rem"
-        alignItems="center"
-        bg="bg-secondary.400"
-        borderRadius={15}
-        border="none"
-      >
-        <Card.Header alignSelf="end">
-          <img
-            src="https://emojicdn.elk.sh/%E2%84%B9?style=google"
-            width={25}
-            alt="Información"
-          />
-        </Card.Header>
-        <Card.Body>
-          <img
-            src="https://emojicdn.elk.sh/%F0%9F%8E%81?style=google"
-            width={120}
-            alt="Caja gatcha"
-          />
-        </Card.Body>
-        <Card.Footer spaceX={4}>
-          <GatchaActions />
-        </Card.Footer>
-      </Card.Root>
+      <GachaContainer />
 
       <HStack
         as="section"
@@ -112,4 +78,4 @@ function Gatcha() {
   )
 }
 
-export default Gatcha
+export default GachaView

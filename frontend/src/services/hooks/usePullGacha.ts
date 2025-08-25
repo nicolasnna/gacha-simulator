@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import { useAppSelector } from './useRedux'
 
-interface CharPull {
+export interface CharPull {
   name: string
   rarity: RarityType
   imgUrl: string

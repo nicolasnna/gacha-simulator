@@ -15,7 +15,7 @@
 .card-effect-sr {
   position: relative;
   z-index: 1;
-  display: inline-block; /* Para que tome solo el espacio necesario */
+  display: inline-block;
 }
 
 .card-effect-ssr::after,
@@ -40,14 +40,14 @@
   background-image: conic-gradient(
     from var(--angle),
     #ffd700,
-    /* Oro */ #fff8dc,
-    /* Crema claro */ #ffed4e,
-    /* Oro claro */ #ffffff,
-    /* Blanco puro */ #ffd700,
-    /* Oro */ #fff8dc,
-    /* Crema claro */ #ffed4e,
-    /* Oro claro */ #ffffff,
-    /* Blanco puro */ #ffd700 /* Oro */
+    #fff8dc,
+    #ffed4e,
+    #ffffff,
+    #ffd700,
+    #fff8dc,
+    #ffed4e,
+    #ffffff,
+    #ffd700
   );
 }
 
@@ -56,14 +56,14 @@
   background-image: conic-gradient(
     from var(--angle),
     #b47bff,
-    /* Morado base */ #e6e6fa,
-    /* Lavanda muy claro */ #9370db,
-    /* Morado medio */ #dda0dd,
-    /* Plum */ #b47bff,
-    /* Morado base */ #e6e6fa,
-    /* Lavanda muy claro */ #9370db,
-    /* Morado medio */ #dda0dd,
-    /* Plum */ #b47bff /* Morado base */
+    #e6e6fa,
+    #9370db,
+    #dda0dd,
+    #b47bff,
+    #e6e6fa,
+    #9370db,
+    #dda0dd,
+    #b47bff
   );
 }
 
@@ -90,5 +90,32 @@
   }
   to {
     --angle: 360deg;
+  }
+}
+
+.shake-animation {
+  animation: 1s shake linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  12% {
+    transform: translateX(-10px) rotate(10deg);
+  }
+  24% {
+    transform: translateX(10px) rotate(-10deg);
+  }
+  36% {
+    transform: translateX(-5px) rotate(7deg);
+  }
+  48% {
+    transform: translateX(5px) rotate(-7deg);
+  }
+  60%,
+  100% {
+    transform: translateX(0) rotate(0deg);
   }
 }
