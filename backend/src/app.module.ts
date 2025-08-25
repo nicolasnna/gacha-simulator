@@ -6,8 +6,9 @@ import { UsersModule } from './users/users.module'
 import { ConfigModule } from '@nestjs/config'
 import { DatabaseModule } from './connection'
 import { RolesModule } from './roles/roles.module'
-import { CharactersModule } from './characters/characters.module';
-import { GachaModule } from './gacha/gacha.module';
+import { CharactersModule } from './characters/characters.module'
+import { GachaModule } from './gacha/gacha.module'
+import { AccessModule } from '@access/access.module'
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { GachaModule } from './gacha/gacha.module';
     DatabaseModule,
     RolesModule,
     CharactersModule,
-    GachaModule
+    GachaModule,
+    AccessModule
   ],
   controllers: [AppController],
   providers: [AppService]
