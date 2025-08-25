@@ -1,5 +1,6 @@
+import { UsersService } from '@/users/users.service'
+import { RoleEnum } from '@common/enums'
 import {
-  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException
@@ -11,59 +12,65 @@ import { Model } from 'mongoose'
 import { User, UserDocument } from 'src/common/schemas/user.schema'
 import { LoginUserDto } from './dto/login-user.dto'
 import { RegisterUserDto } from './dto/register-user.dto'
+import { AuthUserResponse } from './types/auth-response.type'
 
 type UserResponse = Omit<User, 'passwordHash'> & { id: string }
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private userService: UsersService
   ) {}
 
-  async register(dto: RegisterUserDto) {
-    const exists = await this.userModel.exists({ email: dto.email })
-    if (exists) throw new ConflictException('Email ya registrado')
-
-    const passwordHash = await bcrypt.hash(dto.password, 12)
-    const doc = await this.userModel.create({
-      email: dto.email,
-      passwordHash,
-      role: 'user',
-      name: dto.name
+  async register(userData: RegisterUserDto): Promise<AuthUserResponse> {
+    const user = await this.userService.create({
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+      role: RoleEnum.User
     })
 
-    const user = doc.toObject<UserResponse>()
     return {
-      user,
-      ...(await this.sign(user.id, user.email, user.role, false))
+      email: user.data.email,
+      role: user.data.role,
+      ...(await this.sign(user.data.id, user.data.email, user.data.role, false))
     }
   }
 
-  async loginUser(userData: LoginUserDto) {
+  async loginUser(userData: LoginUserDto): Promise<AuthUserResponse> {
     const user = await this.userModel
       .findOne({ email: userData.email })
       .select('+passwordHash')
+      .exec()
 
-    if (!user) {
-      throw new NotFoundException()
-    }
+    if (!user) throw new NotFoundException()
+
     const validatePassword = await bcrypt.compare(
       userData.password,
       user.passwordHash
     )
 
-    if (!validatePassword) {
-      throw new UnauthorizedException()
+    if (!validatePassword) throw new UnauthorizedException()
+
+    const userRes: UserResponse = {
+      id: user._id.toString(),
+      email: user.email,
+      role: user.role,
+      superAdmin: user.superAdmin,
+      active: user.active
     }
 
     const userObject = user.toObject<UserResponse>()
+
     return {
-      userObject,
+      email: userObject.email,
+      role: userObject.role,
       ...(await this.sign(
-        userObject.id,
-        userObject.email,
-        userObject.role,
-        user.superAdmin
+        userRes.id,
+        userRes.email,
+        userRes.role,
+        userRes.superAdmin
       ))
     }
   }
@@ -79,13 +86,4 @@ export class AuthService {
     const access_token = await this.jwtService.signAsync(payload)
     return { access_token }
   }
-
-  // validateUser(loginUserDto: LoginUserDto): Promise<any> {
-  //   const user = this.usersService.findEmail(loginUserDto.email)
-  //   if (user && user.password === loginUserDto.password) {
-  //     const { password, ...result } = user
-  //     return result
-  //   }
-  //   return null
-  // }
 }

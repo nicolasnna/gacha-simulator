@@ -1,2 +1,7 @@
 export * from './actions.enum'
 export * from './modules.enum'
+export * from './roles.enum'
+export * from './rarityCharacter.enum'
+export * from './banner.enum'
+export * from './anime.enum'
+export * from './value-character.enum'

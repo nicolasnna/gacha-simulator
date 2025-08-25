@@ -10,5 +10,5 @@ export class RegisterUserDto {
 
   @IsOptional()
   @IsString()
-  name: string
+  name?: string
 }

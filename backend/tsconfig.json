@@ -19,9 +19,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@connections/": ["src/connections/"],
-      "@common/": ["src/common/"],
-      "@access/": ["src/access/"]
+      "@connections/*": ["src/connections/*"],
+      "@common/*": ["src/common/*"],
+      "@access/*": ["src/access/*"],
+      "@/*": ["src/*"]
     }
   },
   "watchOptions": {

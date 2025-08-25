@@ -1,0 +1,50 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.4 Chrome/138.0.7204.97 Electron/37.2.1 Safari/537.36" version="28.0.4">
+  <diagram name="Página-1" id="LVeZTWKB5SE-aLbl3Xsm">
+    <mxGraphModel dx="786" dy="562" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="h8bGmGys_f37pIbJrNI9-4" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="187" y="290" width="150" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-1" value="&lt;font style=&quot;&quot;&gt;Usuario&lt;br&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;[Person]&lt;/font&gt;&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;Cliente que puede jugar al gacha ver su propia información.&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=30;strokeColor=#009900;fontColor=#009900;" parent="h8bGmGys_f37pIbJrNI9-4" vertex="1">
+          <mxGeometry y="50" width="150" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontColor=#009900;strokeColor=#009900;" parent="h8bGmGys_f37pIbJrNI9-4" vertex="1">
+          <mxGeometry x="45" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-5" value="&lt;div&gt;&lt;font style=&quot;&quot;&gt;Simulador de Gacha&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;[Software System]&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;Maneja el sistema gacha, administra permisos y muestra información del usuario.&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#000099;fontColor=#000099;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="487" y="375" width="154" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="h8bGmGys_f37pIbJrNI9-1" target="h8bGmGys_f37pIbJrNI9-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-9" value="Realiza tiradas en el&lt;div&gt;&amp;nbsp;gacha y&amp;nbsp;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;solicita&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;su información&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="h8bGmGys_f37pIbJrNI9-7" vertex="1" connectable="0">
+          <mxGeometry x="0.174" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-11" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="257" y="450" width="150" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-12" value="&lt;font style=&quot;&quot;&gt;Administrador&lt;br&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;[Person]&lt;/font&gt;&lt;/font&gt;&lt;div&gt;&lt;span style=&quot;font-size: 7px;&quot;&gt;Puede modificar y ver información de otros usuarios.&lt;/span&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=30;strokeColor=#009900;fontColor=#009900;" parent="h8bGmGys_f37pIbJrNI9-11" vertex="1">
+          <mxGeometry y="50" width="150" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-13" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontColor=#009900;strokeColor=#009900;" parent="h8bGmGys_f37pIbJrNI9-11" vertex="1">
+          <mxGeometry x="45" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="h8bGmGys_f37pIbJrNI9-12" target="h8bGmGys_f37pIbJrNI9-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-15" value="Modifica usuarios, roles y&amp;nbsp;&lt;div&gt;visualiza información de&amp;nbsp;&lt;/div&gt;&lt;div&gt;otros usuarios.&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="h8bGmGys_f37pIbJrNI9-14" vertex="1" connectable="0">
+          <mxGeometry x="-0.0607" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h8bGmGys_f37pIbJrNI9-16" value="Context Diagram" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=30;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="289" y="210" width="250" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

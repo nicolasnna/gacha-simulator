@@ -1,4 +1,4 @@
-import { obtainedCharactersFake } from '@/utils/data-fake'
+import useHistoryGacha from '@/services/hooks/useHistoryGacha'
 import {
   Container,
   Grid,
@@ -8,21 +8,33 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
 function HistoryGacha() {
+  const { history, updateHistory } = useHistoryGacha()
+
+  useEffect(() => {
+    if (history.length === 0) updateHistory()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history])
+
   return (
     <Container centerContent py={2} spaceY={4}>
-      <HStack mt={2} flexWrap='wrap'>
-        <img src='https://emojicdn.elk.sh/%F0%9F%93%85?style=google' width={50} alt='Calendario'/>
+      <HStack mt={2} flexWrap="wrap">
+        <img
+          src="https://emojicdn.elk.sh/%F0%9F%93%85?style=google"
+          width={50}
+          alt="Calendario"
+        />
         <Heading size="4xl" color="text">
           Historial de tiradas
         </Heading>
       </HStack>
 
       <VStack alignItems={'start'} maxH={500} overflowY={'auto'} p={4}>
-        {obtainedCharactersFake.map((chara) => (
+        {history.map((chara, idx) => (
           <Grid
-            key={chara.id}
+            key={idx}
             bg="bg-secondary.600"
             px={5}
             py={2}
@@ -34,7 +46,11 @@ function HistoryGacha() {
             alignItems="center"
           >
             <GridItem colSpan={1}>
-              <img src="https://emojicdn.elk.sh/%F0%9F%8E%AF?style=google" width={25} alt='Icono conseguido'/>
+              <img
+                src="https://emojicdn.elk.sh/%F0%9F%8E%AF?style=google"
+                width={25}
+                alt="Icono conseguido"
+              />
             </GridItem>
             <GridItem colSpan={7}>
               <HStack flexWrap="wrap" gapY={0}>
@@ -45,7 +61,7 @@ function HistoryGacha() {
               </HStack>
             </GridItem>
             <GridItem colSpan={4}>
-              <Text color="text">{chara.obtainedAt.toLocaleString()}</Text>
+              <Text color="text">{chara.dateAt.toLocaleString()}</Text>
             </GridItem>
           </Grid>
         ))}

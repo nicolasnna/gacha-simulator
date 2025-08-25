@@ -1,5 +1,121 @@
-@property --angle{
-  syntax: "<angle>";
+@property --angle {
+  syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
+}
+
+.img-card {
+  position: absolute;
+  object-fit: cover;
+  object-position: center;
+  /* overflow: ; */
+}
+
+.card-effect-ssr,
+.card-effect-sr {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+.card-effect-ssr::after,
+.card-effect-ssr::before,
+.card-effect-sr::before,
+.card-effect-sr::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -10;
+  padding: 1px;
+  border-radius: 10px;
+  animation: 3s spin linear infinite;
+}
+
+.card-effect-ssr::after,
+.card-effect-ssr::before {
+  background-image: conic-gradient(
+    from var(--angle),
+    #ffd700,
+    #fff8dc,
+    #ffed4e,
+    #ffffff,
+    #ffd700,
+    #fff8dc,
+    #ffed4e,
+    #ffffff,
+    #ffd700
+  );
+}
+
+.card-effect-sr::after,
+.card-effect-sr::before {
+  background-image: conic-gradient(
+    from var(--angle),
+    #b47bff,
+    #e6e6fa,
+    #9370db,
+    #dda0dd,
+    #b47bff,
+    #e6e6fa,
+    #9370db,
+    #dda0dd,
+    #b47bff
+  );
+}
+
+.card-effect-ssr::before,
+.card-effect-sr::before {
+  filter: blur(0.8rem);
+  opacity: 1;
+}
+
+.card-effect-sr::after,
+.card-effect-ssr::after {
+  filter: blur(2rem);
+  opacity: 0.2;
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
+.shake-animation {
+  animation: 1s shake linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  12% {
+    transform: translateX(-10px) rotate(10deg);
+  }
+  24% {
+    transform: translateX(10px) rotate(-10deg);
+  }
+  36% {
+    transform: translateX(-5px) rotate(7deg);
+  }
+  48% {
+    transform: translateX(5px) rotate(-7deg);
+  }
+  60%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
 }

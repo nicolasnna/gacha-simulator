@@ -1,8 +1,16 @@
-import CardCharacter from '@/components/card-character'
-import { characterListFake } from '@/utils/data-fake'
+import CardCharacter from '@/components/Card/CardCharacter'
+import useCharactersObtained from '@/services/hooks/useCharactersObtained'
 import { Container, Heading, HStack } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
 function Characters() {
+  const { chars, getCharactersObtained } = useCharactersObtained()
+
+  useEffect(() => {
+    if (chars.length === 0) getCharactersObtained()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chars])
+
   return (
     <Container centerContent py={2} spaceY={5}>
       <HStack my={2}>
@@ -17,8 +25,8 @@ function Characters() {
         alignItems="center"
         justifyContent="center"
       >
-        {characterListFake.map((chara) => (
-          <CardCharacter key={chara.id} data={chara} />
+        {chars.map((chara) => (
+          <CardCharacter key={chara.characterId} data={chara} />
         ))}
       </HStack>
     </Container>
