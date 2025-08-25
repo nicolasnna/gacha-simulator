@@ -15,9 +15,8 @@ function HistoryGacha() {
 
   useEffect(() => {
     if (history.length === 0) updateHistory()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history])
-
-  console.log(history)
 
   return (
     <Container centerContent py={2} spaceY={4}>

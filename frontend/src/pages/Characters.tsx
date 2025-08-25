@@ -1,15 +1,15 @@
 import CardCharacter from '@/components/Card/CardCharacter'
-import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
-import { getAllCharacters } from '@/services/redux/characters'
+import useCharactersObtained from '@/services/hooks/useCharactersObtained'
 import { Container, Heading, HStack } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
 function Characters() {
-  const characters = useAppSelector((s) => s.characters.data)
-  const dispatch = useAppDispatch()
+  const { chars, getCharactersObtained } = useCharactersObtained()
+
   useEffect(() => {
-    dispatch(getAllCharacters({ page: 1, limit: 20 }))
-  }, [dispatch])
+    if (chars.length === 0) getCharactersObtained()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chars])
 
   return (
     <Container centerContent py={2} spaceY={5}>
@@ -25,8 +25,8 @@ function Characters() {
         alignItems="center"
         justifyContent="center"
       >
-        {characters.map((chara) => (
-          <CardCharacter key={chara.id} data={chara} />
+        {chars.map((chara) => (
+          <CardCharacter key={chara.characterId} data={chara} />
         ))}
       </HStack>
     </Container>

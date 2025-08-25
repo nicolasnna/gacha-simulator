@@ -16,8 +16,10 @@ export interface Character {
   updatedAt?: Date
 }
 
-export interface CharacterObtained extends Character {
-  obtainedAt: Date
-  pullNumber: number
-  isDuplicate: boolean
+export interface CharacterObtained {
+  characterId: string
+  name: string
+  rarity: RarityType
+  imgUrl: string
+  repeatCount: number
 }

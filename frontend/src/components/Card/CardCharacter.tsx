@@ -1,8 +1,8 @@
-import type { Character } from '@/interfaces/character.interface'
+import type { CharacterObtained } from '@/interfaces/character.interface'
 import { Card, Circle, Float, Heading, Text } from '@chakra-ui/react'
 
 interface CardCharacterProps {
-  data: Character
+  data: CharacterObtained
 }
 
 function CardCharacter({ data }: CardCharacterProps) {
@@ -19,16 +19,21 @@ function CardCharacter({ data }: CardCharacterProps) {
         overflow="hidden"
       >
         <img src={data.imgUrl} alt={data.name} className="img-card" />
-        {/* {!!data.repeatedCount && (
-        <>
-          <Float placement="top-end" zIndex={10} >
-            <Circle size="7" bg="bg-secondary" border='2px solid' borderColor={data.rarity} color="white">
-              {data.repeatedCount}
-            </Circle>
-          </Float>
-        </>
-      )} */}
-
+        {!!data.repeatCount && (
+          <>
+            <Float placement="bottom-end" right={5} bottom={5} zIndex={10}>
+              <Circle
+                size="7"
+                bg="bg-secondary"
+                border="2px solid"
+                borderColor={data.rarity}
+                color="white"
+              >
+                {data.repeatCount}
+              </Circle>
+            </Float>
+          </>
+        )}
         <Card.Header zIndex={10} p={0} px={2}>
           <Heading
             textAlign="end"
