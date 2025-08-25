@@ -6,6 +6,11 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { UserPullDto } from './dto/pull.dto'
+import {
+  BASE_RATES,
+  calculateMultiplePullRarity,
+  calculateSinglePullRarity
+} from './helpers/gacha-probability.helper'
 
 @Injectable()
 export class GachaService {
@@ -14,25 +19,6 @@ export class GachaService {
     private readonly gachaPullModel: Model<GachaPullDocument>,
     private charactersService: CharactersService
   ) {}
-
-  private readonly rarityProbabilities = {
-    [RarityCharacterEnum.SuperSuperRare]: 0.5,
-    [RarityCharacterEnum.SuperRare]: 3.0,
-    [RarityCharacterEnum.Rare]: 12.0,
-    [RarityCharacterEnum.Common]: 84.5
-  }
-
-  private _calculateRarity(): RarityCharacterEnum {
-    const random = Math.random() * 100
-    let cumulative = 0
-
-    for (const [rarity, probs] of Object.entries(this.rarityProbabilities)) {
-      cumulative += probs
-      if (random <= cumulative) return rarity as RarityCharacterEnum
-    }
-
-    return RarityCharacterEnum.Common
-  }
 
   async gachaPull({ anime, pulls, userId }: UserPullDto) {
     if (![PullsEnum.One, PullsEnum.Ten].includes(pulls)) {
@@ -44,22 +30,12 @@ export class GachaService {
     let items = []
 
     if (pulls === PullsEnum.One) {
-      const rarity = this._calculateRarity()
+      const rarity = calculateSinglePullRarity(BASE_RATES)
       items = await this.charactersService.getRandomByRarity(rarity, 1)
     }
 
     if (pulls === PullsEnum.Ten) {
-      const numberByRarity = {
-        [RarityCharacterEnum.SuperSuperRare]: 0,
-        [RarityCharacterEnum.SuperRare]: 0,
-        [RarityCharacterEnum.Rare]: 0,
-        [RarityCharacterEnum.Common]: 0
-      }
-
-      for (let pull = 0; pull < 10; pull++) {
-        const rarity = this._calculateRarity()
-        numberByRarity[rarity] += 1
-      }
+      const numberByRarity = calculateMultiplePullRarity(BASE_RATES, 10)
 
       for (const [rarity, count] of Object.entries(numberByRarity)) {
         if (count > 0) {
@@ -80,5 +56,34 @@ export class GachaService {
     })
 
     return await newPull.save({ validateBeforeSave: true })
+  }
+
+  async getHistoryPull(page: number, limit: number, userId?: string) {
+    if (page < 1 || limit < 1)
+      throw new BadRequestException(
+        'La query page y limit deben ser mayores a 0'
+      )
+
+    const skip = (Math.max(page, 1) - 1) * Math.max(limit, 1)
+
+    const [historyPulls, totalItems] = await Promise.all([
+      this.gachaPullModel
+        .find({ userId: userId })
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .lean()
+        .exec(),
+      this.gachaPullModel.countDocuments({ userId: userId }).exec()
+    ])
+
+    const dataIdClean = historyPulls.map(({ _id, ...rest }) => ({
+      id: _id.toString(),
+      ...rest
+    }))
+
+    const lastItemNumber = skip + dataIdClean.length
+
+    return { data: dataIdClean, totalItems, lastItemNumber, page, limit }
   }
 }

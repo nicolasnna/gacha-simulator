@@ -1,5 +1,5 @@
 import { AuthUser, JwtPayload } from '@/auth/decorators/auth-user.decorator'
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common'
 import { PullDto, UserPullDto } from './dto/pull.dto'
 import { GachaService } from './gacha.service'
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
@@ -13,5 +13,15 @@ export class GachaController {
   gachaPull(@AuthUser() user: JwtPayload, @Body() pullDto: PullDto) {
     const getPullDto: UserPullDto = { ...pullDto, userId: user.sub }
     return this.gachaService.gachaPull(getPullDto)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('history')
+  getHistoryPull(
+    @AuthUser() user: JwtPayload,
+    @Query('page') page: number,
+    @Query('limit') limit: number
+  ) {
+    return this.gachaService.getHistoryPull(page, limit, user.sub)
   }
 }
