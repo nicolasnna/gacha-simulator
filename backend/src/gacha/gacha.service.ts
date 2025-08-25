@@ -30,7 +30,6 @@ export class GachaService {
       'characters.characterId': charId
     })
 
-    console.log(characterUserExist)
     if (characterUserExist) {
       const updatedChar = await this.gachaUserModel.findOneAndUpdate(
         {
