@@ -9,12 +9,12 @@ import { GachaService } from './gacha.service'
 
 @Module({
   imports: [
+    AccessModule,
     MongooseModule.forFeature([
       { name: GachaPull.name, schema: GachaPullSchema },
       { name: GachaUser.name, schema: GachaUserSchema }
     ]),
-    CharactersModule,
-    AccessModule
+    CharactersModule
   ],
   controllers: [GachaController],
   providers: [GachaService]
