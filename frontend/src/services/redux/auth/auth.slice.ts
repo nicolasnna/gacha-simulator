@@ -8,7 +8,7 @@ import {
 import { createSlice } from '@reduxjs/toolkit'
 import { loginUser, registerUser } from './auth.actions'
 
-interface AuthState {
+export interface AuthState {
   promise: PromiseState
   userInfo: {
     email: string

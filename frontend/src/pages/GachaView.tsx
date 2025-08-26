@@ -10,19 +10,19 @@ interface rarityCard {
 const rarityCards: rarityCard[] = [
   {
     rarity: 'ssr',
-    probability: 3
+    probability: 0.5
   },
   {
     rarity: 'sr',
-    probability: 12
+    probability: 3
   },
   {
     rarity: 'r',
-    probability: 25
+    probability: 12
   },
   {
     rarity: 'c',
-    probability: 60
+    probability: 84.5
   }
 ]
 
@@ -69,7 +69,7 @@ function GachaView() {
               {rarityCard.rarity}
             </Card.Header>
             <Card.Body textAlign="center" fontSize={'sm'} pt={2}>
-              <p>Probabilidad de obtención: {rarityCard.probability}%</p>
+              <p>Probabilidad: {rarityCard.probability}%</p>
             </Card.Body>
           </Card.Root>
         ))}

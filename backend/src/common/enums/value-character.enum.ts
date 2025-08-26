@@ -1,6 +1,6 @@
 export enum ValueCharacterEnum {
-  SuperSuperRare = 20,
-  SuperRare = 12,
-  Rare = 5,
-  Common = 1
+  ssr = 20,
+  sr = 12,
+  r = 5,
+  c = 1
 }

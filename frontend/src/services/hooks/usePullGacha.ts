@@ -2,6 +2,8 @@ import type { RarityType } from '@/interfaces/rarity.interface'
 import axios from 'axios'
 import { useState } from 'react'
 import { useAppSelector } from './useRedux'
+import { toaster } from '@/components/ui/toaster'
+import { getErrorMessageAxios } from '@/utils/axios.helper'
 
 export interface CharPull {
   name: string
@@ -14,6 +16,7 @@ export default function usePullGacha() {
   const [chars, setChars] = useState<CharPull[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const userToken = useAppSelector((s) => s.auth.userToken)
+  const [isError, setIsError] = useState<boolean>(false)
 
   const fetchPull = async (count: number, anime: string) => {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
@@ -36,6 +39,7 @@ export default function usePullGacha() {
 
   const handlePulls = async (pulls: 1 | 10, anime: string = 'naruto') => {
     setIsLoading(() => true)
+    setIsError(() => false)
     try {
       const resPull = await fetchPull(pulls, anime)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +51,11 @@ export default function usePullGacha() {
       }))
       setChars(objCharPull)
     } catch (err) {
-      console.log(err)
+      setIsError(() => true)
+      toaster.error({
+        title: 'Error al obtener el pull',
+        description: getErrorMessageAxios(err)
+      })
     } finally {
       setIsLoading(() => false)
     }
@@ -60,6 +68,7 @@ export default function usePullGacha() {
     chars,
     isLoading,
     handleTenPulls,
-    handleOnePull
+    handleOnePull,
+    isError
   }
 }

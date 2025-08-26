@@ -26,6 +26,8 @@ export class AccessGuard implements CanActivate {
     const user = request.user
     if (!user) throw new ForbiddenException('Usuario no autenticado')
 
+    if (user.role === RoleEnum.SuperAdmin) return true
+
     const requiredRoles = this.reflector.getAllAndOverride<RoleEnum[]>(
       ROLES_KEY,
       [context.getHandler(), context.getClass()]
@@ -60,8 +62,6 @@ export class AccessGuard implements CanActivate {
       !requiredRoles.some((role) => role === user.role)
     )
       throw new ForbiddenException('Rol del usuario no autorizado')
-
-    if (user.role === RoleEnum.SuperAdmin) return true
 
     const userRole = await this.rolesService.findRole(user.role)
 

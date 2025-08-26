@@ -37,6 +37,8 @@ export class CharactersService {
 
       const characterData = apiData.data
 
+      const title = characterData.anime[0].anime.title.split(':')[0] // En caso de que el titlo haga referencia a una variante de la serie principal
+
       const newCharacter = new this.characterModel({
         mal_id: mal_id,
         name: characterData.name,
@@ -45,7 +47,7 @@ export class CharactersService {
         rarity: rarity,
         banner: banner,
         value: value,
-        animeOrigin: String(characterData.anime[0].anime.title).toLowerCase()
+        animeOrigin: String(title).toLowerCase()
       })
 
       const char = await newCharacter.save({ validateBeforeSave: true })
