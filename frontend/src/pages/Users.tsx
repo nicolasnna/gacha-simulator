@@ -19,9 +19,10 @@ function Users() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getAllUsers({ page: 1, limit: 3 }))
+    dispatch(getAllUsers({ page: 1, limit: 20 }))
     dispatch(getAllRoles({ page: 1, limit: 20 }))
-  }, [dispatch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const loadMoreUsers = () => {
     if (itemsInfo.lastItemNumber !== itemsInfo.totalItems) {

@@ -3,27 +3,15 @@ import type { RarityType } from '@/interfaces/rarity.interface'
 import { Card, Container, Heading, HStack, Text } from '@chakra-ui/react'
 
 interface rarityCard {
-  rarity: RarityType
-  probability: number
+  rare: RarityType
+  prob: number
 }
 
 const rarityCards: rarityCard[] = [
-  {
-    rarity: 'ssr',
-    probability: 0.5
-  },
-  {
-    rarity: 'sr',
-    probability: 3
-  },
-  {
-    rarity: 'r',
-    probability: 12
-  },
-  {
-    rarity: 'c',
-    probability: 84.5
-  }
+  { rare: 'ssr', prob: 0.5 },
+  { rare: 'sr', prob: 3 },
+  { rare: 'r', prob: 12 },
+  { rare: 'c', prob: 84.5 }
 ]
 
 function GachaView() {
@@ -61,15 +49,15 @@ function GachaView() {
           <Card.Root
             width={150}
             alignItems="center"
-            bg={rarityCard.rarity}
+            bg={rarityCard.rare}
             border={0}
-            key={rarityCard.rarity}
+            key={rarityCard.rare}
           >
             <Card.Header fontSize={'xl'} fontWeight="bold">
-              {rarityCard.rarity}
+              {rarityCard.rare}
             </Card.Header>
             <Card.Body textAlign="center" fontSize={'sm'} pt={2}>
-              <p>Probabilidad: {rarityCard.probability}%</p>
+              <p>Probabilidad: {rarityCard.prob}%</p>
             </Card.Body>
           </Card.Root>
         ))}
