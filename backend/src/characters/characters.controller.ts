@@ -31,8 +31,12 @@ export class CharactersController {
 
   @Action(ActionKeyEnum.READ)
   @Get()
-  getAll(@Query('page') page: number, @Query('limit') limit: number) {
-    return this.charactersService.getAll(page, limit)
+  getAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('anime') anime: string
+  ) {
+    return this.charactersService.getAll(page, limit, anime)
   }
 
   @Action(ActionKeyEnum.READ)

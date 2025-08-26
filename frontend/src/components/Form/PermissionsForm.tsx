@@ -22,7 +22,7 @@ import CheckboxField from './CheckboxField'
 import FieldSelect from './FieldSelect'
 import { useCallback, useEffect } from 'react'
 import { permissionsToGrantsAPI } from '@/utils/grants-helper'
-import { useAppDispatch } from '@/services/hooks/useRedux'
+import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
 import { updatePermissionRole } from '@/services/redux/roles'
 
 const defaultPermissions = {
@@ -47,6 +47,7 @@ export default function PermissionsForm({ roles }: PermissionFormProps) {
       value: role.key
     }))
   })
+  const isLoading = useAppSelector((s) => s.roles.promise.loading)
 
   const { handleSubmit, reset, watch, control, setValue } =
     useForm<PermissionWithUserIdType>({
@@ -161,7 +162,7 @@ export default function PermissionsForm({ roles }: PermissionFormProps) {
           >
             Predeterminado
           </Button>
-          <Button type="submit" bg="primary">
+          <Button type="submit" bg="primary" disabled={isLoading}>
             Actualizar
           </Button>
         </HStack>

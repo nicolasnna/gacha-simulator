@@ -69,7 +69,10 @@ export class AccessGuard implements CanActivate {
       (g) => g.module === requiredResource
     )
 
-    if (grantForModule && grantForModule.actions.includes(requiredAcl))
+    if (
+      (grantForModule && grantForModule.actions.includes(requiredAcl)) ||
+      grantForModule.actions.includes(ActionKeyEnum.MANAGE)
+    )
       return true
 
     return false

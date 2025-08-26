@@ -23,7 +23,7 @@ function GachaView() {
           width={40}
           alt="Máquina gatcha"
         />
-        <Heading size={'4xl'} color="text">
+        <Heading size={'4xl'} color="text" textTransform="uppercase">
           Simulador de Gacha
         </Heading>
       </HStack>

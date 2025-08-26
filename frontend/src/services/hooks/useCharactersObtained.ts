@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
 import { useAppSelector } from './useRedux'
 import { type CharacterObtained } from '@/interfaces/character.interface'
@@ -27,13 +28,21 @@ export default function useCharactersObtained() {
   const getCharactersObtained = async () => {
     try {
       const result = await fetchCharacters()
-      const charProcessed = result.data.characters.map((char) => ({
-        characterId: char.characterId,
-        name: char.name,
-        rarity: char.rarity as RarityType,
-        imgUrl: char.imgUrl,
-        repeatCount: char.repeatCount
-      }))
+      const charProcessed = result.data.characters.map(
+        (char: {
+          characterId: any
+          name: any
+          rarity: string
+          imgUrl: any
+          repeatCount: any
+        }) => ({
+          characterId: char.characterId,
+          name: char.name,
+          rarity: char.rarity as RarityType,
+          imgUrl: char.imgUrl,
+          repeatCount: char.repeatCount
+        })
+      )
       setChars(charProcessed)
     } catch (err) {
       console.error(`Error useCharactersObtained: ${err}`)

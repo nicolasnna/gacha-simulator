@@ -26,7 +26,7 @@ function HistoryGacha() {
           width={50}
           alt="Calendario"
         />
-        <Heading size="4xl" color="text">
+        <Heading size="4xl" color="text" textTransform="uppercase">
           Historial de tiradas
         </Heading>
       </HStack>
