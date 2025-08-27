@@ -1,4 +1,5 @@
 import bgGatcha from '@/assets/gacha-bg.webp'
+import Footer from '@/components/Footer'
 import Navbar from '@/components/ui/navbar'
 import { Box } from '@chakra-ui/react'
 import { Outlet } from 'react-router'
@@ -16,6 +17,7 @@ function GatchaLayout() {
       <Box minH="100vh" backdropFilter="blur(2px)">
         <Navbar />
         <Outlet />
+        <Footer />
       </Box>
     </Box>
   )
