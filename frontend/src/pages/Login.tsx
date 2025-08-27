@@ -35,7 +35,12 @@ function Login() {
           minW={320}
           backdropFilter="blur(4px)"
         >
-          <Heading textAlign="center" size="3xl">
+          <Heading
+            textAlign="center"
+            size="3xl"
+            fontWeight="bold"
+            textTransform="uppercase"
+          >
             {showRegister ? 'Registro' : 'Iniciar sesión'}
           </Heading>
           {showRegister ? <RegisterForm /> : <LoginForm />}
