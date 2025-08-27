@@ -1,14 +1,16 @@
-import { Module } from '@nestjs/common'
-import { CharactersService } from './characters.service'
-import { CharactersController } from './characters.controller'
-import { MongooseModule } from '@nestjs/mongoose'
+import { RolesModule } from '@/roles/roles.module'
 import { Character, CharacterSchema } from '@common/schemas'
+import { Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
+import { CharactersController } from './characters.controller'
+import { CharactersService } from './characters.service'
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Character.name, schema: CharacterSchema }
-    ])
+    ]),
+    RolesModule
   ],
   controllers: [CharactersController],
   providers: [CharactersService],

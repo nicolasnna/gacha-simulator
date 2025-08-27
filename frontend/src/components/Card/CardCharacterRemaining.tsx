@@ -1,11 +1,11 @@
-import type { CharacterObtained } from '@/interfaces/character.interface'
-import { Card, Circle, Float, Heading, Text } from '@chakra-ui/react'
+import type { Character } from '@/interfaces/character.interface'
+import { Card, Heading, Text } from '@chakra-ui/react'
 
 interface CardCharacterProps {
-  data: CharacterObtained
+  data: Character
 }
 
-function CardCharacter({ data }: CardCharacterProps) {
+function CardCharacterRemaining({ data }: CardCharacterProps) {
   return (
     <div className={`card-effect-${data.rarity}`}>
       <Card.Root
@@ -18,22 +18,12 @@ function CardCharacter({ data }: CardCharacterProps) {
         zIndex={10}
         overflow="hidden"
       >
-        <img src={data.imgUrl} alt={data.name} className="img-card" />
-        {!!data.repeatCount && (
-          <>
-            <Float placement="bottom-end" right={5} bottom={5} zIndex={10}>
-              <Circle
-                size="7"
-                bg="bg-secondary"
-                border="2px solid"
-                borderColor={data.rarity}
-                color="white"
-              >
-                {data.repeatCount}
-              </Circle>
-            </Float>
-          </>
-        )}
+        <img
+          src={data.imgUrl}
+          alt={data.name}
+          className="img-card"
+          style={{ filter: 'grayscale(100%)' }}
+        />
         <Card.Header zIndex={10} p={0} px={2}>
           <Heading
             textAlign="end"
@@ -69,4 +59,4 @@ function CardCharacter({ data }: CardCharacterProps) {
   )
 }
 
-export default CardCharacter
+export default CardCharacterRemaining

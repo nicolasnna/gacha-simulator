@@ -19,9 +19,10 @@ function Users() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getAllUsers({ page: 1, limit: 3 }))
+    dispatch(getAllUsers({ page: 1, limit: 20 }))
     dispatch(getAllRoles({ page: 1, limit: 20 }))
-  }, [dispatch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const loadMoreUsers = () => {
     if (itemsInfo.lastItemNumber !== itemsInfo.totalItems) {
@@ -32,19 +33,30 @@ function Users() {
   }
 
   return (
-    <Container centerContent py={2} spaceY={5}>
+    <Container centerContent py={2} spaceY={10}>
       <HStack mt={2} flexWrap="wrap">
-        <Heading size={'4xl'} color="text">
+        <img
+          src="https://emojicdn.elk.sh/👤?style=facebook"
+          width={40}
+          alt="usuario"
+        />
+        <Heading size={'4xl'} color="text" textTransform="uppercase">
           Gestión de usuarios
         </Heading>
       </HStack>
 
-      <Tabs.Root defaultValue="users" variant="plain">
-        <Tabs.List>
-          <Tabs.Trigger value="users" color="text">
+      <Tabs.Root
+        defaultValue="users"
+        variant="plain"
+        lazyMount
+        fitted
+        size="md"
+      >
+        <Tabs.List boxSizing="content-box" w="100%">
+          <Tabs.Trigger value="users" color="text" fontSize="large">
             Usuarios
           </Tabs.Trigger>
-          <Tabs.Trigger value="permissions" color="text">
+          <Tabs.Trigger value="permissions" color="text" fontSize="large">
             Permisos
           </Tabs.Trigger>
           <Tabs.Indicator rounded="md" bg="bg-secondary" />

@@ -81,8 +81,7 @@ export class AuthService {
     role: string,
     superAdmin: boolean
   ) {
-    const roles = [role]
-    const payload = { sub, email, roles, superAdmin }
+    const payload = { sub, email, role, superAdmin }
     const access_token = await this.jwtService.signAsync(payload)
     return { access_token }
   }

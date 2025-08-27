@@ -26,12 +26,12 @@ function HistoryGacha() {
           width={50}
           alt="Calendario"
         />
-        <Heading size="4xl" color="text">
+        <Heading size="4xl" color="text" textTransform="uppercase">
           Historial de tiradas
         </Heading>
       </HStack>
 
-      <VStack alignItems={'start'} maxH={500} overflowY={'auto'} p={4}>
+      <VStack alignItems={'start'} maxH={'80vh'} overflowY={'auto'} p={4}>
         {history.map((chara, idx) => (
           <Grid
             key={idx}

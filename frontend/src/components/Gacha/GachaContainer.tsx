@@ -6,14 +6,21 @@ import { useEffect, useRef, useState } from 'react'
 
 export default function GachaContainer() {
   const { open, onOpen, onClose } = useDisclosure()
-  const { chars, handleOnePull, handleTenPulls } = usePullGacha()
+  const { chars, isError, isLoading, handleOnePull, handleTenPulls } =
+    usePullGacha()
   const [startAnimation, setStartAnimation] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const lottieRef = useRef<any>(null)
 
   useEffect(() => {
     if (!startAnimation) lottieRef.current.stop()
-  }, [startAnimation])
+    if (isError) {
+      lottieRef.current.stop()
+      setStartAnimation(false)
+      onClose()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startAnimation, isError])
 
   const handlePullSeq = (pull: 1 | 10) => {
     setStartAnimation(true)
@@ -63,6 +70,7 @@ export default function GachaContainer() {
             p={5}
             borderRadius={10}
             onClick={() => handlePullSeq(1)}
+            disabled={isLoading || startAnimation}
           >
             Tirar 1
           </Button>
@@ -72,6 +80,7 @@ export default function GachaContainer() {
             p={5}
             borderRadius={10}
             onClick={() => handlePullSeq(10)}
+            disabled={isLoading || startAnimation}
           >
             Tirar 10
           </Button>

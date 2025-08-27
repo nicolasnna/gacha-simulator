@@ -37,6 +37,8 @@ export class CharactersService {
 
       const characterData = apiData.data
 
+      const title = characterData.anime[0].anime.title.split(':')[0] // En caso de que el titlo haga referencia a una variante de la serie principal
+
       const newCharacter = new this.characterModel({
         mal_id: mal_id,
         name: characterData.name,
@@ -45,7 +47,7 @@ export class CharactersService {
         rarity: rarity,
         banner: banner,
         value: value,
-        animeOrigin: String(characterData.anime[0].anime.title).toLowerCase()
+        animeOrigin: String(title).toLowerCase()
       })
 
       const char = await newCharacter.save({ validateBeforeSave: true })
@@ -80,22 +82,27 @@ export class CharactersService {
     return { data: char }
   }
 
-  async getAll(page: number = 1, limit: number = 20) {
+  async getAll(page: number = 1, limit: number = 20, anime?: string) {
     if (page < 1 || limit < 1)
       throw new BadRequestException(
         'Parametro page y number deben ser mayores o iguales a 1'
       )
     const skip = (Math.max(page, 1) - 1) * Math.max(limit, 1)
 
+    const filter: any = {}
+    if (anime) {
+      filter.animeOrigin = anime
+    }
+
     const [chars, totalItems] = await Promise.all([
       this.characterModel
-        .find()
+        .find(filter)
         .skip(skip)
         .limit(limit)
         .sort({ rarity: -1 })
         .lean()
         .exec(),
-      this.characterModel.countDocuments().exec()
+      this.characterModel.find(filter).countDocuments().exec()
     ])
 
     const charsWithId = chars.map(({ _id, ...rest }) => ({

@@ -1,13 +1,10 @@
 import { CharactersService } from '@/characters/characters.service'
-import {
-  BannerEnum,
-  RarityCharacterEnum,
-  ValueCharacterEnum
-} from '@common/enums'
 import { Character, CharacterDocument } from '@common/schemas'
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
+import { charactersNaruto } from './utils/characters-naruto.helper'
+import { ValueCharacterEnum } from '@common/enums'
 
 @Injectable()
 export class CharactersSeeder {
@@ -19,88 +16,8 @@ export class CharactersSeeder {
     private characterService: CharactersService
   ) {}
 
-  private readonly charactersScrapping: {
-    mal_id: number
-    rarity: RarityCharacterEnum
-    value: ValueCharacterEnum
-    banner: BannerEnum
-  }[] = [
-    {
-      mal_id: 14,
-      rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SuperSuperRare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 13,
-      rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SuperSuperRare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 85,
-      rarity: RarityCharacterEnum.SuperSuperRare,
-      value: ValueCharacterEnum.SuperSuperRare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 17,
-      rarity: RarityCharacterEnum.SuperRare,
-      value: ValueCharacterEnum.SuperRare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 145,
-      rarity: RarityCharacterEnum.SuperRare,
-      value: ValueCharacterEnum.SuperRare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 2174,
-      rarity: RarityCharacterEnum.SuperRare,
-      value: ValueCharacterEnum.SuperRare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 17312,
-      rarity: RarityCharacterEnum.Rare,
-      value: ValueCharacterEnum.Rare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 3052,
-      rarity: RarityCharacterEnum.Rare,
-      value: ValueCharacterEnum.Rare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 3735,
-      rarity: RarityCharacterEnum.Rare,
-      value: ValueCharacterEnum.Rare,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 2766,
-      rarity: RarityCharacterEnum.Common,
-      value: ValueCharacterEnum.Common,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 10791,
-      rarity: RarityCharacterEnum.Common,
-      value: ValueCharacterEnum.Common,
-      banner: BannerEnum.Standard
-    },
-    {
-      mal_id: 15081,
-      rarity: RarityCharacterEnum.Common,
-      value: ValueCharacterEnum.Common,
-      banner: BannerEnum.Standard
-    }
-  ]
-
   async drop() {
-    const malIds = this.charactersScrapping.map((char) => char.mal_id)
+    const malIds = charactersNaruto.map((char) => char.mal_id)
     await this.characterModel.deleteMany({ mal_id: { $in: malIds } }).exec()
     this._logger.warn(
       `The characters with mal_ids: ${malIds.join(', ')} has been deleted`
@@ -108,9 +25,11 @@ export class CharactersSeeder {
   }
 
   async seed() {
-    for (const char of this.charactersScrapping) {
+    for (const char of charactersNaruto) {
       try {
-        const newChar = await this.characterService.create({ ...char })
+        const value = ValueCharacterEnum[char.rarity]
+        const charInfo = { ...char, value }
+        const newChar = await this.characterService.create({ ...charInfo })
         // Limitar las peticiones por segundo
         await new Promise((resolve) => setTimeout(resolve, 1000))
         this._logger.log(

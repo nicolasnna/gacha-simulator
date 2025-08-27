@@ -1,6 +1,7 @@
 import { Role, UserDocument } from '@common/schemas'
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException
 } from '@nestjs/common'
@@ -17,8 +18,17 @@ export class RolesService {
     @InjectModel(Role.name) private readonly roleModel: Model<UserDocument>
   ) {}
 
-  create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role'
+  async create(roleData: CreateRoleDto) {
+    const roleExist = await this.roleModel.exists({ key: roleData.key }).exec()
+    if (roleExist) throw new ConflictException('El rol a crear ya existe')
+
+    const newRoleModel = new this.roleModel({
+      ...roleData
+    })
+
+    const newRoleDoc = await newRoleModel.save()
+
+    return { data: newRoleDoc }
   }
 
   async getAll(

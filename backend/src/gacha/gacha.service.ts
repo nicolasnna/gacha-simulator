@@ -12,6 +12,7 @@ import {
   calculateSinglePullRarity
 } from './helpers/gacha-probability.helper'
 import { GachaUser, GachaUserDocument } from '@common/schemas/gacha-user.schema'
+import { rarityOrder } from './helpers/rarity-order.helper'
 
 @Injectable()
 export class GachaService {
@@ -70,12 +71,27 @@ export class GachaService {
   }
 
   async getCharactersObtained(userId: string, anime: string) {
-    const gachaUserDoc = await this.gachaUserModel.findOne({
-      userId: userId,
-      animeOrigin: anime
-    })
+    const gachaUserDoc = await this.gachaUserModel
+      .findOne({
+        userId: userId,
+        animeOrigin: anime
+      })
+      .lean()
+      .exec()
 
-    return { data: gachaUserDoc }
+    if (!gachaUserDoc || !gachaUserDoc.characters) {
+      return { data: gachaUserDoc || [] }
+    }
+
+    const chars = Array.isArray(gachaUserDoc?.characters)
+      ? gachaUserDoc.characters
+      : []
+
+    const sortedCharacters = chars.sort(
+      (a, b) => rarityOrder.indexOf(a.rarity) - rarityOrder.indexOf(b.rarity)
+    ) // Orderer to ssr, sr, r, and c
+
+    return { data: { ...gachaUserDoc, characters: sortedCharacters } }
   }
 
   async gachaPull({ anime, pulls, userId }: UserPullDto) {

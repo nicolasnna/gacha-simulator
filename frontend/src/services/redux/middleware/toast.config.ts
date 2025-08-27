@@ -1,6 +1,7 @@
 import {
   authToastConfigs,
   charactersToastConfig,
+  rolesToastConfig,
   usersToastConfig
 } from './toast'
 
@@ -28,5 +29,6 @@ export type namedToastConfig = Record<string, ToastConfig>
 export const toastConfigs: namedToastConfig = {
   ...authToastConfigs,
   ...charactersToastConfig,
-  ...usersToastConfig
+  ...usersToastConfig,
+  ...rolesToastConfig
 }
