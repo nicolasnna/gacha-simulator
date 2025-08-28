@@ -1,3 +1,7 @@
+import { JwtWithRefreshGuard } from '@/auth/guards/jwt-refresh.guard'
+import { Action, ModuleResource } from '@access/access.decorator'
+import { AccessGuard } from '@access/access.guard'
+import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 import {
   Body,
   Controller,
@@ -9,15 +13,11 @@ import {
   Query,
   UseGuards
 } from '@nestjs/common'
+import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserInfoDto } from './dto/update-user-info.dto'
 import { UsersService } from './users.service'
-import { CreateUserDto } from './dto/create-user.dto'
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
-import { AccessGuard } from '@access/access.guard'
-import { Action, ModuleResource } from '@access/access.decorator'
-import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 
-@UseGuards(JwtAuthGuard, AccessGuard)
+@UseGuards(JwtWithRefreshGuard, AccessGuard)
 @ModuleResource(ModuleKeyEnum.Users)
 @Controller('users')
 export class UsersController {

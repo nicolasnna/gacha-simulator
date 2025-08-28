@@ -1,23 +1,23 @@
+import { JwtWithRefreshGuard } from '@/auth/guards/jwt-refresh.guard'
+import { Action, ModuleResource } from '@access/access.decorator'
+import { AccessGuard } from '@access/access.guard'
+import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
   Query,
   UseGuards
 } from '@nestjs/common'
 import { CharactersService } from './characters.service'
 import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
-import { AccessGuard } from '@access/access.guard'
-import { Action, ModuleResource } from '@access/access.decorator'
-import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 
-@UseGuards(JwtAuthGuard, AccessGuard)
+@UseGuards(JwtWithRefreshGuard, AccessGuard)
 @ModuleResource(ModuleKeyEnum.Characters)
 @Controller('characters')
 export class CharactersController {

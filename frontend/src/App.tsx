@@ -13,6 +13,7 @@ import { useAppDispatch } from './services/hooks/useRedux'
 import { loadSession } from './services/redux/auth'
 import { system } from './theme'
 import { ROUTES } from './utils/routes'
+import './utils/axios.setup'
 
 function App() {
   const dispatch = useAppDispatch()

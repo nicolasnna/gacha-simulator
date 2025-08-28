@@ -1,26 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react'
-import { useAppSelector } from './useRedux'
 import { type CharacterObtained } from '@/interfaces/character.interface'
-import axios from 'axios'
 import type { RarityType } from '@/interfaces/rarity.interface'
+import axios from 'axios'
+import { useState } from 'react'
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
 
 export default function useCharactersObtained() {
   const [chars, setChars] = useState<CharacterObtained[]>([])
-  const userToken = useAppSelector((s) => s.auth.userToken)
 
   const fetchCharacters = async () => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`
-      }
-    }
     const res = await axios.get(
-      `${BACKEND_URL}/gacha/character-obtained?anime=naruto`,
-      config
+      `${BACKEND_URL}/gacha/character-obtained?anime=naruto`
     )
     return res.data
   }

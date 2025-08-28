@@ -13,12 +13,13 @@ function GatchaLayout() {
       bgSize="cover"
       bgPos="center"
       bgAttachment="fixed"
+      position="relative"
     >
-      <Box minH="100vh" backdropFilter="blur(2px)">
+      <Box minH="100vh" backdropFilter="blur(2px)" pb={10}>
         <Navbar />
         <Outlet />
-        <Footer />
       </Box>
+      <Footer />
     </Box>
   )
 }

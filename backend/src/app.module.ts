@@ -9,6 +9,7 @@ import { RolesModule } from './roles/roles.module'
 import { CharactersModule } from './characters/characters.module'
 import { GachaModule } from './gacha/gacha.module'
 import { AccessModule } from '@access/access.module'
+import { RedisModule } from './redis/redis.module'
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { AccessModule } from '@access/access.module'
     RolesModule,
     CharactersModule,
     GachaModule,
-    AccessModule
+    AccessModule,
+    RedisModule
   ],
   controllers: [AppController],
   providers: [AppService]

@@ -31,7 +31,6 @@ function Characters() {
     const remaining = data.filter(
       (charAll) => !charIdObtained.includes(charAll.id)
     )
-    console.log(remaining)
     return remaining
   }, [data, chars])
 

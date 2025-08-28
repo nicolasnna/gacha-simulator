@@ -8,17 +8,10 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData: RegisterUserApi, { rejectWithValue }) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-
     try {
       const response = await axios.post(
         `${BACKEND_URL}/auth/register`,
-        userData,
-        config
+        userData
       )
       return response.data
     } catch (error) {
@@ -30,18 +23,8 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (userData: LoginUserApi, { rejectWithValue }) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/auth/login`,
-        userData,
-        config
-      )
+      const response = await axios.post(`${BACKEND_URL}/auth/login`, userData)
       return response.data
     } catch (error) {
       return rejectWithValue(getErrorMessageAxios(error))

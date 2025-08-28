@@ -1,14 +1,14 @@
 import { AuthUser, JwtPayload } from '@/auth/decorators/auth-user.decorator'
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
+import { JwtWithRefreshGuard } from '@/auth/guards/jwt-refresh.guard'
+import { Action, ModuleResource } from '@access/access.decorator'
 import { AccessGuard } from '@access/access.guard'
+import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common'
 import { CharacterObtainedDto } from './dto/character-obtained.dto'
 import { PullDto, UserPullDto } from './dto/pull.dto'
 import { GachaService } from './gacha.service'
-import { Action, ModuleResource } from '@access/access.decorator'
-import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 
-@UseGuards(JwtAuthGuard, AccessGuard)
+@UseGuards(JwtWithRefreshGuard, AccessGuard)
 @ModuleResource(ModuleKeyEnum.Gachas)
 @Controller('gacha')
 export class GachaController {

@@ -34,5 +34,17 @@ services:
       - MONGO_INITDB_DATABASE=gacha-simulator
     restart: unless-stopped
 
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - '5540:5540'
+
 volumes:
   mongo_data:

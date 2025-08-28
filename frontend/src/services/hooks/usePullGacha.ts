@@ -1,9 +1,8 @@
+import { toaster } from '@/components/ui/toaster'
 import type { RarityType } from '@/interfaces/rarity.interface'
+import { getErrorMessageAxios } from '@/utils/axios.helper'
 import axios from 'axios'
 import { useState } from 'react'
-import { useAppSelector } from './useRedux'
-import { toaster } from '@/components/ui/toaster'
-import { getErrorMessageAxios } from '@/utils/axios.helper'
 
 export interface CharPull {
   name: string
@@ -15,25 +14,14 @@ export interface CharPull {
 export default function usePullGacha() {
   const [chars, setChars] = useState<CharPull[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const userToken = useAppSelector((s) => s.auth.userToken)
   const [isError, setIsError] = useState<boolean>(false)
 
   const fetchPull = async (count: number, anime: string) => {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`
-      }
-    }
-    const res = await axios.post(
-      `${BACKEND_URL}/gacha/pull`,
-      {
-        anime: anime,
-        pulls: count
-      },
-      config
-    )
+    const res = await axios.post(`${BACKEND_URL}/gacha/pull`, {
+      anime: anime,
+      pulls: count
+    })
     return res.data
   }
 

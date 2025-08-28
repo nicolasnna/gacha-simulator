@@ -1,7 +1,6 @@
 import type { RarityType } from '@/interfaces/rarity.interface'
-import { useState } from 'react'
-import { useAppSelector } from './useRedux'
 import axios from 'axios'
+import { useState } from 'react'
 
 export interface HistoryPull {
   idPullUnique: string
@@ -40,18 +39,10 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
 export default function useHistoryGacha() {
   const [history, setHistory] = useState<HistoryPull[]>([])
   const [page, setPage] = useState<number>(1)
-  const userToken = useAppSelector((s) => s.auth.userToken)
 
   const fetchHistory = async (page: number) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userToken}`
-      }
-    }
     const res = await axios.get(
-      `${BACKEND_URL}/gacha/history?page=${page}&limit=20`,
-      config
+      `${BACKEND_URL}/gacha/history?page=${page}&limit=20`
     )
     return res.data as HistoryResponse
   }

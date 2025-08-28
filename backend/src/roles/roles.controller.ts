@@ -1,3 +1,7 @@
+import { JwtWithRefreshGuard } from '@/auth/guards/jwt-refresh.guard'
+import { Action, ModuleResource } from '@access/access.decorator'
+import { AccessGuard } from '@access/access.guard'
+import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 import {
   Body,
   Controller,
@@ -12,12 +16,8 @@ import {
 import { CreateRoleDto } from './dto/create-role.dto'
 import { GrantsArrayDto } from './dto/grants-role.dto'
 import { RolesService } from './roles.service'
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard'
-import { AccessGuard } from '@access/access.guard'
-import { Action, ModuleResource } from '@access/access.decorator'
-import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 
-@UseGuards(JwtAuthGuard, AccessGuard)
+@UseGuards(JwtWithRefreshGuard, AccessGuard)
 @ModuleResource(ModuleKeyEnum.Roles)
 @Controller('roles')
 export class RolesController {

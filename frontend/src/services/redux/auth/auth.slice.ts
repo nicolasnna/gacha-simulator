@@ -37,11 +37,16 @@ const authSlice = createSlice({
       state.userToken = null
       state.promise.error = null
       sessionStorage.clear()
+      // updateAxiosToken(null)
     },
     loadSession: (state) => {
       state.userToken = sessionStorage.getItem('access_token') || null
       const infoStorage = sessionStorage.getItem('info')
       state.userInfo = infoStorage ? JSON.parse(infoStorage) : null
+    },
+    updateAccessToken: (state, action) => {
+      state.userToken = action.payload
+      sessionStorage.setItem('access_token', action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -75,5 +80,5 @@ const authSlice = createSlice({
   }
 })
 
-export const { logout, loadSession } = authSlice.actions
+export const { logout, loadSession, updateAccessToken } = authSlice.actions
 export default authSlice.reducer
