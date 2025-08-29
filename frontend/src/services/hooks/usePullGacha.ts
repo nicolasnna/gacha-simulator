@@ -49,6 +49,15 @@ export default function usePullGacha() {
     }
   }
 
+  const testPullQueue = async () => {
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
+    const res = await axios.post(`${BACKEND_URL}/gacha/pull-queue`, {
+      anime: 'naruto',
+      pulls: 10
+    })
+    console.log(res.data)
+  }
+
   const handleTenPulls = async (anime?: string) => await handlePulls(10, anime)
   const handleOnePull = async (anime?: string) => await handlePulls(1, anime)
 
@@ -57,6 +66,7 @@ export default function usePullGacha() {
     isLoading,
     handleTenPulls,
     handleOnePull,
-    isError
+    isError,
+    testPullQueue
   }
 }

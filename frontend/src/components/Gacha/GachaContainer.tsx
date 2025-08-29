@@ -6,8 +6,14 @@ import { useEffect, useRef, useState } from 'react'
 
 export default function GachaContainer() {
   const { open, onOpen, onClose } = useDisclosure()
-  const { chars, isError, isLoading, handleOnePull, handleTenPulls } =
-    usePullGacha()
+  const {
+    chars,
+    isError,
+    isLoading,
+    handleOnePull,
+    handleTenPulls,
+    testPullQueue
+  } = usePullGacha()
   const [startAnimation, setStartAnimation] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const lottieRef = useRef<any>(null)
@@ -49,6 +55,7 @@ export default function GachaContainer() {
         borderRadius={15}
         border="none"
         pos="relative"
+        w="max-content"
       >
         <img
           src="https://emojicdn.elk.sh/%E2%84%B9?style=google"
@@ -84,6 +91,7 @@ export default function GachaContainer() {
           >
             Tirar 10
           </Button>
+          <Button onClick={() => testPullQueue()}>Probar cola</Button>
         </Card.Footer>
       </Card.Root>
       <GachaResultPortal open={open} onClose={closeResult} result={chars} />

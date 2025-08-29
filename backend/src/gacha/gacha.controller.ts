@@ -14,6 +14,14 @@ import { GachaService } from './gacha.service'
 export class GachaController {
   constructor(private readonly gachaService: GachaService) {}
 
+  // Cola
+  @Action(ActionKeyEnum.CREATE)
+  @Post('pull-queue')
+  async gachaPullQueue(@Body() pullDto: PullDto, @AuthUser() user: JwtPayload) {
+    const getPullDto: UserPullDto = { ...pullDto, userId: user.sub }
+    return this.gachaService.gachaPullQueue(getPullDto)
+  }
+
   @Action(ActionKeyEnum.CREATE)
   @Post('pull')
   gachaPull(@AuthUser() user: JwtPayload, @Body() pullDto: PullDto) {

@@ -6,6 +6,9 @@ import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { GachaController } from './gacha.controller'
 import { GachaService } from './gacha.service'
+import { BullModule } from '@nestjs/bull'
+import { GachaProcessor } from './gacha.processor'
+import { GachaGateway } from './gacha.gateway'
 
 @Module({
   imports: [
@@ -14,9 +17,10 @@ import { GachaService } from './gacha.service'
       { name: GachaPull.name, schema: GachaPullSchema },
       { name: GachaUser.name, schema: GachaUserSchema }
     ]),
-    CharactersModule
+    CharactersModule,
+    BullModule.registerQueue({ name: 'gacha' })
   ],
   controllers: [GachaController],
-  providers: [GachaService]
+  providers: [GachaService, GachaProcessor, GachaGateway]
 })
 export class GachaModule {}

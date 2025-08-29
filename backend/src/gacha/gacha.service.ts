@@ -13,6 +13,8 @@ import {
 } from './helpers/gacha-probability.helper'
 import { GachaUser, GachaUserDocument } from '@common/schemas/gacha-user.schema'
 import { rarityOrder } from './helpers/rarity-order.helper'
+import { InjectQueue } from '@nestjs/bull'
+import { Queue } from 'bull'
 
 @Injectable()
 export class GachaService {
@@ -21,7 +23,8 @@ export class GachaService {
     private readonly gachaPullModel: Model<GachaPullDocument>,
     @InjectModel(GachaUser.name)
     private readonly gachaUserModel: Model<GachaUserDocument>,
-    private charactersService: CharactersService
+    private charactersService: CharactersService,
+    @InjectQueue('gacha') private gachaQueue: Queue
   ) {}
 
   async setCharacterObtained(userId: string, anime: string, charId: string) {
@@ -92,6 +95,26 @@ export class GachaService {
     ) // Orderer to ssr, sr, r, and c
 
     return { data: { ...gachaUserDoc, characters: sortedCharacters } }
+  }
+
+  async gachaPullQueue({ anime, pulls, userId }: UserPullDto) {
+    try {
+      const job = await this.gachaQueue.add(
+        'gacha-pull',
+        { anime, pulls, userId },
+        {
+          attempts: 3, // Reintentar 3 veces si falla
+          backoff: 5000, // Esperar 5 segundos entre intentos
+          removeOnComplete: true
+        }
+      )
+      return {
+        jobId: job.id,
+        message: 'Pull iniciado, revisar jobId'
+      }
+    } catch (err) {
+      throw new Error('Error al añadir el pull a la cola ' + err)
+    }
   }
 
   async gachaPull({ anime, pulls, userId }: UserPullDto) {
