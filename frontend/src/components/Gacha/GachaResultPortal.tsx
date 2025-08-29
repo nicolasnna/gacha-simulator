@@ -1,4 +1,4 @@
-import type { CharPull } from '@/services/hooks/usePullGacha'
+import type { CharPull } from '@/services/hooks/usePullGachaFetch'
 import { Box, Center, HStack, Portal, Presence } from '@chakra-ui/react'
 import CardCharacterGacha from '../Card/CardCharacterGacha'
 

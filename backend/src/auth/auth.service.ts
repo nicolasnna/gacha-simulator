@@ -108,6 +108,7 @@ export class AuthService {
     await this.redisService.setRefreshToken(userRes.id, tokens.refresh_token)
 
     return {
+      userId: userRes.id,
       email: userRes.email,
       role: userRes.role,
       access_token: tokens.access_token

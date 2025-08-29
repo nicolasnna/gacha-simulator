@@ -1,49 +1,41 @@
+import type { CharPull } from '@/services/hooks/usePullGacha'
 import usePullGacha from '@/services/hooks/usePullGacha'
 import { Button, Card, useDisclosure } from '@chakra-ui/react'
+import { useEffect, useRef, useState } from 'react'
 import GachaLottieAnimation from './GachaLottieAnimation'
 import GachaResultPortal from './GachaResultPortal'
-import { useEffect, useRef, useState } from 'react'
 
 export default function GachaContainer() {
   const { open, onOpen, onClose } = useDisclosure()
-  const {
-    chars,
-    isError,
-    isLoading,
-    handleOnePull,
-    handleTenPulls,
-    testPullQueue
-  } = usePullGacha()
+  const hookPull = usePullGacha('websocket')
   const [startAnimation, setStartAnimation] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const lottieRef = useRef<any>(null)
+  const [characters, setCharacters] = useState<CharPull[]>([])
 
   useEffect(() => {
     if (!startAnimation) lottieRef.current.stop()
-    if (isError) {
+    if (hookPull.isError) {
       lottieRef.current.stop()
       setStartAnimation(false)
       onClose()
     }
+    if (characters.length === 0 && hookPull.chars.length !== 0) {
+      setStartAnimation(true)
+      lottieRef.current?.setSpeed(1.5)
+      lottieRef.current?.play()
+      setCharacters(hookPull.chars)
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startAnimation, isError])
-
-  const handlePullSeq = (pull: 1 | 10) => {
-    setStartAnimation(true)
-    lottieRef.current?.setSpeed(1.5)
-    lottieRef.current?.play()
-    if (pull === 1) handleOnePull()
-    if (pull === 10) handleTenPulls()
-  }
-
-  const onCompletePull = () => {
-    onOpen()
-  }
+  }, [startAnimation, hookPull.isError, hookPull.chars])
 
   const closeResult = () => {
     onClose()
     lottieRef.current?.goToAndStop(0)
     setStartAnimation(false)
+    setCharacters([])
+    hookPull.setChars([])
   }
 
   return (
@@ -68,7 +60,7 @@ export default function GachaContainer() {
           width={300}
           height={300}
           isShake={!startAnimation}
-          onComplete={onCompletePull}
+          onComplete={() => onOpen()}
         />
         <Card.Footer spaceX={4}>
           <Button
@@ -76,8 +68,8 @@ export default function GachaContainer() {
             fontSize="xl"
             p={5}
             borderRadius={10}
-            onClick={() => handlePullSeq(1)}
-            disabled={isLoading || startAnimation}
+            onClick={() => hookPull.handleOnePull()}
+            disabled={hookPull.isLoading || startAnimation}
           >
             Tirar 1
           </Button>
@@ -86,15 +78,18 @@ export default function GachaContainer() {
             fontSize="xl"
             p={5}
             borderRadius={10}
-            onClick={() => handlePullSeq(10)}
-            disabled={isLoading || startAnimation}
+            onClick={() => hookPull.handleTenPulls()}
+            disabled={hookPull.isLoading || startAnimation}
           >
             Tirar 10
           </Button>
-          <Button onClick={() => testPullQueue()}>Probar cola</Button>
         </Card.Footer>
       </Card.Root>
-      <GachaResultPortal open={open} onClose={closeResult} result={chars} />
+      <GachaResultPortal
+        open={open}
+        onClose={closeResult}
+        result={characters}
+      />
     </>
   )
 }

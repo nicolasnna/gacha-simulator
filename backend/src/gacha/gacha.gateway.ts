@@ -10,7 +10,7 @@ import {
 } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
 
-@WebSocketGateway(80, {
+@WebSocketGateway({
   cors: {
     origin: ['http://localhost:3000', 'http://localhost:5173'],
     credentials: true

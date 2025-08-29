@@ -11,6 +11,7 @@ import { loginUser, registerUser } from './auth.actions'
 export interface AuthState {
   promise: PromiseState
   userInfo: {
+    userId: string
     email: string
     role: RoleType
   } | null
