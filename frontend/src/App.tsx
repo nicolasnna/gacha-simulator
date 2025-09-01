@@ -12,8 +12,8 @@ import Users from './pages/Users'
 import { useAppDispatch } from './services/hooks/useRedux'
 import { loadSession } from './services/redux/auth'
 import { system } from './theme'
-import { ROUTES } from './utils/routes'
 import './utils/axios.setup'
+import { ROUTES } from './utils/routes'
 
 function App() {
   const dispatch = useAppDispatch()

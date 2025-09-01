@@ -29,7 +29,8 @@ export class GachaUser {
         imgUrl: { type: String },
         repeatCount: { type: Number, default: 0 }
       }
-    ]
+    ],
+    default: []
   })
   characters!: {
     characterId: Types.ObjectId

@@ -7,12 +7,16 @@ import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common'
 import { CharacterObtainedDto } from './dto/character-obtained.dto'
 import { PullDto, UserPullDto } from './dto/pull.dto'
 import { GachaService } from './gacha.service'
+import { GachaUserService } from './gacha-user.service'
 
 @UseGuards(JwtWithRefreshGuard, AccessGuard)
 @ModuleResource(ModuleKeyEnum.Gachas)
 @Controller('gacha')
 export class GachaController {
-  constructor(private readonly gachaService: GachaService) {}
+  constructor(
+    private readonly gachaService: GachaService,
+    private readonly gachaUserService: GachaUserService
+  ) {}
 
   // Cola
   @Action(ActionKeyEnum.CREATE)
@@ -45,7 +49,7 @@ export class GachaController {
     @AuthUser() user: JwtPayload,
     @Body() charInfo: CharacterObtainedDto
   ) {
-    return this.gachaService.setCharacterObtained(
+    return this.gachaUserService.setCharacterObtained(
       user.sub,
       charInfo.anime,
       charInfo.charId
@@ -58,6 +62,6 @@ export class GachaController {
     @AuthUser() user: JwtPayload,
     @Query('anime') anime: string
   ) {
-    return this.gachaService.getCharactersObtained(user.sub, anime)
+    return this.gachaUserService.getCharactersObtained(user.sub, anime)
   }
 }

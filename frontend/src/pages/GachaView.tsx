@@ -1,5 +1,6 @@
 import GachaContainer from '@/components/Gacha/GachaContainer'
 import type { RarityType } from '@/interfaces/rarity.interface'
+import { useUserCredits } from '@/services/hooks/useUserCredits'
 import { Card, Container, Heading, HStack, Text } from '@chakra-ui/react'
 
 interface rarityCard {
@@ -15,6 +16,8 @@ const rarityCards: rarityCard[] = [
 ]
 
 function GachaView() {
+  const { credits } = useUserCredits()
+
   return (
     <Container centerContent py={2} spaceY={5}>
       <HStack mt={2} flexWrap="wrap">
@@ -34,7 +37,7 @@ function GachaView() {
           width={25}
           alt="Diamante"
         />
-        <Text>Monedas: 9000</Text>
+        <Text>Monedas: {credits}</Text>
       </HStack>
 
       <GachaContainer />

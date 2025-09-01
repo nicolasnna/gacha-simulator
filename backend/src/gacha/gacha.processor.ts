@@ -4,12 +4,14 @@ import { Job } from 'bull'
 import { UserPullDto } from './dto/pull.dto'
 import { Logger } from '@nestjs/common'
 import { GachaGateway } from './gacha.gateway'
+import { GachaUserService } from './gacha-user.service'
 
 @Processor('gacha')
 export class GachaProcessor {
   private readonly logger = new Logger(GachaProcessor.name)
   constructor(
     private readonly gachaService: GachaService,
+    private readonly gachaUserService: GachaUserService,
     private readonly gachaGateway: GachaGateway
   ) {}
 
@@ -49,5 +51,10 @@ export class GachaProcessor {
       })
       throw err
     }
+  }
+
+  @Process('recharge-credits')
+  async handleRechargeCredits() {
+    await this.gachaUserService.rechargeCreditsToAllUsers()
   }
 }

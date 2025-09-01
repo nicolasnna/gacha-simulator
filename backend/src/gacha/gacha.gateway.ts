@@ -66,6 +66,20 @@ export class GachaGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`Enviando error a usuario ${userId} : ${error.message}`)
   }
 
+  sendCurrentCredits(userId: string, data: any) {
+    this.server.to(`user-${userId}`).emit('user-credits', data)
+    this.logger.log(
+      `Enviando la cantidad actual de creditos (${data.credits}) al usuario ${userId}`
+    )
+  }
+
+  informCreditRecharge() {
+    this.server.emit('credits-recharged', {
+      message: 'Créditos recargados a todos los usuarios'
+    })
+    console.log('mensaje emitido')
+  }
+
   isUserConnected(userId: string): boolean {
     return this.connectedClients.has(userId)
   }

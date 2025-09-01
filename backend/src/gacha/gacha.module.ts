@@ -9,6 +9,7 @@ import { GachaService } from './gacha.service'
 import { BullModule } from '@nestjs/bull'
 import { GachaProcessor } from './gacha.processor'
 import { GachaGateway } from './gacha.gateway'
+import { GachaUserService } from './gacha-user.service'
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { GachaGateway } from './gacha.gateway'
     BullModule.registerQueue({ name: 'gacha' })
   ],
   controllers: [GachaController],
-  providers: [GachaService, GachaProcessor, GachaGateway]
+  providers: [GachaService, GachaProcessor, GachaGateway, GachaUserService],
+  exports: [GachaService, GachaUserService]
 })
 export class GachaModule {}

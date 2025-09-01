@@ -4,14 +4,20 @@ import { Button, Card, useDisclosure } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import GachaLottieAnimation from './GachaLottieAnimation'
 import GachaResultPortal from './GachaResultPortal'
+import { useAppSelector } from '@/services/hooks/useRedux'
+import type { RoleType } from '@/interfaces/role.interface'
 
 export default function GachaContainer() {
   const { open, onOpen, onClose } = useDisclosure()
-  const hookPull = usePullGacha('websocket')
+  const [typePull, setTypePull] = useState<'websocket' | 'fetch'>('fetch')
+  const hookPull = usePullGacha(typePull)
   const [startAnimation, setStartAnimation] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const lottieRef = useRef<any>(null)
   const [characters, setCharacters] = useState<CharPull[]>([])
+  const role = useAppSelector((s) => s.auth.userInfo?.role)
+
+  const roleForMode: RoleType[] = ['developer', 'superAdmin']
 
   useEffect(() => {
     if (!startAnimation) lottieRef.current.stop()
@@ -83,6 +89,18 @@ export default function GachaContainer() {
           >
             Tirar 10
           </Button>
+          {roleForMode.includes(role as RoleType) && (
+            <Button
+              variant="outline"
+              color="text"
+              _hover={{ color: 'primary', borderColor: 'primary' }}
+              onClick={() =>
+                setTypePull(typePull === 'websocket' ? 'fetch' : 'websocket')
+              }
+            >
+              {typePull === 'websocket' ? 'Websocket' : 'Fetch'}
+            </Button>
+          )}
         </Card.Footer>
       </Card.Root>
       <GachaResultPortal

@@ -2,8 +2,10 @@ import { CharactersService } from '@/characters/characters.service'
 import { RarityCharacterEnum } from '@common/enums'
 import { PullsEnum } from '@common/enums/pulls.enum'
 import { GachaPull, GachaPullDocument } from '@common/schemas'
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { InjectQueue } from '@nestjs/bull'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
+import { Queue } from 'bull'
 import { Model } from 'mongoose'
 import { UserPullDto } from './dto/pull.dto'
 import {
@@ -11,91 +13,19 @@ import {
   calculateMultiplePullRarity,
   calculateSinglePullRarity
 } from './helpers/gacha-probability.helper'
-import { GachaUser, GachaUserDocument } from '@common/schemas/gacha-user.schema'
-import { rarityOrder } from './helpers/rarity-order.helper'
-import { InjectQueue } from '@nestjs/bull'
-import { Queue } from 'bull'
+import { GachaUserService } from './gacha-user.service'
 
 @Injectable()
 export class GachaService {
+  private readonly logger = new Logger(GachaService.name)
+
   constructor(
     @InjectModel(GachaPull.name)
     private readonly gachaPullModel: Model<GachaPullDocument>,
-    @InjectModel(GachaUser.name)
-    private readonly gachaUserModel: Model<GachaUserDocument>,
     private charactersService: CharactersService,
+    private gachaUserService: GachaUserService,
     @InjectQueue('gacha') private gachaQueue: Queue
   ) {}
-
-  async setCharacterObtained(userId: string, anime: string, charId: string) {
-    const characterUserExist = await this.gachaUserModel.findOne({
-      userId,
-      animeOrigin: anime,
-      'characters.characterId': charId
-    })
-
-    if (characterUserExist) {
-      const updatedChar = await this.gachaUserModel.findOneAndUpdate(
-        {
-          userId,
-          animeOrigin: anime,
-          'characters.characterId': charId
-        },
-        {
-          $inc: { 'characters.$.repeatCount': 1 }
-        },
-        { new: true }
-      )
-
-      return { data: updatedChar }
-    }
-
-    const charInfo = await this.charactersService.findById(charId)
-    const updatedChar = await this.gachaUserModel.findOneAndUpdate(
-      {
-        userId,
-        animeOrigin: anime
-      },
-      {
-        $push: {
-          characters: {
-            characterId: charId,
-            name: charInfo.data.name,
-            rarity: charInfo.data.rarity,
-            imgUrl: charInfo.data.imgUrl,
-            repeatCount: 0
-          }
-        }
-      },
-      { new: true, upsert: true }
-    )
-
-    return { data: updatedChar }
-  }
-
-  async getCharactersObtained(userId: string, anime: string) {
-    const gachaUserDoc = await this.gachaUserModel
-      .findOne({
-        userId: userId,
-        animeOrigin: anime
-      })
-      .lean()
-      .exec()
-
-    if (!gachaUserDoc || !gachaUserDoc.characters) {
-      return { data: gachaUserDoc || [] }
-    }
-
-    const chars = Array.isArray(gachaUserDoc?.characters)
-      ? gachaUserDoc.characters
-      : []
-
-    const sortedCharacters = chars.sort(
-      (a, b) => rarityOrder.indexOf(a.rarity) - rarityOrder.indexOf(b.rarity)
-    ) // Orderer to ssr, sr, r, and c
-
-    return { data: { ...gachaUserDoc, characters: sortedCharacters } }
-  }
 
   async gachaPullQueue({ anime, pulls, userId }: UserPullDto) {
     try {
@@ -154,7 +84,7 @@ export class GachaService {
 
     // update user gacha info
     for (const char of items) {
-      await this.setCharacterObtained(userId, anime, char._id)
+      await this.gachaUserService.setCharacterObtained(userId, anime, char._id)
     }
 
     return await newPull.save({ validateBeforeSave: true })
