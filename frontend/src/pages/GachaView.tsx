@@ -1,6 +1,6 @@
 import GachaContainer from '@/components/Gacha/GachaContainer'
 import type { RarityType } from '@/interfaces/rarity.interface'
-import { useUserCredits } from '@/services/hooks/useUserCredits'
+import useUserCredits from '@/services/hooks/useUserCredits'
 import { Card, Container, Heading, HStack, Text } from '@chakra-ui/react'
 
 interface rarityCard {

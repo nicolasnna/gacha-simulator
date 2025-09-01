@@ -64,4 +64,13 @@ export class GachaController {
   ) {
     return this.gachaUserService.getCharactersObtained(user.sub, anime)
   }
+
+  @Action(ActionKeyEnum.READ)
+  @Get('credits')
+  getGachaCredits(
+    @AuthUser() user: JwtPayload,
+    @Query('anime') anime: string = 'naruto'
+  ) {
+    return this.gachaUserService.getCreditsByAnimeBanner(user.sub, anime)
+  }
 }
