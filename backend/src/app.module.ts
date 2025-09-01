@@ -8,7 +8,7 @@ import { DatabaseModule } from './connection'
 import { RolesModule } from './roles/roles.module'
 import { CharactersModule } from './characters/characters.module'
 import { GachaModule } from './gacha/gacha.module'
-import { AccessModule } from '@access/access.module'
+import { AccessModule } from '@/access/access.module'
 import { RedisModule } from './redis/redis.module'
 import { BullModule } from '@nestjs/bull'
 

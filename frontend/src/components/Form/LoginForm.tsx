@@ -19,10 +19,10 @@ function LoginForm() {
       password: ''
     }
   })
-  const { loading } = useAppSelector((state) => state.auth)
+  const { loading } = useAppSelector((state) => state.auth.promise)
   const dispatch = useAppDispatch()
 
-  const onSubmit = (data: LoginType) => {
+  const onSubmit = async (data: LoginType) => {
     dispatch(loginUser(data))
   }
 

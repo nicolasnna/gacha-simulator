@@ -59,7 +59,6 @@ export class GachaGateway implements OnGatewayConnection, OnGatewayDisconnect {
     client.on(
       `get-user-credits-${userId}`,
       async (data: { userId: string; anime: string }) => {
-        console.log('Entrado a get user credist ws')
         const dataUser = await this.gachaUserService.getCreditsByAnimeBanner(
           data.userId,
           data.anime

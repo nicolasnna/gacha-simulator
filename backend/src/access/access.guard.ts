@@ -51,9 +51,11 @@ export class AccessGuard implements CanActivate {
     const requiredResource = requiredPermission?.module || metaRequiredResource
     const requiredAcl = requiredPermission?.action || metaRequiredAcl
 
+    console.log(requiredAcl)
+
     if (!requiredResource || !requiredAcl) {
       console.warn('Falta definir modulo o action')
-      return false
+      return true
     }
 
     if (

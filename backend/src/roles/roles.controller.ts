@@ -1,6 +1,6 @@
 import { JwtWithRefreshGuard } from '@/auth/guards/jwt-refresh.guard'
-import { Action, ModuleResource } from '@access/access.decorator'
-import { AccessGuard } from '@access/access.guard'
+import { Action, ModuleResource } from '@/access/access.decorator'
+import { AccessGuard } from '@/access/access.guard'
 import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 import {
   Body,
@@ -16,6 +16,7 @@ import {
 import { CreateRoleDto } from './dto/create-role.dto'
 import { GrantsArrayDto } from './dto/grants-role.dto'
 import { RolesService } from './roles.service'
+import { AuthUser, JwtPayload } from '@/auth/decorators/auth-user.decorator'
 
 @UseGuards(JwtWithRefreshGuard, AccessGuard)
 @ModuleResource(ModuleKeyEnum.Roles)
@@ -33,6 +34,11 @@ export class RolesController {
   @Get()
   getAll(@Query('page') page: number, @Query('limit') limit: number) {
     return this.rolesService.getAll(page, limit)
+  }
+
+  @Get('me')
+  findMeRole(@AuthUser() user: JwtPayload) {
+    return this.rolesService.findRole(user.role)
   }
 
   @Action(ActionKeyEnum.READ)

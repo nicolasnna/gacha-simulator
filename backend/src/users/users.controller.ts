@@ -1,6 +1,6 @@
 import { JwtWithRefreshGuard } from '@/auth/guards/jwt-refresh.guard'
-import { Action, ModuleResource } from '@access/access.decorator'
-import { AccessGuard } from '@access/access.guard'
+import { Action, ModuleResource } from '@/access/access.decorator'
+import { AccessGuard } from '@/access/access.guard'
 import { ActionKeyEnum, ModuleKeyEnum } from '@common/enums'
 import {
   Body,

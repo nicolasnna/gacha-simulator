@@ -6,7 +6,8 @@ import {
   handlePromiseReject
 } from '@/utils/redux.helper'
 import { createSlice } from '@reduxjs/toolkit'
-import { loginUser, registerUser } from './auth.actions'
+import { getPermissions, loginUser, registerUser } from './auth.actions'
+import type { Grants } from '@/interfaces/grants.interface'
 
 export interface AuthState {
   promise: PromiseState
@@ -15,6 +16,7 @@ export interface AuthState {
     email: string
     role: RoleType
   } | null
+  permissions: Grants[]
   userToken: string | null
 }
 
@@ -24,6 +26,7 @@ const initialState: AuthState = {
     error: null,
     success: null
   },
+  permissions: [],
   userInfo: null,
   userToken: null
 }
@@ -76,6 +79,17 @@ const authSlice = createSlice({
         sessionStorage.setItem('info', JSON.stringify(result))
       })
       .addCase(loginUser.rejected, (s, { payload }) =>
+        handlePromiseReject(s.promise, payload as string)
+      )
+      //permissions
+      .addCase(getPermissions.pending, (s) => handlePromisePending(s.promise))
+      .addCase(getPermissions.fulfilled, (s, { payload }) => {
+        handlePromiseFulfilled(s.promise)
+        console.log(payload)
+        const { data } = payload
+        s.permissions = data.grants as Grants[]
+      })
+      .addCase(getPermissions.rejected, (s, { payload }) =>
         handlePromiseReject(s.promise, payload as string)
       )
   }

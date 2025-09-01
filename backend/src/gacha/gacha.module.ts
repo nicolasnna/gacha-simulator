@@ -1,5 +1,5 @@
 import { CharactersModule } from '@/characters/characters.module'
-import { AccessModule } from '@access/access.module'
+import { AccessModule } from '@/access/access.module'
 import { GachaPull, GachaPullSchema } from '@common/schemas'
 import { GachaUser, GachaUserSchema } from '@common/schemas/gacha-user.schema'
 import { Module } from '@nestjs/common'
