@@ -9,7 +9,7 @@ import type { RoleType } from '@/interfaces/role.interface'
 
 export default function GachaContainer() {
   const { open, onOpen, onClose } = useDisclosure()
-  const [typePull, setTypePull] = useState<'websocket' | 'fetch'>('fetch')
+  const [typePull, setTypePull] = useState<'websocket' | 'fetch'>('websocket')
   const hookPull = usePullGacha(typePull)
   const [startAnimation, setStartAnimation] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

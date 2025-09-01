@@ -1,7 +1,13 @@
 import { CharactersService } from '@/characters/characters.service'
 import { GachaUser, GachaUserDocument } from '@common/schemas/gacha-user.schema'
 import { InjectQueue } from '@nestjs/bull'
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit
+} from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Queue } from 'bull'
 import { Model } from 'mongoose'
@@ -17,6 +23,7 @@ export class GachaUserService implements OnModuleInit {
     private readonly gachaUserModel: Model<GachaUserDocument>,
     private charactersService: CharactersService,
     @InjectQueue('gacha') private gachaQueue: Queue,
+    @Inject(forwardRef(() => GachaGateway))
     private gachaGateway: GachaGateway
   ) {}
 

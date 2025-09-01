@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common'
+import { forwardRef, Inject, Logger } from '@nestjs/common'
 import {
   ConnectedSocket,
   MessageBody,
@@ -9,6 +9,7 @@ import {
   WebSocketServer
 } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
+import { GachaUserService } from './gacha-user.service'
 
 @WebSocketGateway({
   cors: {
@@ -20,6 +21,11 @@ import { Server, Socket } from 'socket.io'
 export class GachaGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server
+
+  constructor(
+    @Inject(forwardRef(() => GachaUserService))
+    private readonly gachaUserService: GachaUserService
+  ) {}
 
   private readonly logger = new Logger(GachaGateway.name)
   private connectedClients = new Map<string, Socket>()
@@ -49,6 +55,18 @@ export class GachaGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.logger.log(`Usuario ${userId} se unio a su room`)
     client.emit('room-joined', { userId, message: 'Conectado correctamente' })
+
+    client.on(
+      `get-user-credits-${userId}`,
+      async (data: { userId: string; anime: string }) => {
+        console.log('Entrado a get user credist ws')
+        const dataUser = await this.gachaUserService.getCreditsByAnimeBanner(
+          data.userId,
+          data.anime
+        )
+        this.sendCurrentCredits(data.userId, data.anime, dataUser.data.credits)
+      }
+    )
   }
 
   sendPullUpdate(userId: string, data: any) {
