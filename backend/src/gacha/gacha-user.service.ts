@@ -114,6 +114,21 @@ export class GachaUserService implements OnModuleInit {
     }
   }
 
+  async incCreditValue(userId: string, animeOrigin: string, count: number) {
+    const updatedUser = await this.gachaUserModel
+      .findOneAndUpdate(
+        {
+          userId: userId,
+          animeOrigin: animeOrigin
+        },
+        { $inc: { credits: count } },
+        { new: true }
+      )
+      .lean()
+      .exec()
+    return updatedUser
+  }
+
   async getCreditsByAnimeBanner(userId: string, animeOrigin: string) {
     const exist = await this.gachaUserModel
       .findOne({

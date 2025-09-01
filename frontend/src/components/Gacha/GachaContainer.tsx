@@ -77,7 +77,13 @@ export default function GachaContainer() {
             onClick={() => hookPull.handleOnePull()}
             disabled={hookPull.isLoading || startAnimation}
           >
-            Tirar 1
+            Tirar 1 (
+            <img
+              src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
+              width={20}
+              alt="Diamante"
+            />
+            3)
           </Button>
           <Button
             bg="primary"
@@ -87,7 +93,13 @@ export default function GachaContainer() {
             onClick={() => hookPull.handleTenPulls()}
             disabled={hookPull.isLoading || startAnimation}
           >
-            Tirar 10
+            Tirar 10 (
+            <img
+              src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
+              width={20}
+              alt="Diamante"
+            />
+            25)
           </Button>
           {roleForMode.includes(role as RoleType) && (
             <Button

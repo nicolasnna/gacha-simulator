@@ -13,8 +13,11 @@ export default function useUserCredits() {
     }
 
     socket.on('credits-recharged', () => {
-      console.log('Creditos recargados revisar')
       fetchGetCredits()
+    })
+
+    socket.on('user-credits', (data) => {
+      setCredits(data.credits)
     })
 
     return () => {
