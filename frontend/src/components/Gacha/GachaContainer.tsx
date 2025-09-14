@@ -16,6 +16,7 @@ export default function GachaContainer() {
   const lottieRef = useRef<any>(null)
   const [characters, setCharacters] = useState<CharPull[]>([])
   const role = useAppSelector((s) => s.auth.userInfo?.role)
+  const [disable, setDisable] = useState<boolean>(false)
 
   const roleForMode: RoleType[] = ['developer', 'superAdmin']
 
@@ -42,6 +43,13 @@ export default function GachaContainer() {
     setStartAnimation(false)
     setCharacters([])
     hookPull.setChars([])
+  }
+
+  const disableDebounce = () => {
+    setDisable(() => true)
+    setTimeout(() => {
+      setDisable(() => false)
+    }, 4000)
   }
 
   return (
@@ -74,8 +82,11 @@ export default function GachaContainer() {
             fontSize="xl"
             p={5}
             borderRadius={10}
-            onClick={() => hookPull.handleOnePull()}
-            disabled={hookPull.isLoading || startAnimation}
+            onClick={() => {
+              disableDebounce()
+              hookPull.handleOnePull()
+            }}
+            disabled={hookPull.isLoading || startAnimation || disable}
           >
             Tirar 1 (
             <img
@@ -90,8 +101,11 @@ export default function GachaContainer() {
             fontSize="xl"
             p={5}
             borderRadius={10}
-            onClick={() => hookPull.handleTenPulls()}
-            disabled={hookPull.isLoading || startAnimation}
+            onClick={() => {
+              disableDebounce()
+              hookPull.handleTenPulls()
+            }}
+            disabled={hookPull.isLoading || startAnimation || disable}
           >
             Tirar 10 (
             <img

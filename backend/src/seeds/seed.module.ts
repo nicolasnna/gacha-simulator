@@ -1,3 +1,4 @@
+import { CharactersModule } from '@/characters/characters.module'
 import { DatabaseModule } from '@/connection'
 import {
   Character,
@@ -10,10 +11,9 @@ import {
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
+import { CharactersSeeder } from './characters.seeder'
 import { RolesSeeder } from './roles.seeder'
 import { UsersSeeder } from './users.seeder'
-import { CharactersSeeder } from './characters.seeder'
-import { CharactersModule } from '@/characters/characters.module'
 
 @Module({
   imports: [
