@@ -1,4 +1,4 @@
-import { useAppDispatch } from '@/services/hooks/useRedux'
+import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
 import { logout } from '@/services/redux/auth'
 import { ROUTES } from '@/utils/routes'
 import { Box, Button, Stack } from '@chakra-ui/react'
@@ -9,18 +9,30 @@ const unusedLinkStyle = {
 }
 
 const routes = [
-  { route: ROUTES.home, label: 'Gacha' },
-  { route: ROUTES.history, label: 'Historial de tiradas' },
-  { route: ROUTES.characters, label: 'Personajes' },
-  { route: ROUTES.users, label: 'Usuarios' }
+  { route: ROUTES.home, label: 'Gacha', permissions: '' },
+  {
+    route: ROUTES.history,
+    label: 'Historial de tiradas',
+    permissions: 'histories'
+  },
+  { route: ROUTES.characters, label: 'Personajes', permissions: 'characters' },
+  { route: ROUTES.users, label: 'Usuarios', permissions: 'users' }
 ]
 
 function Navbar() {
   const dispatch = useAppDispatch()
-
+  const permisionUser = useAppSelector((s) => s.auth.permissions)
   const handleLogout = () => {
     dispatch(logout())
   }
+
+  const routesWithPermissions = routes.filter((r) =>
+    permisionUser.some(
+      (p) =>
+        (p.module === r.permissions && p.actions.length > 0) ||
+        r.permissions === ''
+    )
+  )
 
   return (
     <Box justifyContent="end" p={2}>
@@ -32,7 +44,7 @@ function Navbar() {
         flexWrap="wrap"
         alignItems="center"
       >
-        {routes.map((route) => (
+        {routesWithPermissions.map((route) => (
           <Link key={route.label} to={route.route} style={unusedLinkStyle}>
             {route.label}
           </Link>
