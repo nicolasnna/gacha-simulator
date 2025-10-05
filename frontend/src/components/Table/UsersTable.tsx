@@ -12,7 +12,7 @@ interface UsersTableProps {
 
 export default function UsersTable({ users, roles }: UsersTableProps) {
   return (
-    <Table.Root interactive size="sm" maxW={900}>
+    <Table.Root interactive size="sm">
       <Table.Header>
         <Table.Row bg="background/60">
           <Table.ColumnHeader color="text">Email</Table.ColumnHeader>

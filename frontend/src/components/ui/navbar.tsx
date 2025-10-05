@@ -22,17 +22,21 @@ const routes = [
 function Navbar() {
   const dispatch = useAppDispatch()
   const permisionUser = useAppSelector((s) => s.auth.permissions)
+  const role = useAppSelector((s) => s.auth.userInfo?.role)
   const handleLogout = () => {
     dispatch(logout())
   }
 
-  const routesWithPermissions = routes.filter((r) =>
-    permisionUser.some(
-      (p) =>
-        (p.module === r.permissions && p.actions.length > 0) ||
-        r.permissions === ''
-    )
-  )
+  const routesWithPermissions =
+    role === 'superAdmin'
+      ? routes
+      : routes.filter((r) =>
+          permisionUser.some(
+            (p) =>
+              (p.module === r.permissions && p.actions.length > 0) ||
+              r.permissions === ''
+          )
+        )
 
   return (
     <Box justifyContent="end" p={2}>

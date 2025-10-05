@@ -19,8 +19,6 @@ function Characters() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chars])
 
-  console.log(dataRemaining)
-
   return (
     <Container centerContent py={2} spaceY={10}>
       <HStack my={2}>
@@ -42,7 +40,7 @@ function Characters() {
         w="100%"
         size="md"
       >
-        <Tabs.List mx={10} boxSizing="content-box" w="100%">
+        <Tabs.List mx={10} boxSizing="content-box">
           <Tabs.Trigger value="charObtained" color="text" fontSize="large">
             Obtenidos
           </Tabs.Trigger>

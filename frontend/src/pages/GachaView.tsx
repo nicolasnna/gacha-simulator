@@ -20,13 +20,23 @@ function GachaView() {
 
   return (
     <Container centerContent py={2} spaceY={5}>
-      <HStack mt={2} flexWrap="wrap">
+      <HStack
+        mt={2}
+        flexWrap="wrap"
+        alignItems="center"
+        justifyContent="center"
+      >
         <img
           src="https://emojicdn.elk.sh/🎰?style=facebook"
           width={40}
           alt="Máquina gatcha"
         />
-        <Heading size={'4xl'} color="text" textTransform="uppercase">
+        <Heading
+          size={'4xl'}
+          color="text"
+          textTransform="uppercase"
+          textAlign="center"
+        >
           Simulador de Gacha
         </Heading>
       </HStack>

@@ -20,13 +20,23 @@ function HistoryGacha() {
 
   return (
     <Container centerContent py={2} spaceY={4}>
-      <HStack mt={2} flexWrap="wrap">
+      <HStack
+        mt={2}
+        flexWrap="wrap"
+        alignItems="center"
+        justifyContent="center"
+      >
         <img
           src="https://emojicdn.elk.sh/%F0%9F%93%85?style=google"
           width={50}
           alt="Calendario"
         />
-        <Heading size="4xl" color="text" textTransform="uppercase">
+        <Heading
+          size="4xl"
+          color="text"
+          textTransform="uppercase"
+          textAlign="center"
+        >
           Historial de tiradas
         </Heading>
       </HStack>

@@ -10,6 +10,7 @@ import type {
 } from '@/schemas/permission.schema'
 import { PermissionWithUserIdSchema } from '@/schemas/permission.schema'
 import {
+  Box,
   Button,
   createListCollection,
   HStack,
@@ -120,38 +121,39 @@ export default function PermissionsForm({ roles }: PermissionFormProps) {
           placeholder="Rol"
           values={rolesList}
         />
-
-        <Table.Root interactive size="md" maxW={900}>
-          <Table.Header>
-            <Table.Row bg="background/60" borderRadius={10}>
-              <Table.ColumnHeader color="text">Módulo</Table.ColumnHeader>
-              {actions.map((act) => (
-                <Table.ColumnHeader key={act} color="text">
-                  {act}
-                </Table.ColumnHeader>
-              ))}
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {modules.map((module) => (
-              <Table.Row
-                key={module}
-                bg="bg-secondary/40"
-                _hover={{ bg: 'background' }}
-              >
-                <Table.Cell color="text">{module}</Table.Cell>
-                {actions.map((action) => (
-                  <Table.Cell key={action}>
-                    <CheckboxField
-                      name={`${module}.${action}` as PermissionKeys}
-                      control={control}
-                    />
-                  </Table.Cell>
+        <Box maxW="90dvw" overflowX="auto">
+          <Table.Root interactive size="md">
+            <Table.Header>
+              <Table.Row bg="background/60" borderRadius={10}>
+                <Table.ColumnHeader color="text">Módulo</Table.ColumnHeader>
+                {actions.map((act) => (
+                  <Table.ColumnHeader key={act} color="text">
+                    {act}
+                  </Table.ColumnHeader>
                 ))}
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
+            </Table.Header>
+            <Table.Body>
+              {modules.map((module) => (
+                <Table.Row
+                  key={module}
+                  bg="bg-secondary/40"
+                  _hover={{ bg: 'background' }}
+                >
+                  <Table.Cell color="text">{module}</Table.Cell>
+                  {actions.map((action) => (
+                    <Table.Cell key={action}>
+                      <CheckboxField
+                        name={`${module}.${action}` as PermissionKeys}
+                        control={control}
+                      />
+                    </Table.Cell>
+                  ))}
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </Box>
 
         <HStack alignSelf="end">
           <Button

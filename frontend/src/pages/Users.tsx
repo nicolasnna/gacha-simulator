@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
 import { getAllRoles } from '@/services/redux/roles'
 import { getAllUsers } from '@/services/redux/users'
 import {
+  Box,
   Button,
   Container,
   Heading,
@@ -34,13 +35,23 @@ function Users() {
 
   return (
     <Container centerContent py={2} spaceY={10}>
-      <HStack mt={2} flexWrap="wrap">
+      <HStack
+        mt={2}
+        flexWrap="wrap"
+        alignItems="center"
+        justifyContent="center"
+      >
         <img
           src="https://emojicdn.elk.sh/👤?style=facebook"
           width={40}
           alt="usuario"
         />
-        <Heading size={'4xl'} color="text" textTransform="uppercase">
+        <Heading
+          size={'4xl'}
+          color="text"
+          textTransform="uppercase"
+          textAlign="center"
+        >
           Gestión de usuarios
         </Heading>
       </HStack>
@@ -52,7 +63,7 @@ function Users() {
         fitted
         size="md"
       >
-        <Tabs.List boxSizing="content-box" w="100%">
+        <Tabs.List boxSizing="content-box">
           <Tabs.Trigger value="users" color="text" fontSize="large">
             Usuarios
           </Tabs.Trigger>
@@ -62,7 +73,9 @@ function Users() {
           <Tabs.Indicator rounded="md" bg="bg-secondary" />
         </Tabs.List>
         <Tabs.Content value="users" spaceY={2}>
-          <UsersTable users={data} roles={roles} />
+          <Box maxW="90dvw" overflowX="auto">
+            <UsersTable users={data} roles={roles} />
+          </Box>
           <HStack justifyContent="end">
             <Text color="white">
               Usuarios {itemsInfo.lastItemNumber} de {itemsInfo.totalItems}
