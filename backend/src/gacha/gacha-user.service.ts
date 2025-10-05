@@ -13,6 +13,7 @@ import { Queue } from 'bull'
 import { Model } from 'mongoose'
 import { rarityOrder } from './helpers/rarity-order.helper'
 import { GachaGateway } from './gacha.gateway'
+import { Character, CharacterDocument } from '@common/schemas'
 
 @Injectable()
 export class GachaUserService implements OnModuleInit {
@@ -24,7 +25,9 @@ export class GachaUserService implements OnModuleInit {
     private charactersService: CharactersService,
     @InjectQueue('gacha') private gachaQueue: Queue,
     @Inject(forwardRef(() => GachaGateway))
-    private gachaGateway: GachaGateway
+    private gachaGateway: GachaGateway,
+    @InjectModel(Character.name)
+    private readonly characterModel: Model<CharacterDocument>
   ) {}
 
   async onModuleInit() {
@@ -108,6 +111,34 @@ export class GachaUserService implements OnModuleInit {
     ) // Orderer to ssr, sr, r, and c
 
     return { data: { ...gachaUserDoc, characters: sortedCharacters } }
+  }
+
+  async getCharacterRemaining(userId: string, anime: string) {
+    try {
+      const gachaUser = await this.gachaUserModel
+        .findOne({
+          userId: userId,
+          animeOrigin: anime
+        })
+        .lean()
+        .exec()
+
+      if (!Array.isArray(gachaUser.characters)) return []
+
+      const listCharObtained = gachaUser.characters.map(
+        (char) => char.characterId
+      )
+
+      const listCharRemaining = await this.characterModel
+        .find({ _id: { $nin: listCharObtained }, animeOrigin: anime })
+        .lean()
+        .exec()
+
+      return listCharRemaining
+    } catch (err) {
+      this.logger.error(`Error: ${err.message}`)
+      throw new Error(err.message)
+    }
   }
 
   async rechargeCreditsToAllUsers() {

@@ -4,7 +4,7 @@ import type {
   PromiseState
 } from '@/interfaces/redux-state.interface'
 import { createSlice } from '@reduxjs/toolkit'
-import { getAllCharacters } from './characters.actions'
+import { getAllCharacters, getCharacterRemaining } from './characters.actions'
 import {
   handlePromiseFulfilled,
   handlePromisePending,
@@ -16,6 +16,7 @@ export interface CharactersState {
   promise: PromiseState
   itemsInfo: ItemsInfoState
   data: Character[]
+  dataRemaining: Character[]
 }
 
 const initialState: CharactersState = {
@@ -30,7 +31,8 @@ const initialState: CharactersState = {
     page: 0,
     limit: 20
   },
-  data: []
+  data: [],
+  dataRemaining: []
 }
 
 const charactersSlice = createSlice({
@@ -52,6 +54,16 @@ const charactersSlice = createSlice({
         s.itemsInfo.totalItems = payload.totalItems
 
         s.data = mergeUniqueDataState(s.data, payload.data)
+      })
+      .addCase(getCharacterRemaining.pending, (s) =>
+        handlePromisePending(s.promise)
+      )
+      .addCase(getCharacterRemaining.rejected, (s, { payload }) =>
+        handlePromiseReject(s.promise, payload as string)
+      )
+      .addCase(getCharacterRemaining.fulfilled, (s, { payload }) => {
+        handlePromiseFulfilled(s.promise)
+        s.dataRemaining = payload
       })
   }
 })

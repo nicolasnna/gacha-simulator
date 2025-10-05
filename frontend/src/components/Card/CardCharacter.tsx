@@ -21,13 +21,13 @@ function CardCharacter({ data }: CardCharacterProps) {
         <img src={data.imgUrl} alt={data.name} className="img-card" />
         {!!data.repeatCount && (
           <>
-            <Float placement="bottom-end" right={5} bottom={5} zIndex={10}>
+            <Float placement="top-start" left={5} top={5} zIndex={10}>
               <Circle
                 size="7"
                 bg="bg-secondary"
                 border="2px solid"
                 borderColor={data.rarity}
-                color="white"
+                color={data.rarity}
               >
                 {data.repeatCount}
               </Circle>

@@ -47,6 +47,8 @@ const authSlice = createSlice({
       state.userToken = sessionStorage.getItem('access_token') || null
       const infoStorage = sessionStorage.getItem('info')
       state.userInfo = infoStorage ? JSON.parse(infoStorage) : null
+      const infoPermissions = sessionStorage.getItem('permissions')
+      state.permissions = infoPermissions ? JSON.parse(infoPermissions) : []
     },
     updateAccessToken: (state, action) => {
       state.userToken = action.payload
@@ -88,6 +90,7 @@ const authSlice = createSlice({
         console.log(payload)
         const { data } = payload
         s.permissions = data.grants as Grants[]
+        sessionStorage.setItem('permissions', JSON.stringify(s.permissions))
       })
       .addCase(getPermissions.rejected, (s, { payload }) =>
         handlePromiseReject(s.promise, payload as string)

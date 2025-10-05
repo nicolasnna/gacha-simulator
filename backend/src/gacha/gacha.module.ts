@@ -1,6 +1,11 @@
 import { CharactersModule } from '@/characters/characters.module'
 import { AccessModule } from '@/access/access.module'
-import { GachaPull, GachaPullSchema } from '@common/schemas'
+import {
+  Character,
+  CharacterSchema,
+  GachaPull,
+  GachaPullSchema
+} from '@common/schemas'
 import { GachaUser, GachaUserSchema } from '@common/schemas/gacha-user.schema'
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
@@ -16,7 +21,8 @@ import { GachaUserService } from './gacha-user.service'
     AccessModule,
     MongooseModule.forFeature([
       { name: GachaPull.name, schema: GachaPullSchema },
-      { name: GachaUser.name, schema: GachaUserSchema }
+      { name: GachaUser.name, schema: GachaUserSchema },
+      { name: Character.name, schema: CharacterSchema }
     ]),
     CharactersModule,
     BullModule.registerQueue({ name: 'gacha' })

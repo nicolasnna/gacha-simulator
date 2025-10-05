@@ -66,6 +66,15 @@ export class GachaController {
   }
 
   @Action(ActionKeyEnum.READ)
+  @Get('character-remaining')
+  getCharacterRemaining(
+    @AuthUser() user: JwtPayload,
+    @Query('anime') anime: string
+  ) {
+    return this.gachaUserService.getCharacterRemaining(user.sub, anime)
+  }
+
+  @Action(ActionKeyEnum.READ)
   @Get('credits')
   getGachaCredits(
     @AuthUser() user: JwtPayload,

@@ -20,3 +20,17 @@ export const getAllCharacters = createAsyncThunk(
     }
   }
 )
+
+export const getCharacterRemaining = createAsyncThunk(
+  'characters/getRemaining',
+  async ({ anime }: { anime: string }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/gacha/character-remaining?anime=${anime}`
+      )
+      return response.data
+    } catch (err) {
+      return rejectWithValue(getErrorMessageAxios(err))
+    }
+  }
+)

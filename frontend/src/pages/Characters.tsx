@@ -1,43 +1,25 @@
 import CardCharacter from '@/components/Card/CardCharacter'
 import CardCharacterRemaining from '@/components/Card/CardCharacterRemaining'
-import type { Character } from '@/interfaces/character.interface'
 import useCharactersObtained from '@/services/hooks/useCharactersObtained'
 import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
-import { getAllCharacters } from '@/services/redux/characters'
-import {
-  Button,
-  Container,
-  Heading,
-  HStack,
-  Tabs,
-  Text
-} from '@chakra-ui/react'
-import { useEffect, useMemo } from 'react'
+import { getCharacterRemaining } from '@/services/redux/characters'
+import { Container, Heading, HStack, Tabs } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
 function Characters() {
   const { chars, getCharactersObtained } = useCharactersObtained()
-  const { data, itemsInfo } = useAppSelector((s) => s.characters)
+  const { dataRemaining } = useAppSelector((s) => s.characters)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (chars.length === 0) {
       getCharactersObtained()
+      dispatch(getCharacterRemaining({ anime: 'naruto' }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chars])
 
-  const charsRemaining: Character[] = useMemo(() => {
-    const charIdObtained = chars.map((char) => char.characterId)
-    const remaining = data.filter(
-      (charAll) => !charIdObtained.includes(charAll.id)
-    )
-    return remaining
-  }, [data, chars])
-
-  const loadMoreCharacters = () =>
-    dispatch(
-      getAllCharacters({ page: itemsInfo.page + 1, limit: itemsInfo.limit })
-    )
+  console.log(dataRemaining)
 
   return (
     <Container centerContent py={2} spaceY={10}>
@@ -88,28 +70,9 @@ function Characters() {
             alignItems="center"
             justifyContent="center"
           >
-            {charsRemaining.map((chara) => (
-              <CardCharacterRemaining key={chara.id} data={chara} />
+            {dataRemaining.map((chara) => (
+              <CardCharacterRemaining key={chara.name} data={chara} />
             ))}
-          </HStack>
-          <HStack justifyContent="end">
-            <Text color="white" fontSize="large">
-              Personajes revisados{' '}
-              {itemsInfo.lastItemNumber < itemsInfo.totalItems
-                ? itemsInfo.lastItemNumber
-                : itemsInfo.totalItems}{' '}
-              de {itemsInfo.totalItems}
-            </Text>
-            <Button
-              bg="primary"
-              onClick={loadMoreCharacters}
-              disabled={
-                itemsInfo.lastItemNumber >= itemsInfo.totalItems &&
-                itemsInfo.lastItemNumber !== 0
-              }
-            >
-              Comprobar más
-            </Button>
           </HStack>
         </Tabs.Content>
       </Tabs.Root>
