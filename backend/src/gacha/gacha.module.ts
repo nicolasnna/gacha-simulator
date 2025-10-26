@@ -15,6 +15,8 @@ import { BullModule } from '@nestjs/bull'
 import { GachaProcessor } from './gacha.processor'
 import { GachaGateway } from './gacha.gateway'
 import { GachaUserService } from './gacha-user.service'
+import { Banner, BannerSchema } from '@common/schemas/banner.schema'
+import { PullHelper } from './helpers/pull.helper'
 
 @Module({
   imports: [
@@ -22,13 +24,20 @@ import { GachaUserService } from './gacha-user.service'
     MongooseModule.forFeature([
       { name: GachaPull.name, schema: GachaPullSchema },
       { name: GachaUser.name, schema: GachaUserSchema },
-      { name: Character.name, schema: CharacterSchema }
+      { name: Character.name, schema: CharacterSchema },
+      { name: Banner.name, schema: BannerSchema }
     ]),
     CharactersModule,
     BullModule.registerQueue({ name: 'gacha' })
   ],
   controllers: [GachaController],
-  providers: [GachaService, GachaProcessor, GachaGateway, GachaUserService],
+  providers: [
+    GachaService,
+    GachaProcessor,
+    GachaGateway,
+    GachaUserService,
+    PullHelper
+  ],
   exports: [GachaService, GachaUserService]
 })
 export class GachaModule {}

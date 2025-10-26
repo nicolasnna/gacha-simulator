@@ -1,9 +1,8 @@
-import { AnimeEnum } from '@common/enums'
-import { IsEnum, IsString } from 'class-validator'
+import { IsString } from 'class-validator'
 
 export class CharacterObtainedDto {
-  @IsEnum(AnimeEnum)
-  anime: AnimeEnum
+  @IsString()
+  anime: string
 
   @IsString()
   charId: string

@@ -11,6 +11,7 @@ import { GachaModule } from './gacha/gacha.module'
 import { AccessModule } from '@/access/access.module'
 import { RedisModule } from './redis/redis.module'
 import { BullModule } from '@nestjs/bull'
+import { BannersModule } from './banners/banners.module'
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { BullModule } from '@nestjs/bull'
     CharactersModule,
     GachaModule,
     AccessModule,
-    RedisModule
+    RedisModule,
+    BannersModule
   ],
   controllers: [AppController],
   providers: [AppService]

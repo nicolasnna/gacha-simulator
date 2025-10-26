@@ -1,7 +1,6 @@
 import type {
   ActionType,
-  ModuleType,
-  PermissionKeys
+  ModuleType
 } from '@/interfaces/permissions.interfaces'
 import type { Role } from '@/interfaces/role.interface'
 import type {
@@ -9,6 +8,9 @@ import type {
   PermissionWithUserIdType
 } from '@/schemas/permission.schema'
 import { PermissionWithUserIdSchema } from '@/schemas/permission.schema'
+import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
+import { updatePermissionRole } from '@/services/redux/roles'
+import { permissionsToGrantsAPI } from '@/utils/grants-helper'
 import {
   Box,
   Button,
@@ -18,13 +20,10 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import CheckboxField from './CheckboxField'
 import FieldSelect from './FieldSelect'
-import { useCallback, useEffect } from 'react'
-import { permissionsToGrantsAPI } from '@/utils/grants-helper'
-import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
-import { updatePermissionRole } from '@/services/redux/roles'
 
 const defaultPermissions = {
   manage: false,
@@ -34,11 +33,13 @@ const defaultPermissions = {
   delete: false
 }
 
-interface PermissionFormProps {
+type PermissionFormProps = {
   roles: Role[]
 }
 
-export default function PermissionsForm({ roles }: PermissionFormProps) {
+export default function PermissionsForm(props: Readonly<PermissionFormProps>) {
+  const { roles } = props
+
   const actions: ActionType[] = ['manage', 'read', 'create', 'update', 'delete']
   const modules: ModuleType[] = ['users', 'gachas', 'histories', 'characters']
   const dispatch = useAppDispatch()
@@ -144,7 +145,7 @@ export default function PermissionsForm({ roles }: PermissionFormProps) {
                   {actions.map((action) => (
                     <Table.Cell key={action}>
                       <CheckboxField
-                        name={`${module}.${action}` as PermissionKeys}
+                        name={`${module}.${action}`}
                         control={control}
                       />
                     </Table.Cell>

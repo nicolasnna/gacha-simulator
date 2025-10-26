@@ -1,6 +1,5 @@
 import { RarityCharacterEnum } from '@common/enums'
-
-export type Rates = Record<RarityCharacterEnum, number>
+import { Rates } from '@common/types'
 
 export const BASE_RATES: Rates = {
   [RarityCharacterEnum.SuperSuperRare]: 0.5,

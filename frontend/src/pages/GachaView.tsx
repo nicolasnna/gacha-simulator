@@ -3,12 +3,12 @@ import type { RarityType } from '@/interfaces/rarity.interface'
 import useUserCredits from '@/services/hooks/useUserCredits'
 import { Card, Container, Heading, HStack, Text } from '@chakra-ui/react'
 
-interface rarityCard {
+interface RarityCard {
   rare: RarityType
   prob: number
 }
 
-const rarityCards: rarityCard[] = [
+const rarityCards: RarityCard[] = [
   { rare: 'ssr', prob: 0.5 },
   { rare: 'sr', prob: 3 },
   { rare: 'r', prob: 12 },

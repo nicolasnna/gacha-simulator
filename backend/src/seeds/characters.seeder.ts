@@ -13,7 +13,7 @@ export class CharactersSeeder {
   constructor(
     @InjectModel(Character.name)
     private readonly characterModel: Model<CharacterDocument>,
-    private characterService: CharactersService
+    private readonly characterService: CharactersService
   ) {}
 
   async drop() {

@@ -10,7 +10,10 @@ interface UsersTableProps {
   roles: Role[]
 }
 
-export default function UsersTable({ users, roles }: UsersTableProps) {
+export default function UsersTable({
+  users,
+  roles
+}: Readonly<UsersTableProps>) {
   return (
     <Table.Root interactive size="sm">
       <Table.Header>

@@ -1,10 +1,9 @@
-import { AnimeEnum } from '@common/enums'
 import { PullsEnum } from '@common/enums/pulls.enum'
-import { IsEnum } from 'class-validator'
+import { IsEnum, IsString } from 'class-validator'
 
 export class PullDto {
-  @IsEnum(AnimeEnum)
-  anime: AnimeEnum
+  @IsString()
+  anime: string
 
   @IsEnum(PullsEnum)
   pulls!: PullsEnum

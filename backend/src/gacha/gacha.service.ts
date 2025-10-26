@@ -1,20 +1,19 @@
-import { CharactersService } from '@/characters/characters.service'
-import { RarityCharacterEnum } from '@common/enums'
-import { PullsEnum, PullsValueEnum } from '@common/enums/pulls.enum'
+import { PullsEnum } from '@common/enums/pulls.enum'
 import { GachaPull, GachaPullDocument } from '@common/schemas'
+import { Banner, BannerDocument } from '@common/schemas/banner.schema'
 import { InjectQueue } from '@nestjs/bull'
-import { BadRequestException, Injectable, Logger } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException
+} from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Queue } from 'bull'
 import { Model } from 'mongoose'
 import { UserPullDto } from './dto/pull.dto'
-import {
-  BASE_RATES,
-  calculateMultiplePullRarity,
-  calculateSinglePullRarity
-} from './helpers/gacha-probability.helper'
-import { GachaUserService } from './gacha-user.service'
 import { GachaGateway } from './gacha.gateway'
+import { PullHelper } from './helpers/pull.helper'
 
 @Injectable()
 export class GachaService {
@@ -23,10 +22,11 @@ export class GachaService {
   constructor(
     @InjectModel(GachaPull.name)
     private readonly gachaPullModel: Model<GachaPullDocument>,
-    private charactersService: CharactersService,
-    private gachaUserService: GachaUserService,
-    private gachaGateway: GachaGateway,
-    @InjectQueue('gacha') private gachaQueue: Queue
+    @InjectModel(Banner.name)
+    private readonly bannerModel: Model<BannerDocument>,
+    private readonly pullHelper: PullHelper,
+    private readonly gachaGateway: GachaGateway,
+    @InjectQueue('gacha') private readonly gachaQueue: Queue
   ) {}
 
   async gachaPullQueue({ anime, pulls, userId }: UserPullDto) {
@@ -50,72 +50,28 @@ export class GachaService {
   }
 
   async gachaPull({ anime, pulls, userId }: UserPullDto) {
+    const getBannerAnime = await this.bannerModel.findOne({ anime: anime })
+
+    if (!getBannerAnime)
+      throw new NotFoundException(
+        'No se ha encontrador el banner del anime mencionado'
+      )
+
     if (![PullsEnum.One, PullsEnum.Ten].includes(pulls)) {
       throw new BadRequestException(
         'Los pulls del gacha solo pueden ser 1 o 10'
       )
     }
 
-    const dataUser = await this.gachaUserService.getCreditsByAnimeBanner(
-      userId,
-      anime
-    )
+    const results =
+      pulls === PullsEnum.One
+        ? await this.pullHelper.singlePull(userId, getBannerAnime)
+        : await this.pullHelper.multiPull(userId, getBannerAnime)
+    const { currentCredits, ...pullsInfo } = results
 
-    let items = []
+    this.gachaGateway.sendCurrentCredits(userId, anime, +currentCredits)
 
-    if (pulls === PullsEnum.One) {
-      if (dataUser.data.credits < (PullsValueEnum.One as number)) {
-        throw new BadRequestException('Necesitas 3 creditos para una single')
-      }
-      const rarity = calculateSinglePullRarity(BASE_RATES)
-      items = await this.charactersService.getRandomByRarity(rarity, 1)
-    }
-
-    if (pulls === PullsEnum.Ten) {
-      if (dataUser.data.credits < (PullsValueEnum.Ten as number)) {
-        throw new BadRequestException('Necesitas 25 creditos para una multi')
-      }
-
-      const numberByRarity = calculateMultiplePullRarity(BASE_RATES, 10)
-
-      for (const [rarity, count] of Object.entries(numberByRarity)) {
-        if (count > 0) {
-          const charObtained = await this.charactersService.getRandomByRarity(
-            rarity as RarityCharacterEnum,
-            count
-          )
-          items.push(...charObtained)
-        }
-      }
-    }
-
-    const newPull = new this.gachaPullModel({
-      userId: userId,
-      animeOrigin: anime,
-      pullsCount: pulls,
-      items: items
-    })
-
-    // update user gacha info
-    for (const char of items) {
-      await this.gachaUserService.setCharacterObtained(userId, anime, char._id)
-    }
-
-    let newCreditsUser
-    if (pulls === PullsEnum.One) {
-      newCreditsUser = await this.gachaUserService.incCreditValue(
-        userId,
-        anime,
-        -3
-      )
-    } else {
-      newCreditsUser = await this.gachaUserService.incCreditValue(
-        userId,
-        anime,
-        -25
-      )
-    }
-    this.gachaGateway.sendCurrentCredits(userId, anime, newCreditsUser?.credits)
+    const newPull = new this.gachaPullModel(pullsInfo)
 
     return await newPull.save({ validateBeforeSave: true })
   }

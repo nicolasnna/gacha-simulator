@@ -22,10 +22,11 @@ export class GachaUserService implements OnModuleInit {
   constructor(
     @InjectModel(GachaUser.name)
     private readonly gachaUserModel: Model<GachaUserDocument>,
-    private charactersService: CharactersService,
-    @InjectQueue('gacha') private gachaQueue: Queue,
+    private readonly charactersService: CharactersService,
+    @InjectQueue('gacha')
+    private readonly gachaQueue: Queue,
     @Inject(forwardRef(() => GachaGateway))
-    private gachaGateway: GachaGateway,
+    private readonly gachaGateway: GachaGateway,
     @InjectModel(Character.name)
     private readonly characterModel: Model<CharacterDocument>
   ) {}
