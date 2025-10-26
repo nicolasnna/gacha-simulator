@@ -22,7 +22,7 @@ export class CharactersService {
     mal_id,
     rarity,
     value,
-    banner
+    banners
   }: CreateCharacterDto) {
     const urlApiJikan = `https://api.jikan.moe/v4/characters/${mal_id}/full`
 
@@ -45,7 +45,7 @@ export class CharactersService {
         nicknames: characterData.nicknames ?? [],
         imgUrl: characterData.images.webp.image_url,
         rarity: rarity,
-        banner: banner,
+        banners: banners,
         value: value,
         animeOrigin: String(title).toLowerCase()
       })
@@ -77,7 +77,7 @@ export class CharactersService {
     return { id: _id.toString(), ...rest }
   }
 
-  async create(charData: CreateCharacterDto) {
+  async createByMalId(charData: CreateCharacterDto) {
     const char = await this._fetchAndGetCharacter({ ...charData })
     return { data: char }
   }
@@ -127,13 +127,18 @@ export class CharactersService {
     return { data: charObj }
   }
 
-  async getRandomByRarity(rarity: RarityCharacterEnum, count: number) {
+  async getRandomByRarity(
+    bannerId: string,
+    rarity: RarityCharacterEnum,
+    count: number
+  ) {
     const results = await this.characterModel
       .aggregate([
         {
           $match: {
             rarity: rarity,
-            isActive: true
+            isActive: true,
+            banners: bannerId
           }
         },
         { $sample: { size: count } },

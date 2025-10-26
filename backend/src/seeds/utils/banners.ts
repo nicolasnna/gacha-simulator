@@ -16,8 +16,8 @@ export const bannerList: banner[] = [
     rates: {
       ssr: 0.5,
       sr: 4.5,
-      r: 30.0,
-      c: 65.0
+      r: 30,
+      c: 65
     },
     costSinglePull: 3,
     costMultiPull: 25

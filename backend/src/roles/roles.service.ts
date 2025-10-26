@@ -1,4 +1,4 @@
-import { Role, UserDocument } from '@common/schemas'
+import { Role, RoleDocument } from '@common/schemas'
 import {
   BadRequestException,
   ConflictException,
@@ -15,7 +15,7 @@ import { RoleType } from './types/role.type'
 @Injectable()
 export class RolesService {
   constructor(
-    @InjectModel(Role.name) private readonly roleModel: Model<UserDocument>
+    @InjectModel(Role.name) private readonly roleModel: Model<RoleDocument>
   ) {}
 
   async create(roleData: CreateRoleDto) {

@@ -24,9 +24,9 @@ export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
   @Action(ActionKeyEnum.CREATE)
-  @Post()
-  create(@Body() createCharacterDto: CreateCharacterDto) {
-    return this.charactersService.create(createCharacterDto)
+  @Post('byMalId')
+  createByMalId(@Body() createCharacterDto: CreateCharacterDto) {
+    return this.charactersService.createByMalId(createCharacterDto)
   }
 
   @Action(ActionKeyEnum.READ)

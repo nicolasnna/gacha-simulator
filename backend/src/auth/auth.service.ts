@@ -1,45 +1,48 @@
-import { UsersService } from '@/users/users.service'
+import { RedisService } from '@/redis/redis.service'
 import { RoleEnum } from '@common/enums'
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { InjectModel } from '@nestjs/mongoose'
 import * as bcrypt from 'bcrypt'
+import { Response } from 'express'
 import { Model } from 'mongoose'
 import { User, UserDocument } from 'src/common/schemas/user.schema'
 import { LoginUserDto } from './dto/login-user.dto'
 import { RegisterUserDto } from './dto/register-user.dto'
 import { AuthUserResponse } from './types/auth-response.type'
-import { Response } from 'express'
-import { ConfigService } from '@nestjs/config'
-import { RedisService } from '@/redis/redis.service'
 
 type UserResponse = Omit<User, 'passwordHash'> & { id: string }
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-    private jwtService: JwtService,
-    private userService: UsersService,
-    private configService: ConfigService,
-    private redisService: RedisService
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly redisService: RedisService
   ) {}
 
   async register(
     userData: RegisterUserDto,
     res: Response
   ): Promise<AuthUserResponse> {
-    const user = await this.userService.create({
-      name: userData.name,
+    const exists = await this.userModel.exists({ email: userData.email })
+    if (exists) throw new ConflictException('Email ya registrado')
+
+    const passwordHash = await bcrypt.hash(userData.password, 12)
+    const userDoc = await this.userModel.create({
       email: userData.email,
-      password: userData.password,
-      role: RoleEnum.User
+      passwordHash,
+      role: RoleEnum.User,
+      name: userData.name
     })
 
-    return await this.sendTokens(user.data, res)
+    return await this.sendTokens(userDoc, res)
   }
 
   async loginUser(

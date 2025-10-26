@@ -1,5 +1,5 @@
-import { RolesService } from '@/roles/roles.service'
 import { ActionKeyEnum, ModuleKeyEnum, RoleEnum } from '@common/enums'
+import { Role, RoleDocument } from '@common/schemas'
 import {
   CanActivate,
   ExecutionContext,
@@ -7,6 +7,8 @@ import {
   Injectable
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 import {
   ACL_KEY,
   PERMISSION_KEY,
@@ -17,8 +19,8 @@ import {
 @Injectable()
 export class AccessGuard implements CanActivate {
   constructor(
-    private reflector: Reflector,
-    private rolesService: RolesService
+    private readonly reflector: Reflector,
+    @InjectModel(Role.name) private readonly roleModel: Model<RoleDocument>
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -58,21 +60,17 @@ export class AccessGuard implements CanActivate {
       return true
     }
 
-    if (
-      requiredRoles &&
-      requiredRoles.length &&
-      !requiredRoles.some((role) => role === user.role)
-    )
+    if (requiredRoles.length && !requiredRoles.includes(user.role))
       throw new ForbiddenException('Rol del usuario no autorizado')
 
-    const userRole = await this.rolesService.findRole(user.role)
+    const userRole = await this.roleModel.findOne({ key: user.role })
 
-    const grantForModule = userRole.data['grants'].find(
+    const grantForModule = userRole.grants.find(
       (g) => g.module === requiredResource
     )
 
     if (
-      (grantForModule && grantForModule.actions.includes(requiredAcl)) ||
+      grantForModule.actions.includes(requiredAcl) ||
       grantForModule.actions.includes(ActionKeyEnum.MANAGE)
     )
       return true

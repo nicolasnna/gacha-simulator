@@ -1,11 +1,7 @@
-import {
-  AnimeEnum,
-  BannerEnum,
-  RarityCharacterEnum,
-  ValueCharacterEnum
-} from '@common/enums'
+import { RarityCharacterEnum, ValueCharacterEnum } from '@common/enums'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { HydratedDocument } from 'mongoose'
+import mongoose, { HydratedDocument } from 'mongoose'
+import { Banner } from './banner.schema'
 
 export type CharacterDocument = HydratedDocument<Character>
 
@@ -41,15 +37,12 @@ export class Character {
   value: ValueCharacterEnum
 
   @Prop({
-    default: BannerEnum.Standard,
-    enum: Object.values(BannerEnum),
-    type: String,
-    index: 1
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Banner' }]
   })
-  banner: BannerEnum
+  banners: Banner[]
 
-  @Prop({ required: true, enum: AnimeEnum, type: String, index: 1 })
-  animeOrigin: AnimeEnum
+  @Prop({ required: true, type: String, index: 1 })
+  animeOrigin: string
 
   @Prop({ default: true, index: 1 })
   isActive: boolean

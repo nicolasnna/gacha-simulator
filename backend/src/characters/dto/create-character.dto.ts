@@ -1,17 +1,20 @@
+import { RarityCharacterEnum, ValueCharacterEnum } from '@common/enums'
 import {
-  BannerEnum,
-  RarityCharacterEnum,
-  ValueCharacterEnum
-} from '@common/enums'
-import { IsEnum, IsNumber, IsPositive } from 'class-validator'
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsPositive,
+  IsString
+} from 'class-validator'
 
 export class CreateCharacterDto {
   @IsNumber()
   @IsPositive()
   mal_id: number
 
-  @IsEnum(BannerEnum)
-  banner: BannerEnum
+  @IsArray()
+  @IsString({ each: true })
+  banners: string[]
 
   @IsEnum(ValueCharacterEnum)
   value: ValueCharacterEnum

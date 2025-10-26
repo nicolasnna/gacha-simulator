@@ -1,5 +1,5 @@
 import { CharactersService } from '@/characters/characters.service'
-import { Banner } from '@common/schemas/banner.schema'
+import { Banner, BannerDocument } from '@common/schemas/banner.schema'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { GachaUserService } from '../gacha-user.service'
 import {
@@ -16,7 +16,7 @@ export class PullHelper {
     private readonly gachaUserService: GachaUserService
   ) {}
 
-  async singlePull(userId: string, bannerInfo: Banner) {
+  async singlePull(userId: string, bannerInfo: BannerDocument) {
     const dataUser = await this.gachaUserService.getCreditsByAnimeBanner(
       userId,
       bannerInfo.anime
@@ -28,7 +28,11 @@ export class PullHelper {
       )
     }
     const rarity = calculateSinglePullRarity(bannerInfo.rates)
-    const char = await this.charactersService.getRandomByRarity(rarity, 1)
+    const char = await this.charactersService.getRandomByRarity(
+      String(bannerInfo._id),
+      rarity,
+      1
+    )
 
     const currentCredits = await this.updateUserGachaCharacters(
       userId,
@@ -45,7 +49,7 @@ export class PullHelper {
     }
   }
 
-  async multiPull(userId: string, bannerInfo: Banner) {
+  async multiPull(userId: string, bannerInfo: BannerDocument) {
     const dataUser = await this.gachaUserService.getCreditsByAnimeBanner(
       userId,
       bannerInfo.anime
@@ -62,6 +66,7 @@ export class PullHelper {
     for (const [rarity, count] of Object.entries(numberByRarity)) {
       if (count > 0) {
         const charObtained = await this.charactersService.getRandomByRarity(
+          String(bannerInfo._id),
           rarity as RarityCharacterEnum,
           count
         )

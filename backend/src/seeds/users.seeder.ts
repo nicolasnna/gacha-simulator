@@ -23,7 +23,7 @@ export class UsersSeeder {
   }> = [
     {
       email: 'super@local.test',
-      password: 'Admin123',
+      password: '123123',
       name: 'Super Admin',
       role: RoleEnum.SuperAdmin,
       superAdmin: true,
@@ -31,28 +31,28 @@ export class UsersSeeder {
     },
     {
       email: 'gacha@local.test',
-      password: 'Secret123',
+      password: '123123',
       name: 'Gacha Mgr',
       role: RoleEnum.Moderator,
       active: true
     },
     {
       email: 'editor@local.test',
-      password: 'Secret123',
+      password: '123123',
       name: 'Editor',
       role: RoleEnum.Developer,
       active: true
     },
     {
       email: 'viewer@local.test',
-      password: 'Secret123',
+      password: '123123',
       name: 'Viewer',
       role: RoleEnum.User,
       active: true
     },
     {
       email: 'user@local.test',
-      password: 'Secret123',
+      password: '123123',
       name: 'Usuario',
       role: RoleEnum.User,
       active: true
