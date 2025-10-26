@@ -28,7 +28,7 @@ export class GachaGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {}
 
   private readonly logger = new Logger(GachaGateway.name)
-  private connectedClients = new Map<string, Socket>()
+  private readonly connectedClients = new Map<string, Socket>()
 
   handleConnection(client: Socket) {
     this.logger.log(`Cliente conectado: ${client.id}`)

@@ -57,7 +57,7 @@ export class PullHelper {
 
     if (dataUser.data.credits < bannerInfo.costMultiPull) {
       throw new BadRequestException(
-        `Necesitas ${bannerInfo.costMultiPull} creditos para una single`
+        `Necesitas ${bannerInfo.costMultiPull} creditos para una multi`
       )
     }
     const numberByRarity = calculateMultiplePullRarity(bannerInfo.rates, 10)
@@ -102,14 +102,15 @@ export class PullHelper {
       )
     }
 
-    const currentCredits: GachaUser =
+    const userDataUpdated: GachaUser =
       await this.gachaUserService.incCreditValue(
         userId,
         bannerInfo.anime,
         characters.length === 1
-          ? bannerInfo.costSinglePull
-          : bannerInfo.costMultiPull
+          ? -bannerInfo.costSinglePull
+          : -bannerInfo.costMultiPull
       )
-    return { currentCredits: currentCredits.credits }
+
+    return userDataUpdated.credits
   }
 }

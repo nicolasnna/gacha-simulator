@@ -53,14 +53,12 @@ export class AccessGuard implements CanActivate {
     const requiredResource = requiredPermission?.module || metaRequiredResource
     const requiredAcl = requiredPermission?.action || metaRequiredAcl
 
-    console.log(requiredAcl)
-
     if (!requiredResource || !requiredAcl) {
       console.warn('Falta definir modulo o action')
       return true
     }
 
-    if (requiredRoles.length && !requiredRoles.includes(user.role))
+    if (requiredRoles?.length && !requiredRoles.includes(user.role))
       throw new ForbiddenException('Rol del usuario no autorizado')
 
     const userRole = await this.roleModel.findOne({ key: user.role })

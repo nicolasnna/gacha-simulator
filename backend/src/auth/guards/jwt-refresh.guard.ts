@@ -15,9 +15,9 @@ export class JwtWithRefreshGuard implements CanActivate {
   private readonly logger = new Logger(JwtWithRefreshGuard.name)
 
   constructor(
-    private jwtService: JwtService,
-    private redisService: RedisService,
-    private configService: ConfigService
+    private readonly jwtService: JwtService,
+    private readonly redisService: RedisService,
+    private readonly configService: ConfigService
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

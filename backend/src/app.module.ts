@@ -1,20 +1,17 @@
+import { AccessModule } from '@/access/access.module'
+import { BullModule } from '@nestjs/bull'
 import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
-import { UsersModule } from './users/users.module'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { DatabaseModule } from './connection'
-import { RolesModule } from './roles/roles.module'
-import { CharactersModule } from './characters/characters.module'
-import { GachaModule } from './gacha/gacha.module'
-import { AccessModule } from '@/access/access.module'
-import { RedisModule } from './redis/redis.module'
-import { BullModule } from '@nestjs/bull'
 import { BannersModule } from './banners/banners.module'
-import { APP_GUARD } from '@nestjs/core'
-import { JwtWithRefreshGuard } from './auth/guards/jwt-refresh.guard'
-import { AccessGuard } from '@access/access.guard'
+import { CharactersModule } from './characters/characters.module'
+import { DatabaseModule } from './connection'
+import { GachaModule } from './gacha/gacha.module'
+import { RedisModule } from './redis/redis.module'
+import { RolesModule } from './roles/roles.module'
+import { UsersModule } from './users/users.module'
 
 @Module({
   imports: [
@@ -43,10 +40,6 @@ import { AccessGuard } from '@access/access.guard'
     BannersModule
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    { provide: APP_GUARD, useClass: JwtWithRefreshGuard },
-    { provide: APP_GUARD, useClass: AccessGuard }
-  ]
+  providers: [AppService]
 })
 export class AppModule {}

@@ -17,7 +17,7 @@ function Characters() {
       dispatch(getCharacterRemaining({ anime: 'naruto' }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chars])
+  }, [])
 
   return (
     <Container centerContent py={2} spaceY={10}>

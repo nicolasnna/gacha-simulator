@@ -7,7 +7,7 @@ import {
   NotFoundException
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
+import mongoose, { Model } from 'mongoose'
 import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 
@@ -138,7 +138,7 @@ export class CharactersService {
           $match: {
             rarity: rarity,
             isActive: true,
-            banners: bannerId
+            banners: new mongoose.Types.ObjectId(bannerId)
           }
         },
         { $sample: { size: count } },
