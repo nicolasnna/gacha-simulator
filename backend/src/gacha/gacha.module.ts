@@ -1,22 +1,23 @@
-import { CharactersModule } from '@/characters/characters.module'
 import { AccessModule } from '@/access/access.module'
+import { CharactersModule } from '@/characters/characters.module'
 import {
   Character,
   CharacterSchema,
   GachaPull,
   GachaPullSchema
 } from '@common/schemas'
+import { Banner, BannerSchema } from '@common/schemas/banner.schema'
 import { GachaUser, GachaUserSchema } from '@common/schemas/gacha-user.schema'
+import { BullModule } from '@nestjs/bull'
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
-import { GachaController } from './gacha.controller'
-import { GachaService } from './gacha.service'
-import { BullModule } from '@nestjs/bull'
-import { GachaProcessor } from './gacha.processor'
-import { GachaGateway } from './gacha.gateway'
 import { GachaUserService } from './gacha-user.service'
-import { Banner, BannerSchema } from '@common/schemas/banner.schema'
+import { GachaController } from './gacha.controller'
+import { GachaGateway } from './gacha.gateway'
+import { GachaProcessor } from './gacha.processor'
+import { GachaService } from './gacha.service'
 import { PullHelper } from './helpers/pull.helper'
+import { UsersModule } from '@/users/users.module'
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PullHelper } from './helpers/pull.helper'
       { name: Character.name, schema: CharacterSchema },
       { name: Banner.name, schema: BannerSchema }
     ]),
+    UsersModule,
     CharactersModule,
     BullModule.registerQueue({ name: 'gacha' })
   ],

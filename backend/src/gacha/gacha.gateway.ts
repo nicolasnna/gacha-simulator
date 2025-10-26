@@ -10,6 +10,7 @@ import {
 } from '@nestjs/websockets'
 import { Server, Socket } from 'socket.io'
 import { GachaUserService } from './gacha-user.service'
+import { UsersService } from '@/users/users.service'
 
 @WebSocketGateway({
   cors: {
@@ -24,7 +25,8 @@ export class GachaGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
     @Inject(forwardRef(() => GachaUserService))
-    private readonly gachaUserService: GachaUserService
+    private readonly gachaUserService: GachaUserService,
+    private readonly usersService: UsersService
   ) {}
 
   private readonly logger = new Logger(GachaGateway.name)
@@ -58,12 +60,16 @@ export class GachaGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     client.on(
       `get-user-credits-${userId}`,
-      async (data: { userId: string; anime: string }) => {
-        const dataUser = await this.gachaUserService.getCreditsByAnimeBanner(
+      async (data: { userId: string }) => {
+        const dataUser = await this.usersService.findById(userId)
+
+        const { creditsPromotional, creditsStandard } = dataUser.data
+
+        this.sendCurrentCredits(
           data.userId,
-          data.anime
+          creditsPromotional,
+          creditsStandard
         )
-        this.sendCurrentCredits(data.userId, data.anime, dataUser.data.credits)
       }
     )
   }
@@ -89,10 +95,16 @@ export class GachaGateway implements OnGatewayConnection, OnGatewayDisconnect {
     })
   }
 
-  sendCurrentCredits(userId: string, anime: string, credits: number) {
-    this.server.to(`user-${userId}`).emit('user-credits', { credits, anime })
+  sendCurrentCredits(
+    userId: string,
+    creditsPromotional: number,
+    creditsStandard: number
+  ) {
+    this.server
+      .to(`user-${userId}`)
+      .emit('user-credits', { creditsPromotional, creditsStandard })
     this.logger.log(
-      `Enviando la cantidad actual de creditos (${credits}) al usuario ${userId}`
+      `Enviando la cantidad actual de creditos (promocional: ${creditsPromotional}, standard: ${creditsStandard}) al usuario ${userId}`
     )
   }
 

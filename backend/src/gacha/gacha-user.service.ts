@@ -1,4 +1,6 @@
 import { CharactersService } from '@/characters/characters.service'
+import { UsersService } from '@/users/users.service'
+import { Character, CharacterDocument } from '@common/schemas'
 import { GachaUser, GachaUserDocument } from '@common/schemas/gacha-user.schema'
 import { InjectQueue } from '@nestjs/bull'
 import {
@@ -11,9 +13,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose'
 import { Queue } from 'bull'
 import { Model } from 'mongoose'
-import { rarityOrder } from './helpers/rarity-order.helper'
 import { GachaGateway } from './gacha.gateway'
-import { Character, CharacterDocument } from '@common/schemas'
+import { rarityOrder } from './helpers/rarity-order.helper'
 
 @Injectable()
 export class GachaUserService implements OnModuleInit {
@@ -28,7 +29,8 @@ export class GachaUserService implements OnModuleInit {
     @Inject(forwardRef(() => GachaGateway))
     private readonly gachaGateway: GachaGateway,
     @InjectModel(Character.name)
-    private readonly characterModel: Model<CharacterDocument>
+    private readonly characterModel: Model<CharacterDocument>,
+    private readonly usersService: UsersService
   ) {}
 
   async onModuleInit() {
@@ -143,53 +145,7 @@ export class GachaUserService implements OnModuleInit {
   }
 
   async rechargeCreditsToAllUsers() {
-    try {
-      await this.gachaUserModel.updateMany({}, { $inc: { credits: 15 } })
-      this.logger.log('Creditos incrementados de todos los usuarios')
-      this.gachaGateway.informCreditRecharge()
-    } catch (err) {
-      console.error(`Error al recargar los creditos de los usuarios: ${err}`)
-      throw err
-    }
-  }
-
-  async incCreditValue(userId: string, animeOrigin: string, count: number) {
-    const updatedUser = await this.gachaUserModel
-      .findOneAndUpdate(
-        {
-          userId: userId,
-          animeOrigin: animeOrigin
-        },
-        { $inc: { credits: count } },
-        { new: true }
-      )
-      .lean()
-      .exec()
-    return updatedUser
-  }
-
-  async getCreditsByAnimeBanner(userId: string, animeOrigin: string) {
-    const exist = await this.gachaUserModel
-      .findOne({
-        userId: userId,
-        animeOrigin: animeOrigin
-      })
-      .lean()
-      .exec()
-
-    if (exist) {
-      const data = { credits: exist.credits, anime: exist.animeOrigin }
-
-      return { data: data }
-    }
-
-    const newGachaUser = new this.gachaUserModel({
-      userId,
-      animeOrigin
-    })
-
-    const newDoc = await newGachaUser.save()
-
-    return { data: { credits: newDoc.credits, anime: newDoc.animeOrigin } }
+    const result = await this.usersService.incrementAllUserCredits(5, 15)
+    if (result) this.gachaGateway.informCreditRecharge()
   }
 }

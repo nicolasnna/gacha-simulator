@@ -90,10 +90,7 @@ export class AuthService {
 
     const userRes: UserResponse = {
       id: idObj,
-      email: user.email,
-      role: user.role,
-      superAdmin: user.superAdmin,
-      active: user.active
+      ...user
     }
 
     const tokens = await this.generateTokens(

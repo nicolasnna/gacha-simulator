@@ -3,6 +3,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
@@ -16,6 +17,8 @@ import { FindEmailUserDto } from './dto/find-email-user.dto'
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name)
+
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) {}
@@ -118,6 +121,47 @@ export class UsersService {
 
   async activateById(id: string): Promise<UserResponse> {
     return await this._changeActiveState(id, true)
+  }
+
+  async incrementAllUserCredits(incPromotional: number, incStandard: number) {
+    try {
+      await this.userModel.updateMany(
+        {},
+        {
+          $inc: {
+            creditsPromotional: incPromotional,
+            creditsStandard: incStandard
+          }
+        }
+      )
+      this.logger.log('Creditos incrementados de todos los usuarios')
+      return true
+    } catch (err) {
+      this.logger.warn(`Error al recargar los creditos de los usuarios: ${err}`)
+      return false
+    }
+  }
+
+  async incrementSingleUserCredits(
+    id: string,
+    incPromotional: number,
+    incStandard: number
+  ) {
+    const userUpdated = await this.userModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $inc: {
+            creditsPromotional: incPromotional,
+            creditsStandard: incStandard
+          }
+        },
+        { new: true }
+      )
+      .lean()
+      .exec()
+
+    return userUpdated
   }
 
   private async _changeActiveState(id: string, active: boolean) {

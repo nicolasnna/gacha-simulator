@@ -67,9 +67,13 @@ export class GachaService {
       pulls === PullsEnum.One
         ? await this.pullHelper.singlePull(userId, getBannerAnime)
         : await this.pullHelper.multiPull(userId, getBannerAnime)
-    const { currentCredits, ...pullsInfo } = results
+    const { creditsPromotional, creditsStandard, ...pullsInfo } = results
 
-    this.gachaGateway.sendCurrentCredits(userId, anime, +currentCredits)
+    this.gachaGateway.sendCurrentCredits(
+      userId,
+      creditsPromotional,
+      creditsStandard
+    )
 
     const newPull = new this.gachaPullModel(pullsInfo)
 

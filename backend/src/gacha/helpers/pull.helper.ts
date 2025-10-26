@@ -1,4 +1,7 @@
 import { CharactersService } from '@/characters/characters.service'
+import { UsersService } from '@/users/users.service'
+import { BannerEnum, RarityCharacterEnum } from '@common/enums'
+import { User } from '@common/schemas'
 import { Banner, BannerDocument } from '@common/schemas/banner.schema'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { GachaUserService } from '../gacha-user.service'
@@ -6,14 +9,13 @@ import {
   calculateMultiplePullRarity,
   calculateSinglePullRarity
 } from './gacha-probability.helper'
-import { RarityCharacterEnum } from '@common/enums'
-import { GachaUser } from '@common/schemas/gacha-user.schema'
 
 @Injectable()
 export class PullHelper {
   constructor(
     private readonly charactersService: CharactersService,
-    private readonly gachaUserService: GachaUserService
+    private readonly gachaUserService: GachaUserService,
+    private readonly usersGacha: UsersService
   ) {}
 
   async singlePull(userId: string, bannerInfo: BannerDocument) {
@@ -45,7 +47,7 @@ export class PullHelper {
       animeOrigin: bannerInfo.anime,
       pullsCount: 1,
       items: char,
-      currentCredits
+      ...currentCredits
     }
   }
 
@@ -85,7 +87,7 @@ export class PullHelper {
       animeOrigin: bannerInfo.anime,
       pullsCount: 10,
       items: characterObtained,
-      currentCredits
+      ...currentCredits
     }
   }
 
@@ -102,15 +104,22 @@ export class PullHelper {
       )
     }
 
-    const userDataUpdated: GachaUser =
-      await this.gachaUserService.incCreditValue(
+    const { costMultiPull, costSinglePull, type } = bannerInfo
+
+    const valueToInc =
+      characters.length === 1 ? -costSinglePull : -costMultiPull
+    const incPromotional = type === BannerEnum.Promotional ? valueToInc : 0
+    const incStandard = type === BannerEnum.Standard ? valueToInc : 0
+
+    const userDataUpdated: User =
+      await this.usersGacha.incrementSingleUserCredits(
         userId,
-        bannerInfo.anime,
-        characters.length === 1
-          ? -bannerInfo.costSinglePull
-          : -bannerInfo.costMultiPull
+        incPromotional,
+        incStandard
       )
 
-    return userDataUpdated.credits
+    const { creditsPromotional, creditsStandard } = userDataUpdated
+
+    return { creditsPromotional, creditsStandard }
   }
 }

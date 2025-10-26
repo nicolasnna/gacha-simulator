@@ -2,8 +2,16 @@ import { useEffect, useState } from 'react'
 import { useAppSelector } from './useRedux'
 import { useWebsocketSingleton } from './useWebsocketSingleton'
 
+interface Credits {
+  promotional: number
+  standard: number
+}
+
 export default function useUserCredits() {
-  const [credits, setCredits] = useState<number>(0)
+  const [credits, setCredits] = useState<Credits>({
+    promotional: 0,
+    standard: 0
+  })
   const socket = useWebsocketSingleton()
   const userId = useAppSelector((s) => s.auth.userInfo?.userId)
 
@@ -13,16 +21,18 @@ export default function useUserCredits() {
       return
     }
 
-    if (socket.connected)
-      socket.emit(`get-user-credits-${userId}`, { userId, anime: 'naruto' })
+    if (socket.connected) socket.emit(`get-user-credits-${userId}`, { userId })
 
     socket.on('credits-recharged', () => {
       // fetchGetCredits()
-      socket.emit(`get-user-credits-${userId}`, { userId, anime: 'naruto' })
+      socket.emit(`get-user-credits-${userId}`, { userId })
     })
 
     socket.on('user-credits', (data) => {
-      setCredits(data.credits)
+      setCredits({
+        standard: data.creditsStandard,
+        promotional: data.creditsPromotional
+      })
     })
 
     return () => {
@@ -30,17 +40,6 @@ export default function useUserCredits() {
       socket.off('user-credits')
     }
   }, [socket, userId])
-
-  // const fetchGetCredits = async () => {
-  //   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
-  //   try {
-  //     const res = await axios.get(`${BACKEND_URL}/gacha/credits`)
-  //     const data = res.data
-  //     setCredits(data.data.credits)
-  //   } catch (err) {
-  //     console.log(`Error con la obtencion de creditos: ${err}`)
-  //   }
-  // }
 
   return { credits }
 }

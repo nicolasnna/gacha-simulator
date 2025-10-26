@@ -47,7 +47,18 @@ function GachaView() {
           width={25}
           alt="Diamante"
         />
-        <Text>Monedas: {credits}</Text>
+        <Text>Standard: {credits.standard}</Text>
+
+        <img
+          src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
+          width={25}
+          alt="Diamante"
+          style={{
+            filter:
+              'sepia(100%) saturate(300%) brightness(1.2) hue-rotate(-10deg)'
+          }}
+        />
+        <Text>Promotional: {credits.promotional}</Text>
       </HStack>
 
       <GachaContainer />

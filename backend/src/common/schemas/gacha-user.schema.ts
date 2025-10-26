@@ -1,4 +1,4 @@
-import { AnimeEnum, RarityCharacterEnum } from '@common/enums'
+import { RarityCharacterEnum } from '@common/enums'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { HydratedDocument, Types } from 'mongoose'
 
@@ -11,8 +11,8 @@ export class GachaUser {
   @Prop({ required: true, index: 1, type: String, ref: 'user' })
   userId: string
 
-  @Prop({ required: true, enum: AnimeEnum, type: String, index: 1 })
-  animeOrigin: AnimeEnum
+  @Prop({ required: true, type: String, index: 1 })
+  animeOrigin: string
 
   @Prop({ type: Number, default: 0 })
   credits: number

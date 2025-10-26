@@ -31,6 +31,18 @@ export class User {
 
   @Prop()
   name?: string
+
+  @Prop({ type: Number, default: 0 })
+  creditsPromotional: number
+
+  @Prop({ type: Number, default: 0 })
+  creditsStandard: number
+
+  @Prop({ type: Number, default: 0 })
+  coinSsr: number
+
+  @Prop({ type: Number, default: 0 })
+  coinSr: number
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)
