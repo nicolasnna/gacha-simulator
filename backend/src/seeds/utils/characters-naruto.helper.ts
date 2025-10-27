@@ -3,6 +3,7 @@ import { RarityCharacterEnum } from '@common/enums'
 export const charactersNaruto: {
   mal_id: number
   rarity: RarityCharacterEnum
+  anime: string
 }[] = [
   // SSR
   {
@@ -151,4 +152,4 @@ export const charactersNaruto: {
     mal_id: 4694,
     rarity: RarityCharacterEnum.Common
   } // Kankuro
-]
+].map((char) => ({ ...char, anime: 'naruto' }))

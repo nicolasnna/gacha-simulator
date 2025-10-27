@@ -103,7 +103,7 @@ export class PullHelper {
     for (const char of characters) {
       await this.gachaUserService.setCharacterObtained(
         userId,
-        bannerInfo.anime,
+        char.animeOrigin,
         char._id
       )
     }

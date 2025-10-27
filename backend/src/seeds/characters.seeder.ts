@@ -39,22 +39,18 @@ export class CharactersSeeder {
     })
     this._logger.log('Se ha añadido los banner de la lista en banner.ts')
 
-    const bannerAnime = bannersCreated.find(
-      (banner) => banner.anime === 'naruto'
-    )
-    if (!bannerAnime) {
-      this._logger.error(
-        'No se ha creado el banner del anime naruto para proceder con la incorporacion de personajes'
-      )
-      return
-    }
     for (const char of charactersNaruto) {
       try {
         const value = ValueCharacterEnum[char.rarity]
         const charInfo = { ...char, value }
+
+        const bannersId = bannersCreated
+          .filter((b) => b.anime.includes(char.anime))
+          .map((banner) => String(banner._id))
+
         const newChar = await this.characterService.createByMalId({
           ...charInfo,
-          banners: [String(bannerAnime._id)]
+          banners: bannersId
         })
         // Limitar las peticiones por segundo
         await new Promise((resolve) => setTimeout(resolve, 1000))

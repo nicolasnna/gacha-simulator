@@ -147,7 +147,8 @@ export class CharactersService {
             name: 1,
             imgUrl: 1,
             rarity: 1,
-            value: 1
+            value: 1,
+            animeOrigin: 1
           }
         }
       ])

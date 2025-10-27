@@ -1,6 +1,7 @@
 import { BannerEnum } from '@common/enums'
 import { Rates } from '@common/types'
 import {
+  IsArray,
   IsEnum,
   IsNumber,
   IsObject,
@@ -9,8 +10,9 @@ import {
 } from 'class-validator'
 
 export class CreateBannerDto {
-  @IsString()
-  anime: string
+  @IsArray()
+  @IsString({ each: true })
+  anime: string[]
 
   @IsEnum(BannerEnum)
   type: BannerEnum
@@ -25,4 +27,8 @@ export class CreateBannerDto {
   @IsOptional()
   @IsNumber()
   costMultiPull: number
+
+  @IsOptional()
+  @IsString()
+  imgUrl: string
 }

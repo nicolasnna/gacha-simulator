@@ -9,8 +9,8 @@ export type BannerDocument = HydratedDocument<Banner>
   timestamps: true
 })
 export class Banner {
-  @Prop({ required: true })
-  anime: string
+  @Prop({ required: true, type: [String] })
+  anime: string[]
 
   @Prop({ required: true, enum: BannerEnum })
   type: BannerEnum
@@ -23,6 +23,9 @@ export class Banner {
 
   @Prop({ default: 25, type: Number })
   costMultiPull: number
+
+  @Prop({ type: String })
+  imgUrl: string
 }
 
 export const BannerSchema = SchemaFactory.createForClass(Banner)
