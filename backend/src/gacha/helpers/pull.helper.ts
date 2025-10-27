@@ -19,12 +19,14 @@ export class PullHelper {
   ) {}
 
   async singlePull(userId: string, bannerInfo: BannerDocument) {
-    const dataUser = await this.gachaUserService.getCreditsByAnimeBanner(
-      userId,
-      bannerInfo.anime
-    )
+    const dataUser = await this.usersGacha.findById(userId)
 
-    if (dataUser.data.credits < bannerInfo.costSinglePull) {
+    const creditsUser =
+      bannerInfo.type === BannerEnum.Promotional
+        ? dataUser.data.creditsPromotional
+        : dataUser.data.creditsStandard
+
+    if (creditsUser < bannerInfo.costSinglePull) {
       throw new BadRequestException(
         `Necesitas ${bannerInfo.costSinglePull} creditos para una single`
       )
@@ -52,12 +54,14 @@ export class PullHelper {
   }
 
   async multiPull(userId: string, bannerInfo: BannerDocument) {
-    const dataUser = await this.gachaUserService.getCreditsByAnimeBanner(
-      userId,
-      bannerInfo.anime
-    )
+    const dataUser = await this.usersGacha.findById(userId)
 
-    if (dataUser.data.credits < bannerInfo.costMultiPull) {
+    const creditsUser =
+      bannerInfo.type === BannerEnum.Promotional
+        ? dataUser.data.creditsPromotional
+        : dataUser.data.creditsStandard
+
+    if (creditsUser < bannerInfo.costMultiPull) {
       throw new BadRequestException(
         `Necesitas ${bannerInfo.costMultiPull} creditos para una multi`
       )

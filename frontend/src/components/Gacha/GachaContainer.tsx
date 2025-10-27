@@ -74,7 +74,7 @@ export default function GachaContainer() {
           width={300}
           height={300}
           isShake={!startAnimation}
-          onComplete={() => onOpen()}
+          onComplete={onOpen}
         />
         <Card.Footer>
           <HStack

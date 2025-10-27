@@ -38,7 +38,7 @@ export class GachaUser {
     rarity: RarityCharacterEnum
     imgUrl: string
     repeatCount: number
-  }
+  }[]
 }
 
 export const GachaUserSchema = SchemaFactory.createForClass(GachaUser)

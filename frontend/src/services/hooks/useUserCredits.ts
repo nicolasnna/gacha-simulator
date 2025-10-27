@@ -17,7 +17,6 @@ export default function useUserCredits() {
 
   useEffect(() => {
     if (!socket || !userId) {
-      // socketGetCredits()
       return
     }
 
@@ -25,7 +24,9 @@ export default function useUserCredits() {
 
     socket.on('credits-recharged', () => {
       // fetchGetCredits()
-      socket.emit(`get-user-credits-${userId}`, { userId })
+      setTimeout(() => {
+        socket.emit(`get-user-credits-${userId}`, { userId })
+      }, 1000)
     })
 
     socket.on('user-credits', (data) => {

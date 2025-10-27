@@ -8,6 +8,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  NotFoundException,
   OnModuleInit
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
@@ -109,7 +110,7 @@ export class GachaUserService implements OnModuleInit {
       ? gachaUserDoc.characters
       : []
 
-    const sortedCharacters = chars.sort(
+    const sortedCharacters = [...chars].sort(
       (a, b) => rarityOrder.indexOf(a.rarity) - rarityOrder.indexOf(b.rarity)
     ) // Orderer to ssr, sr, r, and c
 
@@ -147,5 +148,23 @@ export class GachaUserService implements OnModuleInit {
   async rechargeCreditsToAllUsers() {
     const result = await this.usersService.incrementAllUserCredits(5, 15)
     if (result) this.gachaGateway.informCreditRecharge()
+  }
+
+  async getSelleableCharacters(userId: string, anime: string) {
+    const userData = await this.gachaUserModel.findOne({
+      userId,
+      animeOrigin: anime
+    })
+
+    if (!userData)
+      throw new NotFoundException(
+        'No existe información del usuario para este anime'
+      )
+
+    const charactersObtained = userData.characters
+    const characterRepeated = charactersObtained.filter(
+      (char) => char.repeatCount > 0
+    )
+    return { data: characterRepeated }
   }
 }

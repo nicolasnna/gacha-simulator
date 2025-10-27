@@ -87,7 +87,6 @@ const authSlice = createSlice({
       .addCase(getPermissions.pending, (s) => handlePromisePending(s.promise))
       .addCase(getPermissions.fulfilled, (s, { payload }) => {
         handlePromiseFulfilled(s.promise)
-        console.log(payload)
         const { data } = payload
         s.permissions = data.grants as Grants[]
         sessionStorage.setItem('permissions', JSON.stringify(s.permissions))
