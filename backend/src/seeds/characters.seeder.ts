@@ -3,10 +3,10 @@ import { Character, CharacterDocument } from '@common/schemas'
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { charactersNaruto } from './utils/characters-naruto.helper'
 import { ValueCharacterEnum } from '@common/enums'
 import { Banner, BannerDocument } from '@common/schemas/banner.schema'
 import { bannerList } from './utils/banners'
+import { charactersNaruto } from './utils/characters-naruto-malid'
 
 @Injectable()
 export class CharactersSeeder {
