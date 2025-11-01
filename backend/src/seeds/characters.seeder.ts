@@ -6,7 +6,7 @@ import { Model } from 'mongoose'
 import { ValueCharacterEnum } from '@common/enums'
 import { Banner, BannerDocument } from '@common/schemas/banner.schema'
 import { bannerList } from './utils/banners'
-import { charactersNaruto } from './utils/characters-naruto-malid'
+import { charactersMalIdsAll } from './utils/characters-malid'
 
 @Injectable()
 export class CharactersSeeder {
@@ -21,7 +21,7 @@ export class CharactersSeeder {
   ) {}
 
   async drop() {
-    const malIds = charactersNaruto.map((char) => char.mal_id)
+    const malIds = charactersMalIdsAll.map((char) => char.mal_id)
     await this.characterModel.deleteMany({ mal_id: { $in: malIds } }).exec()
     this._logger.warn(
       `The characters with mal_ids: ${malIds.join(', ')} has been deleted`
@@ -39,7 +39,7 @@ export class CharactersSeeder {
     })
     this._logger.log('Se ha añadido los banner de la lista en banner.ts')
 
-    for (const char of charactersNaruto) {
+    for (const char of charactersMalIdsAll) {
       try {
         const value = ValueCharacterEnum[char.rarity]
         const charInfo = { ...char, value }
