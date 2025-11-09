@@ -1,7 +1,13 @@
+import GachaBanners from '@/components/Gacha/GachaBanners'
 import GachaContainer from '@/components/Gacha/GachaContainer'
+import { IconGachaMachine } from '@/components/Icons/IconGachaMachine'
+import { IconPromotionalGem } from '@/components/Icons/IconPromotionalGem'
+import { IconStandardGem } from '@/components/Icons/IconStandardGem'
 import type { RarityType } from '@/interfaces/rarity.interface'
+import { useBanners } from '@/services/hooks/useBanners'
 import useUserCredits from '@/services/hooks/useUserCredits'
 import { Card, Container, Heading, HStack, Text } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
 interface RarityCard {
   rare: RarityType
@@ -17,20 +23,22 @@ const rarityCards: RarityCard[] = [
 
 function GachaView() {
   const { credits } = useUserCredits()
+  const { banners, getBanners } = useBanners()
+
+  useEffect(() => {
+    getBanners()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
-    <Container centerContent py={2} spaceY={5}>
+    <Container centerContent py={2} spaceY={2}>
       <HStack
-        mt={2}
+        mb={4}
         flexWrap="wrap"
         alignItems="center"
         justifyContent="center"
       >
-        <img
-          src="https://emojicdn.elk.sh/🎰?style=facebook"
-          width={40}
-          alt="Máquina gatcha"
-        />
+        <IconGachaMachine />
         <Heading
           size={'4xl'}
           color="text"
@@ -41,23 +49,13 @@ function GachaView() {
         </Heading>
       </HStack>
 
+      <GachaBanners banners={banners} />
+
       <HStack flexDir="row" color="text">
-        <img
-          src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
-          width={25}
-          alt="Diamante"
-        />
+        <IconStandardGem />
         <Text>Standard: {credits.standard}</Text>
 
-        <img
-          src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
-          width={25}
-          alt="Diamante"
-          style={{
-            filter:
-              'sepia(100%) saturate(300%) brightness(1.2) hue-rotate(-10deg)'
-          }}
-        />
+        <IconPromotionalGem />
         <Text>Promotional: {credits.promotional}</Text>
       </HStack>
 

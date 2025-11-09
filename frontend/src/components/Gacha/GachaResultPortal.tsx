@@ -1,11 +1,10 @@
-import type { CharPull } from '@/services/hooks/usePullGachaFetch'
 import { Box, Center, HStack, Portal, Presence } from '@chakra-ui/react'
 import CardCharacterGacha from '../Card/CardCharacterGacha'
+import type { CharPull } from '@/services/hooks/usePullGacha'
 
 interface GachaResultPortalProp {
   open: boolean
   onClose: () => void
-  onOpen?: () => void
   result: CharPull[]
 }
 
@@ -13,7 +12,7 @@ export default function GachaResultPortal({
   open,
   onClose,
   result
-}: GachaResultPortalProp) {
+}: Readonly<GachaResultPortalProp>) {
   return (
     <Portal>
       <Presence

@@ -14,7 +14,7 @@ export const bannerList: Banner[] = [
     costSinglePull: 3,
     costMultiPull: 25,
     imgUrl:
-      'https://github.com/nicolasnna/gacha-simulator/blob/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-naruto.webp'
+      'https://raw.githubusercontent.com/nicolasnna/gacha-simulator/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-naruto.webp'
   },
   {
     anime: ['black clover'],
@@ -28,7 +28,7 @@ export const bannerList: Banner[] = [
     costSinglePull: 5,
     costMultiPull: 45,
     imgUrl:
-      'https://github.com/nicolasnna/gacha-simulator/blob/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-black-clover.webp'
+      'https://raw.githubusercontent.com/nicolasnna/gacha-simulator/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-black-clover.webp'
   },
   {
     anime: ['jujutsu kaisen'],
@@ -42,7 +42,7 @@ export const bannerList: Banner[] = [
     costSinglePull: 3,
     costMultiPull: 25,
     imgUrl:
-      'https://github.com/nicolasnna/gacha-simulator/blob/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-jjk.webp'
+      'https://raw.githubusercontent.com/nicolasnna/gacha-simulator/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-jjk.webp'
   },
   {
     anime: ['sousou no frieren'],
@@ -56,7 +56,7 @@ export const bannerList: Banner[] = [
     costSinglePull: 4,
     costMultiPull: 36,
     imgUrl:
-      'https://github.com/nicolasnna/gacha-simulator/blob/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-sousou-no-frieren.webp'
+      'https://raw.githubusercontent.com/nicolasnna/gacha-simulator/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-sousou-no-frieren.webp'
   },
   {
     anime: ['hajime no ippo'],
@@ -70,7 +70,7 @@ export const bannerList: Banner[] = [
     costSinglePull: 4,
     costMultiPull: 36,
     imgUrl:
-      'https://github.com/nicolasnna/gacha-simulator/blob/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-hajime-no-ippo.webp'
+      'https://raw.githubusercontent.com/nicolasnna/gacha-simulator/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-hajime-no-ippo.webp'
   },
   {
     anime: ['naruto', 'hajime no ippo', 'jujutsu kaisen', 'black clover'],
@@ -84,6 +84,6 @@ export const bannerList: Banner[] = [
     costSinglePull: 10,
     costMultiPull: 90,
     imgUrl:
-      'https://github.com/nicolasnna/gacha-simulator/blob/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-standard.webp'
+      'https://raw.githubusercontent.com/nicolasnna/gacha-simulator/7c669775b65cd79515179ac3824c368e9bd46889/images/banner-standard.webp'
   }
 ]

@@ -1,11 +1,11 @@
+import type { RoleType } from '@/interfaces/role.interface'
 import type { CharPull } from '@/services/hooks/usePullGacha'
 import usePullGacha from '@/services/hooks/usePullGacha'
-import { Button, Card, HStack, useDisclosure } from '@chakra-ui/react'
+import { useAppSelector } from '@/services/hooks/useRedux'
+import { Button, HStack, Image, useDisclosure } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import GachaLottieAnimation from './GachaLottieAnimation'
 import GachaResultPortal from './GachaResultPortal'
-import { useAppSelector } from '@/services/hooks/useRedux'
-import type { RoleType } from '@/interfaces/role.interface'
 
 export default function GachaContainer() {
   const { open, onOpen, onClose } = useDisclosure()
@@ -54,88 +54,71 @@ export default function GachaContainer() {
 
   return (
     <>
-      <Card.Root
+      <HStack
+        gap={4}
+        flexWrap="wrap"
         alignItems="center"
-        bg="bg-secondary.400"
-        borderRadius={15}
-        border="none"
-        pos="relative"
-        w="max-content"
-        maxW="90dvw"
+        justifyContent="center"
       >
-        <img
-          src="https://emojicdn.elk.sh/%E2%84%B9?style=google"
-          width={25}
-          alt="Información"
-          style={{ position: 'absolute', top: '5%', right: '10%' }}
-        />
+        <Button
+          bg="primary"
+          fontSize="xl"
+          p={5}
+          borderRadius={10}
+          onClick={() => {
+            disableDebounce()
+            hookPull.handleOnePull()
+          }}
+          disabled={hookPull.isLoading || startAnimation || disable}
+        >
+          Tirar 1 ({' '}
+          <Image
+            src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
+            width={25}
+            alt="Diamante"
+          />{' '}
+          3 )
+        </Button>
         <GachaLottieAnimation
           lottieRef={lottieRef}
-          width={300}
-          height={300}
+          width={200}
+          height={180}
           isShake={!startAnimation}
           onComplete={onOpen}
         />
-        <Card.Footer>
-          <HStack
-            gap={4}
-            flexWrap="wrap"
-            alignItems="center"
-            justifyContent="center"
+        <Button
+          bg="primary"
+          fontSize="xl"
+          p={5}
+          borderRadius={10}
+          onClick={() => {
+            disableDebounce()
+            hookPull.handleTenPulls()
+          }}
+          disabled={hookPull.isLoading || startAnimation || disable}
+        >
+          Tirar 10 ({' '}
+          <Image
+            src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
+            width={25}
+            alt="Diamante"
+          />{' '}
+          25)
+        </Button>
+        {roleForMode.includes(role as RoleType) && (
+          <Button
+            variant="outline"
+            color="text"
+            _hover={{ color: 'primary', borderColor: 'primary' }}
+            onClick={() =>
+              setTypePull(typePull === 'websocket' ? 'fetch' : 'websocket')
+            }
           >
-            <Button
-              bg="primary"
-              fontSize="xl"
-              p={5}
-              borderRadius={10}
-              onClick={() => {
-                disableDebounce()
-                hookPull.handleOnePull()
-              }}
-              disabled={hookPull.isLoading || startAnimation || disable}
-            >
-              Tirar 1 (
-              <img
-                src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
-                width={20}
-                alt="Diamante"
-              />
-              3)
-            </Button>
-            <Button
-              bg="primary"
-              fontSize="xl"
-              p={5}
-              borderRadius={10}
-              onClick={() => {
-                disableDebounce()
-                hookPull.handleTenPulls()
-              }}
-              disabled={hookPull.isLoading || startAnimation || disable}
-            >
-              Tirar 10 (
-              <img
-                src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
-                width={20}
-                alt="Diamante"
-              />
-              25)
-            </Button>
-            {roleForMode.includes(role as RoleType) && (
-              <Button
-                variant="outline"
-                color="text"
-                _hover={{ color: 'primary', borderColor: 'primary' }}
-                onClick={() =>
-                  setTypePull(typePull === 'websocket' ? 'fetch' : 'websocket')
-                }
-              >
-                {typePull === 'websocket' ? 'Websocket' : 'Fetch'}
-              </Button>
-            )}
-          </HStack>
-        </Card.Footer>
-      </Card.Root>
+            {typePull === 'websocket' ? 'Websocket' : 'Fetch'}
+          </Button>
+        )}
+      </HStack>
+
       <GachaResultPortal
         open={open}
         onClose={closeResult}
