@@ -46,7 +46,7 @@ export class PullHelper {
 
     return {
       userId,
-      animeOrigin: bannerInfo.anime,
+      bannerId: bannerInfo._id,
       pullsCount: 1,
       items: char,
       ...currentCredits
@@ -88,7 +88,7 @@ export class PullHelper {
 
     return {
       userId,
-      animeOrigin: bannerInfo.anime,
+      bannerId: bannerInfo._id,
       pullsCount: 10,
       items: characterObtained,
       ...currentCredits

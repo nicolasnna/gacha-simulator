@@ -1,13 +1,22 @@
+import type { Banner } from '@/interfaces/banner.interface'
 import type { RoleType } from '@/interfaces/role.interface'
 import type { CharPull } from '@/services/hooks/usePullGacha'
 import usePullGacha from '@/services/hooks/usePullGacha'
 import { useAppSelector } from '@/services/hooks/useRedux'
-import { Button, HStack, Image, useDisclosure } from '@chakra-ui/react'
+import { Button, HStack, useDisclosure } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
+import { IconPromotionalGem } from '../Icons/IconPromotionalGem'
+import { IconStandardGem } from '../Icons/IconStandardGem'
 import GachaLottieAnimation from './GachaLottieAnimation'
 import GachaResultPortal from './GachaResultPortal'
 
-export default function GachaContainer() {
+interface GachaContainerProps {
+  bannerSelected: Banner
+}
+
+export default function GachaContainer({
+  bannerSelected
+}: Readonly<GachaContainerProps>) {
   const { open, onOpen, onClose } = useDisclosure()
   const [typePull, setTypePull] = useState<'websocket' | 'fetch'>('websocket')
   const hookPull = usePullGacha(typePull)
@@ -52,6 +61,26 @@ export default function GachaContainer() {
     }, 4000)
   }
 
+  const iconGems =
+    bannerSelected?.type === 'promotional' ? (
+      <IconPromotionalGem />
+    ) : (
+      <IconStandardGem />
+    )
+
+  const handleSinglePull = () => {
+    disableDebounce()
+    hookPull.handleOnePull(bannerSelected._id)
+  }
+  const handleMultiPull = () => {
+    disableDebounce()
+    hookPull.handleTenPulls(bannerSelected._id)
+  }
+  const disabledButton = hookPull.isLoading || startAnimation || disable
+
+  const handleChangeModeRequest = () =>
+    setTypePull(typePull === 'websocket' ? 'fetch' : 'websocket')
+
   return (
     <>
       <HStack
@@ -65,19 +94,10 @@ export default function GachaContainer() {
           fontSize="xl"
           p={5}
           borderRadius={10}
-          onClick={() => {
-            disableDebounce()
-            hookPull.handleOnePull()
-          }}
-          disabled={hookPull.isLoading || startAnimation || disable}
+          onClick={handleSinglePull}
+          disabled={disabledButton}
         >
-          Tirar 1 ({' '}
-          <Image
-            src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
-            width={25}
-            alt="Diamante"
-          />{' '}
-          3 )
+          Tirar 1 ( {iconGems} 3 )
         </Button>
         <GachaLottieAnimation
           lottieRef={lottieRef}
@@ -91,28 +111,17 @@ export default function GachaContainer() {
           fontSize="xl"
           p={5}
           borderRadius={10}
-          onClick={() => {
-            disableDebounce()
-            hookPull.handleTenPulls()
-          }}
-          disabled={hookPull.isLoading || startAnimation || disable}
+          onClick={handleMultiPull}
+          disabled={disabledButton}
         >
-          Tirar 10 ({' '}
-          <Image
-            src="https://emojicdn.elk.sh/%F0%9F%92%8E?style=google"
-            width={25}
-            alt="Diamante"
-          />{' '}
-          25)
+          Tirar 10 ( {iconGems} 25)
         </Button>
         {roleForMode.includes(role as RoleType) && (
           <Button
             variant="outline"
             color="text"
             _hover={{ color: 'primary', borderColor: 'primary' }}
-            onClick={() =>
-              setTypePull(typePull === 'websocket' ? 'fetch' : 'websocket')
-            }
+            onClick={handleChangeModeRequest}
           >
             {typePull === 'websocket' ? 'Websocket' : 'Fetch'}
           </Button>

@@ -7,7 +7,7 @@ import type { RarityType } from '@/interfaces/rarity.interface'
 import { useBanners } from '@/services/hooks/useBanners'
 import useUserCredits from '@/services/hooks/useUserCredits'
 import { Card, Container, Heading, HStack, Text } from '@chakra-ui/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 interface RarityCard {
   rare: RarityType
@@ -24,6 +24,7 @@ const rarityCards: RarityCard[] = [
 function GachaView() {
   const { credits } = useUserCredits()
   const { banners, getBanners } = useBanners()
+  const [bannerNro, setBannerNro] = useState<number>(0)
 
   useEffect(() => {
     getBanners()
@@ -49,7 +50,11 @@ function GachaView() {
         </Heading>
       </HStack>
 
-      <GachaBanners banners={banners} />
+      <GachaBanners
+        banners={banners}
+        bannerSelected={bannerNro}
+        setBannerSelected={setBannerNro}
+      />
 
       <HStack flexDir="row" color="text">
         <IconStandardGem />
@@ -59,7 +64,7 @@ function GachaView() {
         <Text>Promotional: {credits.promotional}</Text>
       </HStack>
 
-      <GachaContainer />
+      <GachaContainer bannerSelected={banners[bannerNro]} />
 
       <HStack
         as="section"

@@ -1,4 +1,4 @@
-import { AnimeEnum, RarityCharacterEnum } from '@common/enums'
+import { RarityCharacterEnum } from '@common/enums'
 import { PullsEnum } from '@common/enums/pulls.enum'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { HydratedDocument, Types } from 'mongoose'
@@ -12,8 +12,8 @@ export class GachaPull {
   @Prop({ required: true, index: 1, type: String, ref: 'User' })
   userId: string
 
-  @Prop({ required: true, enum: AnimeEnum, type: String, index: 1 })
-  animeOrigin: AnimeEnum
+  @Prop({ required: true, type: Types.ObjectId, ref: 'Banner' })
+  bannerId: Types.ObjectId
 
   @Prop({ enum: PullsEnum, type: Number })
   pullsCount: PullsEnum

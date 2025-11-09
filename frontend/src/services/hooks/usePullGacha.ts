@@ -17,8 +17,8 @@ export interface UsePullGacha {
   setChars: Dispatch<SetStateAction<CharPull[]>>
   isLoading: boolean
   isError: boolean
-  handleTenPulls: () => void
-  handleOnePull: () => void
+  handleTenPulls: (bannerId: string) => Promise<void>
+  handleOnePull: (bannerId: string) => Promise<void>
 }
 
 export default function usePullGacha(mode: PullMode) {

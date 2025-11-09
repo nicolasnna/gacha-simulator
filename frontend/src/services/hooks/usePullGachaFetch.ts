@@ -10,20 +10,20 @@ export default function usePullGachaFetch(): UsePullGacha {
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState<boolean>(false)
 
-  const fetchPull = async (count: number, anime: string) => {
+  const fetchPull = async (count: number, bannerId: string) => {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
     const res = await axios.post(`${BACKEND_URL}/gacha/pull`, {
-      anime: anime,
+      bannerId: bannerId,
       pulls: count
     })
     return res.data
   }
 
-  const handlePulls = async (pulls: 1 | 10, anime: string = 'naruto') => {
+  const handlePulls = async (pulls: 1 | 10, bannerId: string) => {
     setIsLoading(() => true)
     setIsError(() => false)
     try {
-      const resPull = await fetchPull(pulls, anime)
+      const resPull = await fetchPull(pulls, bannerId)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const objCharPull: CharPull[] = resPull.items.map((p: any) => ({
         name: p.name,
@@ -43,8 +43,10 @@ export default function usePullGachaFetch(): UsePullGacha {
     }
   }
 
-  const handleTenPulls = async (anime?: string) => await handlePulls(10, anime)
-  const handleOnePull = async (anime?: string) => await handlePulls(1, anime)
+  const handleTenPulls = async (bannerId: string) =>
+    await handlePulls(10, bannerId)
+  const handleOnePull = async (bannerId: string) =>
+    await handlePulls(1, bannerId)
 
   return {
     chars,

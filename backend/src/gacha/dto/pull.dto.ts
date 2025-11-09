@@ -3,7 +3,7 @@ import { IsEnum, IsString } from 'class-validator'
 
 export class PullDto {
   @IsString()
-  anime: string
+  bannerId: string
 
   @IsEnum(PullsEnum)
   pulls!: PullsEnum

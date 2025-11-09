@@ -29,11 +29,11 @@ export class GachaService {
     @InjectQueue('gacha') private readonly gachaQueue: Queue
   ) {}
 
-  async gachaPullQueue({ anime, pulls, userId }: UserPullDto) {
+  async gachaPullQueue({ bannerId, pulls, userId }: UserPullDto) {
     try {
       const job = await this.gachaQueue.add(
         'gacha-pull',
-        { anime, pulls, userId },
+        { bannerId, pulls, userId },
         {
           attempts: 3, // Reintentar 3 veces si falla
           backoff: 5000, // Esperar 5 segundos entre intentos
@@ -49,8 +49,8 @@ export class GachaService {
     }
   }
 
-  async gachaPull({ anime, pulls, userId }: UserPullDto) {
-    const getBannerAnime = await this.bannerModel.findOne({ anime: anime })
+  async gachaPull({ bannerId, pulls, userId }: UserPullDto) {
+    const getBannerAnime = await this.bannerModel.findById(bannerId)
 
     if (!getBannerAnime)
       throw new NotFoundException(

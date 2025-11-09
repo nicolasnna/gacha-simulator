@@ -54,18 +54,18 @@ export default function usePullGachaWebsocket(): UsePullGacha {
     }
   }, [socket])
 
-  const handlePullQueue = async (count: 1 | 10, anime: string = 'naruto') => {
+  const handlePullQueue = async (count: 1 | 10, bannerId: string) => {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:3000'
     await axios.post(`${BACKEND_URL}/gacha/pull-queue`, {
-      anime: anime,
+      bannerId: bannerId,
       pulls: count
     })
   }
 
-  const handleOnePull = async (anime?: string) =>
-    await handlePullQueue(1, anime)
-  const handleTenPulls = async (anime?: string) =>
-    await handlePullQueue(10, anime)
+  const handleOnePull = async (bannerId: string) =>
+    await handlePullQueue(1, bannerId)
+  const handleTenPulls = async (bannerId: string) =>
+    await handlePullQueue(10, bannerId)
 
   return {
     chars,
