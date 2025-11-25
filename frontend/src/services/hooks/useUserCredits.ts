@@ -15,12 +15,17 @@ export default function useUserCredits() {
   const socket = useWebsocketSingleton()
   const userId = useAppSelector((s) => s.auth.userInfo?.userId)
 
+  const getCurrentCredits = () => {
+    if (!socket) return
+    socket.emit(`get-user-credits-${userId}`, { userId })
+  }
+
   useEffect(() => {
     if (!socket || !userId) {
       return
     }
 
-    if (socket.connected) socket.emit(`get-user-credits-${userId}`, { userId })
+    if (socket.connected) getCurrentCredits()
 
     socket.on('credits-recharged', () => {
       // fetchGetCredits()
@@ -30,6 +35,7 @@ export default function useUserCredits() {
     })
 
     socket.on('user-credits', (data) => {
+      console.log(data)
       setCredits({
         standard: data.creditsStandard,
         promotional: data.creditsPromotional
@@ -40,7 +46,8 @@ export default function useUserCredits() {
       socket.off('credits-recharged')
       socket.off('user-credits')
     }
-  }, [socket, userId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, userId, socket?.connected])
 
   return { credits }
 }

@@ -7,7 +7,7 @@ import type { RarityType } from '@/interfaces/rarity.interface'
 import { useBanners } from '@/services/hooks/useBanners'
 import useUserCredits from '@/services/hooks/useUserCredits'
 import { Card, Container, Heading, HStack, Text } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface RarityCard {
   rare: RarityType
@@ -30,6 +30,11 @@ function GachaView() {
     getBanners()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const arrayRates = useMemo(() => {
+    const entries = Object.entries(banners[bannerNro])
+    return
+  }, [banners, bannerNro])
 
   return (
     <Container centerContent py={2} spaceY={2}>

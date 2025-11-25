@@ -96,8 +96,13 @@ export default function GachaContainer({
           borderRadius={10}
           onClick={handleSinglePull}
           disabled={disabledButton}
+          _hover={{
+            color: 'primary',
+            borderColor: 'primary',
+            backgroundColor: 'white'
+          }}
         >
-          Tirar 1 ( {iconGems} 3 )
+          Tirar 1 ( {iconGems} {bannerSelected?.costSinglePull} )
         </Button>
         <GachaLottieAnimation
           lottieRef={lottieRef}
@@ -113,8 +118,13 @@ export default function GachaContainer({
           borderRadius={10}
           onClick={handleMultiPull}
           disabled={disabledButton}
+          _hover={{
+            color: 'primary',
+            borderColor: 'primary',
+            backgroundColor: 'white'
+          }}
         >
-          Tirar 10 ( {iconGems} 25)
+          Tirar 10 ( {iconGems} {bannerSelected?.costMultiPull})
         </Button>
         {roleForMode.includes(role as RoleType) && (
           <Button
