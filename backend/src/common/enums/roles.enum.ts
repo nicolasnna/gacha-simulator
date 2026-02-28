@@ -19,7 +19,7 @@ export const ROLE_PERMISSIONS: Record<
     },
     {
       module: ModuleKeyEnum.Gachas,
-      actions: [ActionKeyEnum.READ, ActionKeyEnum.CREATE]
+      actions: [ActionKeyEnum.READ, ActionKeyEnum.CREATE, ActionKeyEnum.CREATE]
     },
     {
       module: ModuleKeyEnum.Histories,

@@ -1,4 +1,4 @@
-import { HStack, Text } from '@chakra-ui/react'
+import { HStack, Link, Text } from '@chakra-ui/react'
 
 export default function Footer() {
   return (
@@ -12,8 +12,15 @@ export default function Footer() {
       w="100%"
     >
       <Text color="text" fontSize="sm">
-        Nicolás Norambuena - derechos reservados
+        Nicolás Norambuena -
       </Text>
+      <Link
+        color={'aquamarine'}
+        href="https://github.com/nicolasnna"
+        target="_blank"
+      >
+        GITHUB
+      </Link>
     </HStack>
   )
 }

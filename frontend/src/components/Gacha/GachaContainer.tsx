@@ -18,7 +18,7 @@ export default function GachaContainer({
   bannerSelected
 }: Readonly<GachaContainerProps>) {
   const { open, onOpen, onClose } = useDisclosure()
-  const [typePull, setTypePull] = useState<'websocket' | 'fetch'>('websocket')
+  const [typePull, setTypePull] = useState<'websocket' | 'fetch'>('fetch')
   const hookPull = usePullGacha(typePull)
   const [startAnimation, setStartAnimation] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -30,34 +30,33 @@ export default function GachaResultPortal({
           zIndex="modal"
           onClick={onClose}
         >
-          <Box
-            overflow="auto"
-            maxWidth="95vw"
-            onWheel={(e) => {
-              if (e.deltaY === 0) return
-              e.preventDefault()
-              // e.currentTarget.scrollLeft += e.deltaY
-              const scrollAmount = e.deltaY * 1.5
-              e.currentTarget.scrollTo({
-                left: e.currentTarget.scrollLeft + scrollAmount,
-                behavior: 'smooth'
-              })
-            }}
+          <HStack
+            px={4}
+            py={20}
+            alignItems="center"
+            justifyContent="center"
+            minWidth="100%"
+            flexWrap="wrap"
+            gap={8}
           >
-            <HStack
-              p={10}
-              alignItems="center"
-              justifyContent="center"
-              minWidth="max-content"
-            >
-              {result.map((char, idx) => (
+            {result.map((char, idx) => (
+              <Box
+                key={`${char.name} ${idx}`}
+                data-state="open"
+                opacity={0}
+                _open={{
+                  animation: `slide-from-top 400ms ease-out, fade-in 400ms ease-out`,
+                  animationDelay: `${idx * 200}ms`,
+                  animationFillMode: 'forwards'
+                }}
+              >
                 <CardCharacterGacha
                   key={`${char.name} ${idx}`}
                   charPull={char}
                 />
-              ))}
-            </HStack>
-          </Box>
+              </Box>
+            ))}
+          </HStack>
         </Center>
       </Presence>
     </Portal>

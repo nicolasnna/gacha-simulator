@@ -31,10 +31,7 @@ function GachaView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const arrayRates = useMemo(() => {
-    const entries = Object.entries(banners[bannerNro])
-    return
-  }, [banners, bannerNro])
+  // const arrayRates = Object.entries(banners[bannerNro]) ?? []
 
   return (
     <Container centerContent py={2} spaceY={2}>
