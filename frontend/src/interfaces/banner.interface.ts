@@ -2,6 +2,7 @@ export type BannerType = 'standard' | 'promotional'
 
 export interface Banner {
   _id: string
+  anime: string[]
   type: BannerType
   rates: Record<string, number>
   costSinglePull: number

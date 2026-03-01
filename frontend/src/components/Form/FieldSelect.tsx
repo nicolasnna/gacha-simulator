@@ -34,8 +34,8 @@ export default function FieldSelect<TFieldValues extends FieldValues>({
             multiple={isMultiple}
             name={field.name}
             size="md"
-            value={field.value}
-            onValueChange={({ value }) => field.onChange(value)}
+            value={field.value ? [field.value] : []}
+            onValueChange={({ value }) => field.onChange(value[0])}
             onBlur={field.onBlur}
             collection={values}
           >

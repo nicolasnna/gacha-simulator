@@ -35,7 +35,6 @@ export default function useUserCredits() {
     })
 
     socket.on('user-credits', (data) => {
-      console.log(data)
       setCredits({
         standard: data.creditsStandard,
         promotional: data.creditsPromotional

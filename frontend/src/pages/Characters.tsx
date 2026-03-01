@@ -1,23 +1,52 @@
 import CardCharacter from '@/components/Card/CardCharacter'
 import CardCharacterRemaining from '@/components/Card/CardCharacterRemaining'
+import FieldSelect from '@/components/Form/FieldSelect'
+import { useBanners } from '@/services/hooks/useBanners'
 import useCharactersObtained from '@/services/hooks/useCharactersObtained'
 import { useAppDispatch, useAppSelector } from '@/services/hooks/useRedux'
 import { getCharacterRemaining } from '@/services/redux/characters'
-import { Container, Heading, HStack, Tabs } from '@chakra-ui/react'
+import {
+  Box,
+  Container,
+  createListCollection,
+  Heading,
+  HStack,
+  Tabs
+} from '@chakra-ui/react'
 import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 
 function Characters() {
-  const { chars, getCharactersObtained } = useCharactersObtained()
+  const { chars, setAnime } = useCharactersObtained()
   const { dataRemaining } = useAppSelector((s) => s.characters)
+  const { banners, getBanners } = useBanners()
   const dispatch = useAppDispatch()
+  const { control, watch } = useForm({
+    defaultValues: { anime: 'naruto' }
+  })
+  const anime = watch('anime')
 
   useEffect(() => {
-    if (chars.length === 0) {
-      getCharactersObtained()
-      dispatch(getCharacterRemaining({ anime: 'naruto' }))
+    if (!anime) return
+
+    const fetchData = async () => {
+      await getBanners() // Espera que carguen los banners primero
+      setAnime(anime)
+      dispatch(getCharacterRemaining({ anime }))
     }
+    fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [anime])
+
+  const animeList = banners.map((banner) => banner.anime).flat()
+  const uniqueAnime = [...new Set(animeList)]
+
+  const animeCollection = createListCollection({
+    items: uniqueAnime.map((anime) => ({
+      label: anime,
+      value: anime
+    }))
+  })
 
   return (
     <Container centerContent py={2} spaceY={10}>
@@ -31,6 +60,15 @@ function Characters() {
           Personajes
         </Heading>
       </HStack>
+
+      <Box w={600}>
+        <FieldSelect
+          control={control}
+          values={animeCollection}
+          name="anime"
+          placeholder="Anime a filtrar"
+        />
+      </Box>
 
       <Tabs.Root
         defaultValue="charObtained"
